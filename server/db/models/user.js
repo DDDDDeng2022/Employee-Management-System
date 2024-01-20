@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Role",
     },
+    deleted: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
     personal_info: {
         type: mongoose.Types.ObjectId,
         ref: "PersonalInfo",

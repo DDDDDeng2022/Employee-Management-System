@@ -21,7 +21,15 @@ const getAllUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
     await User.findById(req.params?.id)
-        .populate("role personal_info")
+        .populate("role")
+        .populate({
+            path: "personal_info",
+            populate: [
+                { path: "current_address", model: "Address" },
+                { path: "reference", model: "Contact" },
+                { path: "emergency_contact", model: "Contact" },
+            ],
+        })
         .then((user) => {
             res.status(200).json(user);
         })
@@ -46,7 +54,11 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-    await User.findByIdAndDelete(req.params?.id)
+    await User.findByIdAndUpdate(
+        req.params?.id,
+        { deleted: true },
+        { new: true }
+    )
         .then((result) => {
             res.status(200).json({ result, message: "User deleted" });
         })
