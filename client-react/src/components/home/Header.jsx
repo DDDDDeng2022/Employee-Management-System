@@ -7,7 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 // eslint-disable-next-line react/prop-types
-export default function PrimarySearchAppBar({ hanldeMenuVisible }) {
+export default function PrimarySearchAppBar({ handleLeftVisible }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -81,7 +81,7 @@ export default function PrimarySearchAppBar({ hanldeMenuVisible }) {
             <AppBar position="static" sx={{ backgroundColor: "#007fd4" }}>
                 <Toolbar>
                     <Tooltip title="resource">
-                        <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} onClick={hanldeMenuVisible}>
+                        <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} onClick={handleLeftVisible}>
                             <MenuIcon />
                         </IconButton>
                     </Tooltip>
