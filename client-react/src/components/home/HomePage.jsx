@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Tabs, Tab } from "@mui/material";
-import TabPanels from './tabPanels/TabPanels';
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import Header from "./Header"
@@ -9,7 +8,7 @@ import VisaPage from './tabPanels/VisaPage';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import TabPanels from './tabPanels/TabPanels';
 const HomePage = () => {
     const [visible, setVisible] = React.useState(true);
     const [value, setValue] = React.useState(0);
