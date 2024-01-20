@@ -1,33 +1,38 @@
 import mongoose from "mongoose";
-import PersonalInfo from "./personalInfo";
+import Role from "./role.js";
+import PersonalInfo from "./personalInfo.js";
 
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     email: {
         type: String,
         unique: true,
         trim: true,
         lowercase: true,
-        required: 'Email address is required',
+        required: "Email address is required",
         validate: {
             validator: function (value) {
-                return value.includes('@');
-            }
-        }
+                return value.includes("@");
+            },
+        },
     },
     password: {
         type: String,
-        required: true
+        required: true,
+    },
+    role: {
+        type: mongoose.Types.ObjectId,
+        ref: "Role",
     },
     personal_info: {
         type: mongoose.Types.ObjectId,
-        ref: "PersonalInfo"
-    }
-})
+        ref: "PersonalInfo",
+    },
+});
 
 const User = mongoose.model("User", userSchema);
 

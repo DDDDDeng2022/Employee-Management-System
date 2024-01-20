@@ -1,84 +1,85 @@
 import mongoose from "mongoose";
-import Address from "./address.js"
+import Address from "./address.js";
 
 const personalInfoSchema = new mongoose.Schema({
     first_name: {
         type: String,
-        required: true
+        required: true,
     },
     last_name: {
         type: String,
-        required: true
+        required: true,
     },
     middle_name: {
-        type: String
+        type: String,
     },
     current_address: {
         type: mongoose.Types.ObjectId,
-        ref: 'Address',
-        required: true
+        ref: "Address",
+        required: true,
     },
     phone_num: {
         type: Number,
-        required: true
+        required: true,
     },
     email: {
         type: String,
         unique: true,
         trim: true,
         lowercase: true,
-        required: 'Email address is required',
+        required: "Email address is required",
         validate: {
             validator: function (value) {
-                return value.includes('@');
-            }
-        }
+                return value.includes("@");
+            },
+        },
     },
     ssn: {
         type: Number,
-        required: true
+        required: true,
     },
     birth_date: {
-        type: String,
-        required: true
+        type: Number,
+        required: true,
     },
     gender: {
         type: String,
         required: true,
-        enum: ['male', 'female', 'other', 'I do not wish to answer'],
-        default: 'I do not wish to answer'
+        enum: ["male", "female", "other", "I do not wish to answer"],
+        default: "I do not wish to answer",
     },
     visa_type: {
         type: String,
-        required: true
+        required: true,
     },
     review_status: {
         type: String,
-        required: true
+        required: true,
+        default: false,
     },
     preferred_name: {
-        type: String
+        type: String,
     },
     profile_pic: {
-        type: String
+        type: String,
     },
     work_phone_num: {
-        type: String
+        type: String,
     },
     reference: {
         type: mongoose.Types.ObjectId,
-        ref: "Contact"
+        ref: "Contact",
     },
     emergency_contact: {
         type: mongoose.Types.ObjectId,
-        ref: "Contact"
+        ref: "Contact",
     },
     opt: {
         type: mongoose.Types.ObjectId,
-        ref: "OPT"
+        ref: "OPT",
     },
     // uploaded_files: [ fileRecord ]
-})
+});
 
 const PersonalInfo = mongoose.model("PersonalInfo", personalInfoSchema);
 
