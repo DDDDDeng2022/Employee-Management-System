@@ -3,15 +3,18 @@ import User from "../db/models/user.js";
 const getAllUsers = async (req, res) => {
     await User.find()
         .populate("personal_info")
-        .then((user) => {
-            const user_data = {
-                first_name: user.personal_info.first_name,
-                last_name: user.personal_info.last_name,
-                ssn: user.personal_info.ssn,
-                visa_type: user.personal_info.visa_type,
-                phone_num: user.personal_info.phone_num,
-                email: user.email,
-            };
+        .then((users) => {
+            const user_data = users.map((user) => {
+                const new_obj = {
+                    first_name: user.personal_info?.first_name,
+                    last_name: user.personal_info?.last_name,
+                    ssn: user.personal_info?.ssn,
+                    visa_type: user.personal_info?.visa_type,
+                    phone_num: user.personal_info?.phone_num,
+                    email: user.email,
+                };
+                return new_obj;
+            });
             res.status(200).json(user_data);
         })
         .catch((err) => {
