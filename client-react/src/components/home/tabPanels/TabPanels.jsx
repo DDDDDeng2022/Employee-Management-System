@@ -11,6 +11,7 @@ export default function TabPanels(props) {
             {...other}
             style={{
                 height: "100%",
+                overflowY: "scroll",
                 background: "#faf8f8",
             }}>
             {value === index && (
