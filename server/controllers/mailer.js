@@ -2,6 +2,8 @@ import nodemailer from 'nodemailer';
 import Mailgen from 'mailgen';
 import 'dotenv/config';
 
+const BASE_URL = 'http://example.com';
+
 const sendMail = async (req, res) => {
     const { targetEmail, token } = req.body;
     if(!targetEmail || !token ){
@@ -21,10 +23,11 @@ const sendMail = async (req, res) => {
         theme:'default',
         product: {
             name: 'Manage U Future',
-            link: 'https://mailgen.js'
+            link: 'https://mailgen.js'//need to modify as needed
         }
     });
     
+    const link = `${BASE_URL}/registration?email=${targetEmail}&token=${token}`;  // Update the path or endpoint
     const content = {
         body:{
             intro: "Welcome to the on boarding process! Here is your registration invitation from Manage Your Future. Please do NOT share link this with others.",
@@ -32,7 +35,7 @@ const sendMail = async (req, res) => {
                 data:
                     [
                        {
-                        link: targetEmail+token,
+                        link: `<a href= "${link}"> Click here to accept the invitation </a>`,
                         expires_in: '30 mins' 
 
                        }

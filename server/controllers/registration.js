@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
 import Registration from '../db/models/registration.js';
 
-const sendRegistration = async (req, res) => {
+const createRegistration = async (req, res) => {
     const { email, firstName, lastName } = req.body;
     if(!email){
         res.status(400).json({message: "Required fields: email are missing"});
@@ -35,11 +35,51 @@ const sendRegistration = async (req, res) => {
    
 };
 
-const test = async( req, res) => {
-    res.status(200).json({message: "test"});
+const getRegistrationByEmail = async (req, res)=>{
+    const email = req.params?.email;
+    if(!email){
+        res.status(400).json({message: "Required fields: email are missing"});
+        return;
+    }
+    try{
+        const registration = await Registration.findOne({ email: email});
+      
+        if(!registration){
+            res.status(404).json({msg: "The email is not found"});
+            return;
+        }
+        res.status(200).json({msg: "Registration found.", registration: registration});
+        return;
+    }catch(err){
+        res.status(500).json({ message: 'Server Error' });
+    }
+
 };
 
+const getTokenByEmail = async (req, res)=>{
+    const email = req.params?.email;
+    if(!email){
+        res.status(400).json({message: "Required fields: email are missing"});
+        return;
+    }
+    try{
+        const registration = await Registration.findOne({ email: email});
+      
+        if(!registration || !registration.token){
+            res.status(404).json({msg: "The email is not found or token is not found"});
+            return;
+        }
+        res.status(200).json({msg: "Token found.", token: registration.token});
+        return;
+    }catch(err){
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+
+
 export {
-    sendRegistration,
-    test
+    createRegistration,
+    getRegistrationByEmail,
+    getTokenByEmail
 };
