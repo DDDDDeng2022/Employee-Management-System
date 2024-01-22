@@ -8,17 +8,55 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 import dayjs from 'dayjs';
 import { LineBox } from '../ProfilePage';
 import { useForm } from 'react-hook-form';
-// import AvatarSection from './AvatarSection';
+import { styled } from "@mui/material/styles";
+
 import SectionContainer from './SectionContainer';
+export const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+});
 export const NameSection = ({ formData }) => {
     const [localData, setLocalData] = React.useState(formData);
     const [isDisabled, setIsDisabled] = React.useState(true);
     const [avatar, setAvatar] = React.useState(formData.photo);
-    const handleAvatarChange = (event) => {
-        if (event.target.files[0]) {
-            setAvatar(URL.createObjectURL(event.target.files[0]));
+    const uploadImage = async (file) => {
+        const formData = new FormData();
+        formData.append('image', file);
+        try {
+            const response = await fetch("http://localhost:8080/api/user/upload", {
+                method: 'POST',
+                body: formData,
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data.imageUrl;
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
         }
     };
+    const handleAvatarChange = async (e) => {
+        console.log("hhhh");
+        const file = e.target.files[0];
+        if (file) {
+            try {
+                const imageUrl = await uploadImage(file);
+                setAvatar(imageUrl);
+            } catch (error) {
+                console.error('Upload error:', error);
+            }
+        }
+    };
+
     const handleRemoveAvatar = () => {
         setAvatar(null);
     };
@@ -34,9 +72,9 @@ export const NameSection = ({ formData }) => {
             <Box sx={{ display: "flex", justifyContent: "center", alignItems: "baseline" }}>
                 <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
                 {!isDisabled && <Box>
-                    <Button variant="contained" size="small">
+                    <Button variant="contained" size="small" component="label">
                         Upload Image
-                        <input type="file" hidden onChange={handleAvatarChange} />
+                        <VisuallyHiddenInput type="file" accept="image/*" onChange={handleAvatarChange} />
                     </Button>
                     <Button variant="contained" color="error" size="small" onClick={handleRemoveAvatar}>
                         Remove

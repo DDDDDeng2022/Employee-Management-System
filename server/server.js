@@ -16,6 +16,7 @@ app.use(express.json());
 app.use("/api/user", UserRouter);
 app.use("/api/auth", AuthRouter);
 app.use("/api/registration", RegistRouter);
+app.use('/uploads', express.static('uploads'));
 
 app.listen(PORT, () => {
     console.log(`Server started on port: ${PORT}`);
