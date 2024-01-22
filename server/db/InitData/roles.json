@@ -1,0 +1,16 @@
+[
+    {
+        "_id": {
+            "$oid": "65abc24aac6bfa1e60d2cd53"
+        },
+        "name": "HR",
+        "description": "HR could view employees data and review files"
+    },
+    {
+        "_id": {
+            "$oid": "65abc24aac6bfa1e60d2cd54"
+        },
+        "name": "Employee",
+        "description": "Employee works very hard"
+    }
+]
