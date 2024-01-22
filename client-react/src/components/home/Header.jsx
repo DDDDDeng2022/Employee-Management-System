@@ -77,8 +77,8 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
     );
 
     return (
-        <Box >
-            <AppBar position="static" sx={{ backgroundColor: "#007fd4" }}>
+        <Box position="static" sx={{ backgroundColor: "#007fd4" }}>
+            <AppBar position="static">
                 <Toolbar>
                     <Tooltip title="resource">
                         <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} onClick={handleLeftVisible}>
@@ -95,11 +95,12 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <IconButton size="large" color="inherit">
+                        {/* 可能用不着 */}
+                        {/* <IconButton size="large" color="inherit">
                             <Badge badgeContent={17} color="error">
                                 <NotificationsIcon />
                             </Badge>
-                        </IconButton>
+                        </IconButton> */}
                         <IconButton
                             size="large"
                             edge="end"
@@ -108,6 +109,8 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                         >
                             <AccountCircle />
                         </IconButton>
+                        {/* todo: 改成username */}
+                        <Typography sx={{ margin: "auto", paddingLeft: "20px" }}>Welcome XXX!</Typography>
                     </Box>
                     <Box sx={{ display: { xs: "flex", md: "none" } }}>
                         <IconButton
