@@ -31,9 +31,7 @@ const HomePage = () => {
         { label: "Profile", path: "/home/profile", icon: <AccountCircleIcon /> },
         { label: "EmployeeProfiles", path: "/home/employee", icon: <GroupsIcon /> },
         { label: "Visa Status Management", path: "/home/visaManagement", icon: <SwitchAccountIcon /> },
-        { label: "Hiring Management", path: "/home/Hiring", icon: <ManageAccountsIcon /> },
-        { label: "Onboarding Application Reviews", path: "/home/onboardingReviews", icon: <AssignmentIcon /> },
-
+        { label: "Hiring Management", path: "/home/hiring", icon: <ManageAccountsIcon /> },
     ];
     React.useEffect(() => {
         const currentTab = tabs.findIndex(tab => tab.path === location.pathname);
