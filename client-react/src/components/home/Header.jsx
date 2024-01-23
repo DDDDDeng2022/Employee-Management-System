@@ -15,13 +15,14 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setIsLogin } from "../../redux/loginStateSlice";
 import { resetUser } from "../../redux/userSlice";
 
 // eslint-disable-next-line react/prop-types
 export default function PrimarySearchAppBar({ handleLeftVisible }) {
+    const username = useSelector((state) => state.user.user_name);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -55,14 +56,18 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
 
     const renderMenu = (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
-            <MenuItem>
+            <MenuItem
+                onClick={() => {
+                    navigate("/home/profile");
+                }}
+            >
                 <IconButton size="large" color="inherit">
                     <AccountCircle />
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
-            <MenuItem>
-                <IconButton size="large" color="inherit" onClick={handleLogout}>
+            <MenuItem onClick={handleLogout}>
+                <IconButton size="large" color="inherit">
                     <LogoutIcon />
                 </IconButton>
                 sign out
@@ -84,14 +89,18 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                 </IconButton>
                 <p>Notifications</p>
             </MenuItem>
-            <MenuItem>
+            <MenuItem
+                onClick={() => {
+                    navigate("/home/profile");
+                }}
+            >
                 <IconButton size="large" color="inherit">
                     <AccountCircle />
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
-            <MenuItem>
-                <IconButton size="large" color="inherit" onClick={handleLogout}>
+            <MenuItem onClick={handleLogout}>
+                <IconButton size="large" color="inherit">
                     <LogoutIcon />
                 </IconButton>
                 sign out
@@ -142,7 +151,7 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                         <Typography
                             sx={{ margin: "auto", paddingLeft: "20px" }}
                         >
-                            Welcome XXX!
+                            Welcome {username}!
                         </Typography>
                     </Box>
                     <Box sx={{ display: { xs: "flex", md: "none" } }}>

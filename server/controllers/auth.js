@@ -11,9 +11,10 @@ const login = async (req, res) => {
         .populate({
             path: "personal_info",
             populate: [
-                { path: "current_address", model: "Address" },
+                { path: "address", model: "Address" },
                 { path: "reference", model: "Contact" },
                 { path: "emergency_contact", model: "Contact" },
+                { path: "opt", model: "OPT" },
             ],
         })
         .then((user) => {

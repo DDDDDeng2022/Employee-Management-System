@@ -60,9 +60,13 @@ export default function Form() {
                             personal_info: response._doc.personal_info,
                         })
                     );
-                    // dispatch(setMyProfile());
+                    dispatch(setMyProfile(response._doc?.personal_info));
                     localStorage.setItem("token", response.token);
-                    navigate(`/home`);
+                    if (response._doc.personal_info) {
+                        navigate(`/home/profile`);
+                    } else {
+                        navigate("/home/onboarding");
+                    }
                 } else {
                     alert(response.message || "Login failed");
                 }
