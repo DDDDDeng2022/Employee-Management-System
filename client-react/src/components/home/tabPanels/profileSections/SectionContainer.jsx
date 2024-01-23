@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 export default function SectionContainer(props) {
-    const { sectionName, formData, children, handleEdit, isDisabled, handleSubmit, reset, resetAvatar } = props;
+    const { sectionName, formData, children, handleEdit, isDisabled, handleSubmit, reset, resetAvatar, isEmployeeProfile } = props;
     const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false);
     const handleCloseComfirmDialog = (type) => {
         if (type === "yes") {
@@ -25,31 +25,32 @@ export default function SectionContainer(props) {
         alert("form data: " + JSON.stringify(data, null, 2));
         handleEdit();
     };
-
     return (
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: "flex", flexDirection: 'column', gap: "20px" }}>
             <Divider textAlign="left">
                 <Typography sx={{ fontSize: "14px", color: "grey" }}>{sectionName}</Typography>
             </Divider>
             {children}
-            {isDisabled ? (
-                <Button onClick={handleEdit} variant="outlined" size="small" style={{ margin: '10px 0' }}>
-                    Edit
-                </Button>
-            ) : (
-                <Box sx={{ display: "flex" }}>
-                    <Button variant="contained" color="error" size="small" onClick={() => setOpenConfirmDialog(true)}
-                        sx={{ flex: 1 }}>
-                        Cancel
+            {!isEmployeeProfile && (
+                isDisabled ? (
+                    <Button onClick={handleEdit} variant="outlined" size="small" style={{ margin: '10px 0' }} >
+                        Edit
                     </Button>
-                    <Button type="submit" variant="contained" size="small" color="primary" sx={{ flex: 1 }}>
-                        Save
-                    </Button>
-                </Box>
+                ) : (
+                    <Box sx={{ display: "flex" }}>
+                        <Button variant="contained" color="error" size="small" onClick={() => setOpenConfirmDialog(true)}
+                            sx={{ flex: 1 }}>
+                            Cancel
+                        </Button>
+                        <Button type="submit" variant="contained" size="small" color="primary" sx={{ flex: 1 }}>
+                            Save
+                        </Button>
+                    </Box>
+                )
             )}
-            <ComfirmDialog openComfirmDialog={openConfirmDialog} handleCloseComfirmDialog={handleCloseComfirmDialog} />
+            < ComfirmDialog openComfirmDialog={openConfirmDialog} handleCloseComfirmDialog={handleCloseComfirmDialog} />
 
-        </Box>
+        </Box >
     );
 }
 

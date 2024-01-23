@@ -3,7 +3,7 @@ import { TextField } from '@mui/material';
 import SectionContainer from './SectionContainer';
 import { useForm } from 'react-hook-form';
 import { LineBox } from '../ProfilePage';
-export const AddressSection = ({ formData }) => {
+export const AddressSection = ({ formData, isEmployeeProfile }) => {
     const [localData, setLocalData] = React.useState(formData);
     const [isDisabled, setIsDisabled] = React.useState(true);
     const { register, handleSubmit, reset } = useForm({ defaultValues: formData });
@@ -18,16 +18,26 @@ export const AddressSection = ({ formData }) => {
             formData={formData}
             handleSubmit={handleSubmit}
             reset={reset}
+            isEmployeeProfile={isEmployeeProfile}
         >
-
-            <TextField
-                {...register("street")}
-                fullWidth
-                disabled={isDisabled}
-                label="Street"
-                value={localData.street}
-                onChange={(e) => setLocalData({ ...localData, street: e.target.value })}
-            />
+            <LineBox>
+                <TextField
+                    {...register("building")}
+                    fullWidth
+                    disabled={isDisabled}
+                    label="Building"
+                    value={localData.building}
+                    onChange={(e) => setLocalData({ ...localData, building: e.target.value })}
+                />
+                <TextField
+                    {...register("street")}
+                    fullWidth
+                    disabled={isDisabled}
+                    label="Street"
+                    value={localData.street}
+                    onChange={(e) => setLocalData({ ...localData, street: e.target.value })}
+                />
+            </LineBox>
             <LineBox>
                 <TextField
                     {...register("city")}
