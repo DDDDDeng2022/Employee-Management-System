@@ -56,7 +56,7 @@ export default function OnboardingPage() {
     const profile = useSelector((state) => state.myProfile.profile);
     const [localData, setLocalData] = useState(profile);
     console.log(localData);
-    const [avatar, setAvatar] = useState(profile.photo);
+    const [avatar, setAvatar] = useState(profile?.photo);
     const [isDisabled, setIsDisabled] = useState(false);
     const [isWorkVisa, setIsWorkVisa] = useState(false);
     const [showIdentity, setShowIdentity] = useState(false);

@@ -57,7 +57,7 @@ export default function Form() {
                             id: response._doc._id,
                             username: response._doc.username,
                             role: response._doc.role,
-                            personal_info: response._doc.personal_info,
+                            personal_info: response._doc.personal_info?._id,
                         })
                     );
                     dispatch(setMyProfile(response._doc?.personal_info));
