@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Address from "./address.js";
+import OPT from "./opt.js";
 
 const personalInfoSchema = new mongoose.Schema({
     first_name: {
@@ -13,14 +14,17 @@ const personalInfoSchema = new mongoose.Schema({
     middle_name: {
         type: String,
     },
-    current_address: {
+    address: {
         type: mongoose.Types.ObjectId,
         ref: "Address",
         required: true,
     },
-    phone_num: {
-        type: Number,
+    cell_phone_number: {
+        type: String,
         required: true,
+    },
+    work_phone_number: {
+        type: String,
     },
     email: {
         type: String,
@@ -35,11 +39,11 @@ const personalInfoSchema = new mongoose.Schema({
         },
     },
     ssn: {
-        type: Number,
+        type: String,
         required: true,
     },
     birth_date: {
-        type: Number,
+        type: String,
         required: true,
     },
     gender: {

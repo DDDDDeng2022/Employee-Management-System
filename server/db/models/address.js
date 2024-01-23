@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const addressSchema = new mongoose.Schema({
-    street_name: {
+    street: {
         type: String,
         required: true
     },
-    building_num: {
+    building: {
         type: String
     },
     city: {

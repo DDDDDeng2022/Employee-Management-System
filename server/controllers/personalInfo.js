@@ -5,6 +5,7 @@ import Address from "../db/models/address.js";
 import getUserById from "../services/getUserById.js";
 import getPersonalInfoById from "../services/getPersonalInfoById.js";
 import updateRefs from "../services/updateRefs.js";
+import OPT from "../db/models/opt.js";
 
 const createPersonalInfo = async (req, res) => {
     try {
@@ -28,12 +29,17 @@ const createPersonalInfo = async (req, res) => {
             personal_info.emergency_contact = result.insertedIds["1"];
         });
 
-        // Create and convert current_address to Object_id
-        const new_address = new Address({ ...personal_info.current_address });
+        // Create and convert address to Object_id
+        const new_address = new Address({ ...personal_info.address });
         await new_address.save().then((address) => {
-            personal_info.current_address = address._id;
+            personal_info.address = address._id;
         });
 
+        // Create and convert opt to Object_id
+        const opt = new OPT({ ...personal_info.opt });
+        await opt.save().then((opt) => {
+            personal_info.opt = opt._id;
+        });
         const pinfo = new PersonalInfo({ ...personal_info });
         await pinfo.save().then(async (info) => {
             const user = await getUserById(user_id);
@@ -58,9 +64,10 @@ const updatePersonalInfo = async (req, res) => {
         const user_id = req.params?.id;
         const update_info = req.body;
         const update_fields = {
-            current_address: Address,
+            address: Address,
             reference: Contact,
             emergency_contact: Contact,
+            opt: OPT,
         };
 
         const user = await getUserById(user_id);

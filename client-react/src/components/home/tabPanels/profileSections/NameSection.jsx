@@ -22,7 +22,7 @@ export const VisuallyHiddenInput = styled('input')({
     whiteSpace: 'nowrap',
     width: 1,
 });
-export const NameSection = ({ formData }) => {
+export const NameSection = ({ formData, isEmployeeProfile }) => {
     const [localData, setLocalData] = React.useState(formData);
     const [isDisabled, setIsDisabled] = React.useState(true);
     const [avatar, setAvatar] = React.useState(formData.photo);
@@ -88,44 +88,45 @@ export const NameSection = ({ formData }) => {
                 handleSubmit={handleSubmit}
                 reset={reset}
                 resetAvatar={resetAvatar}
+                isEmployeeProfile={isEmployeeProfile}
             >
                 <LineBox>
                     <TextField
-                        {...register("firstName")}
+                        {...register("first_name")}
                         disabled={isDisabled}
                         required
                         fullWidth
                         label="First Name"
-                        value={localData.firstName}
-                        onChange={(e) => setLocalData({ ...localData, firstName: e.target.value })}
+                        value={localData.first_name}
+                        onChange={(e) => setLocalData({ ...localData, first_name: e.target.value })}
                     />
                     <TextField
-                        {...register("middleName")}
+                        {...register("middle_name")}
                         disabled={isDisabled}
                         label="Middle Name"
                         fullWidth
-                        value={localData.middleName}
-                        onChange={(e) => setLocalData({ ...localData, middleName: e.target.value })}
+                        value={localData.middle_name}
+                        onChange={(e) => setLocalData({ ...localData, middle_name: e.target.value })}
                     />
                 </LineBox>
 
                 <LineBox>
                     <TextField
-                        {...register("lastName")}
+                        {...register("last_name")}
                         required
                         fullWidth
                         disabled={isDisabled}
                         label="Last Name"
-                        value={localData.lastName}
-                        onChange={(e) => setLocalData({ ...localData, lastName: e.target.value })}
+                        value={localData.last_name}
+                        onChange={(e) => setLocalData({ ...localData, last_name: e.target.value })}
                     />
                     <TextField
-                        {...register("preferedName")}
+                        {...register("prefered_name")}
                         fullWidth
                         disabled={isDisabled}
                         label="prefered Name"
-                        value="prefered"
-                        onChange={(e) => setLocalData({ ...localData, preferredName: e.target.value })}
+                        value={localData.prefered_name}
+                        onChange={(e) => setLocalData({ ...localData, prefered_name: e.target.value })}
 
                     />
                 </LineBox>
@@ -145,19 +146,19 @@ export const NameSection = ({ formData }) => {
                             disabled={isDisabled}
                             onChange={(e) => setLocalData({ ...localData, gender: e.target.value })}
                             value={localData.gender} label="Gender">
-                            <MenuItem value="Female">Female</MenuItem>
-                            <MenuItem value="Male">Male</MenuItem>
+                            <MenuItem value="female">Female</MenuItem>
+                            <MenuItem value="male">Male</MenuItem>
                             <MenuItem value="I do not wish to answer">I do not wish to answer</MenuItem>
                         </Select>
                     </FormControl>
                     <TextField
                         sx={{ flex: 1 }}
-                        {...register("SSN")}
+                        {...register("ssn")}
                         label="SSN"
                         required
                         disabled={isDisabled}
-                        value={localData.SSN}
-                        onChange={(e) => setLocalData({ ...localData, SSN: e.target.value })}
+                        value={localData.ssn}
+                        onChange={(e) => setLocalData({ ...localData, ssn: e.target.value })}
                     />
 
                 </LineBox>
