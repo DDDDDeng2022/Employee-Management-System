@@ -95,9 +95,10 @@ export default function EmployeeProfilesPage() {
 
     return (
         <Paper>
-            {loading ? <Box sx={{ width: "100%", height: "700px", display: "flex", justifyContent: "center", alignItems: "center" }}><CircularProgress size="100px" /></Box> :
-                location.pathname === "/home/employee" ?
-                    <Box sx={{ display: "flex", flexDirection: "column", padding: "20px" }}>
+            {loading ?
+                <Box sx={{ width: "100%", height: "700px", display: "flex", justifyContent: "center", alignItems: "center" }}><CircularProgress size="100px" /></Box>
+                : (location.pathname === "/home/employee"
+                    ? (<Box sx={{ display: "flex", flexDirection: "column", padding: "20px" }}>
                         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: "10px", alignItems: "center", justifyContent: "center" }}>
                             <Typography noWrap component="div">Total Employee Profiles
                                 <Chip label={rows.length} color="primary" variant="outlined" sx={{ marginLeft: "10px" }} /></Typography>
@@ -110,55 +111,61 @@ export default function EmployeeProfilesPage() {
                                 </IconButton>
                             </Paper>
                         </Box>
-                        <TableContainer sx={{ maxHeight: 450, marginTop: "20px" }} >
-                            <Table stickyHeader>
-                                <TableHead >
-                                    <TableRow>
-                                        {COLUMNS.map((column) => (
-                                            <StyledTableCell
-                                                key={column.id}
-                                                align="center"
-                                                style={{ minWidth: column.minWidth }}
-                                            >
-                                                {column.label}
-                                            </StyledTableCell>
-                                        ))}
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {filteredRows
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row) => {
-                                            return (
-                                                <StyledTableRow hover role="checkbox" tabIndex={-1} key={row.email}>
-                                                    {COLUMNS.map((column) => {
-                                                        const value = row[column.id];
-                                                        return (
-                                                            <StyledTableCell key={column.id} align="center">
-                                                                {column.id === "fullName" ? (
-                                                                    <Link onClick={() => { handleClick(row.fullName, row) }}>{row.fullName}</Link>
-                                                                ) : (
-                                                                    value
-                                                                )}
-                                                            </StyledTableCell>
-                                                        );
-                                                    })}
-                                                </StyledTableRow>
-                                            );
-                                        })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <TablePagination
-                            rowsPerPageOptions={[8, 10, 25]}
-                            count={filteredRows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                    </Box> :
-                    <Outlet />
+                        {filteredRows.length === 0
+                            ? <Box sx={{ width: "100%", textAlign: "center", minHeight: "500px", lineHeight: "500px" }}>no results found</Box>
+                            :
+                            <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "end" }}>
+                                <TableContainer sx={{ maxHeight: 450, marginTop: "20px" }} >
+                                    <Table stickyHeader>
+                                        <TableHead >
+                                            <TableRow>
+                                                {COLUMNS.map((column) => (
+                                                    <StyledTableCell
+                                                        key={column.id}
+                                                        align="center"
+                                                        style={{ minWidth: column.minWidth }}
+                                                    >
+                                                        {column.label}
+                                                    </StyledTableCell>
+                                                ))}
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {filteredRows
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map((row) => {
+                                                    return (
+                                                        <StyledTableRow hover role="checkbox" tabIndex={-1} key={row.email}>
+                                                            {COLUMNS.map((column) => {
+                                                                const value = row[column.id];
+                                                                return (
+                                                                    <StyledTableCell key={column.id} align="center">
+                                                                        {column.id === "fullName" ? (
+                                                                            <Link onClick={() => { handleClick(row.fullName, row) }}>{row.fullName}</Link>
+                                                                        ) : (
+                                                                            value
+                                                                        )}
+                                                                    </StyledTableCell>
+                                                                );
+                                                            })}
+                                                        </StyledTableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                                <TablePagination
+                                    rowsPerPageOptions={[8, 10, 25]}
+                                    count={filteredRows.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    onPageChange={handleChangePage}
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
+                                />
+                            </Box>}
+                    </Box>)
+                    : <Outlet />
+                )
             }
         </ Paper>
 
