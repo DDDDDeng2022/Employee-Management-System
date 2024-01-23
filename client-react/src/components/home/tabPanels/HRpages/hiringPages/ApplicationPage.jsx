@@ -15,11 +15,9 @@ export default function ApplicationPage() {
     };
     const handleApprove = () => {
         //    todo 添加修改application的API
-        handleBack();
     };
     const handleReject = () => {
         setOpen(true);
-        handleBack();
     }
     const navigate = useNavigate();
     const location = useLocation();
