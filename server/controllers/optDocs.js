@@ -1,4 +1,6 @@
 import OptDocs from "../db/models/optDocs.js";
+import fs from 'fs';
+import path from 'path';
 // const curDocs = []
 const RECEIPT = 0;
 const EAD = 1;
@@ -12,7 +14,16 @@ const REJECTED = 3;
 
 //enable employee to upload document
 const uploadDoc = async (req, res)=>{
-    const { id, docType, link } = req.body;
+    console.log("test calling upload doc")
+    // const { id, docType, link } = req.body;
+    const { id, docType} = req.body;
+    const file  = req.file;
+    const link = `${req.protocol}://${req.get('host')}/uploads/opt/${file.filename}`;
+
+    console.log("id", id)
+    console.log("docType", docType);
+    console.log("link ",link);
+
     try{
         const optDoc = await OptDocs.findById(id);
         if(!optDoc){
@@ -27,6 +38,7 @@ const uploadDoc = async (req, res)=>{
         //     res.status(400).json({msg: `The document has been approved. You cannot re-upload.`});
         //     return;
         // }
+        console.log("test calling upload doc1")
         switch(docType){
             case RECEIPT:
                 optDoc.Receipt = link;
@@ -44,12 +56,16 @@ const uploadDoc = async (req, res)=>{
                 res.status(400).json({msg: "Unknown requested document type."});
                 return;
         }
+        console.log("test calling upload doc2")
         optDoc.curStatus = PENDING;
+        console.log("test calling upload do3")
         await optDoc.save();
+        console.log("test calling upload doc4")
         res.status(200).json({msg: "document upload success", optDoc: optDoc});
         return;
     }catch(err){
-        res.status(500).json({msg: "Internal Error"});
+        console.log("err: ",err)
+        res.status(500).json({msg: "Internal Error in uploadDoc", err:err});
     }
    
 };

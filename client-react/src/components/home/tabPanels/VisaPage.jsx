@@ -77,11 +77,27 @@ export default function VisaPage() {
 
     const handleUpload = async () =>{
         try{
-        const response = await axios.put('http://localhost:8080/api/opt/upload', {
-            id: queryId,
-            docType: optDoc.curDoc,
-            link: selectedFile,
-        });
+          console.log("test selected file: ", selectedFile)
+          const formData = new FormData();
+
+    // Append file to formData with 'file' as the key
+    formData.append('file', selectedFile);
+
+    // Append id and docType to formData
+    formData.append('id', queryId);
+    formData.append('docType', optDoc.curDoc);
+
+    // Make a POST request with axios
+    const response = await axios.put('http://localhost:8080/api/opt/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+        // const response = await axios.put('http://localhost:8080/api/opt/upload', {
+        //     id: queryId,
+        //     docType: optDoc.curDoc,
+        //     link: selectedFile,
+        // });
         console.log('Upload successful', response.data);
         } catch (error) {
         // Handle errors

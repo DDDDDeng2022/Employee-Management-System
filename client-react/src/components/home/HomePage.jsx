@@ -20,21 +20,21 @@ const HomePage = () => {
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     // todo,之后根据role来判断应用哪个tabs
 
-    // const tabs = [
-    //     { label: "Profile", path: "/home/profile", icon: <AccountCircleIcon /> },
-    //     { label: "Onboarding Application", path: "/home/onboarding", icon: <AssignmentIcon /> },
-    //     { label: "Visa Status", path: "/home/visa", icon: <ContactMailIcon /> },
-    //     // 之后可以根据需要添加更多 Tabs
-    // ];
-
     const tabs = [
         { label: "Profile", path: "/home/profile", icon: <AccountCircleIcon /> },
-        { label: "EmployeeProfiles", path: "/home/employee", icon: <GroupsIcon /> },
-        { label: "Visa Status Management", path: "/home/visaManagement", icon: <SwitchAccountIcon /> },
-        { label: "Hiring Management", path: "/home/Hiring", icon: <ManageAccountsIcon /> },
-        { label: "Onboarding Application Reviews", path: "/home/onboardingReviews", icon: <AssignmentIcon /> },
-
+        { label: "Onboarding Application", path: "/home/onboarding", icon: <AssignmentIcon /> },
+        { label: "Visa Status", path: "/home/visa", icon: <ManageAccountsIcon /> },
+        // 之后可以根据需要添加更多 Tabs
     ];
+
+    // const tabs = [
+    //     { label: "Profile", path: "/home/profile", icon: <AccountCircleIcon /> },
+    //     { label: "EmployeeProfiles", path: "/home/employee", icon: <GroupsIcon /> },
+    //     { label: "Visa Status Management", path: "/home/visaManagement", icon: <SwitchAccountIcon /> },
+    //     { label: "Hiring Management", path: "/home/Hiring", icon: <ManageAccountsIcon /> },
+    //     { label: "Onboarding Application Reviews", path: "/home/onboardingReviews", icon: <AssignmentIcon /> },
+
+    // ];
     React.useEffect(() => {
         const currentTab = tabs.findIndex(tab => tab.path === location.pathname);
         if (currentTab >= 0) {
