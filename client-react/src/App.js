@@ -13,6 +13,7 @@ import VisaManagementPage from './components/home/tabPanels/HRpages/VisaManageme
 import EmployeeProfilesPage from './components/home/tabPanels/HRpages/EmployeeProfilesPage';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DetailedProfilePage from './components/home/tabPanels/HRpages/DetailedProfilePage';
+import ApplicationPage from './components/home/tabPanels/HRpages/hiringPages/ApplicationPage';
 const theme = createTheme({
   components: {
     MuiButton: {
@@ -43,8 +44,10 @@ function App() {
             </Route>
 
             <Route path="visaManagement" element={<VisaManagementPage />} />
-            <Route path="Hiring" element={<HiringManagementPage />} />
-            <Route path="onboardingReviews" element={<OnboardingReviewPage />} />
+            <Route path="hiring" element={<HiringManagementPage />} >
+              <Route path=":id" element={<ApplicationPage />} >
+              </Route>
+            </Route>
           </Route>
         </Routes>
       </Router>

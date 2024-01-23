@@ -27,7 +27,8 @@ const getAllUsers = async (req, res) => {
                     reference: user.personal_info?.reference,
                     emergency_contact: user.personal_info?.emergency_contact,
                     address: user.personal_info?.address,
-                    opt: user.personal_info?.opt
+                    opt: user.personal_info?.opt,
+                    review_status: user.personal_info?.review_status
                 };
                 console.log(new_obj);
                 return new_obj;
