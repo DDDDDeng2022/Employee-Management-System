@@ -1,10 +1,24 @@
 import * as React from "react";
-import { AppBar, Box, Typography, Toolbar, IconButton, Badge, MenuItem, Menu, Tooltip } from "@mui/material"
+import {
+    AppBar,
+    Box,
+    Typography,
+    Toolbar,
+    IconButton,
+    Badge,
+    MenuItem,
+    Menu,
+    Tooltip,
+} from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setIsLogin } from "../../redux/loginStateSlice";
+import { resetUser } from "../../redux/userSlice";
 
 // eslint-disable-next-line react/prop-types
 export default function PrimarySearchAppBar({ handleLeftVisible }) {
@@ -12,6 +26,8 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -30,6 +46,13 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+    const handleLogout = () => {
+        dispatch(setIsLogin(false));
+        dispatch(resetUser());
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
+
     const renderMenu = (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
             <MenuItem>
@@ -39,7 +62,7 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                 <p>Profile</p>
             </MenuItem>
             <MenuItem>
-                <IconButton size="large" color="inherit">
+                <IconButton size="large" color="inherit" onClick={handleLogout}>
                     <LogoutIcon />
                 </IconButton>
                 sign out
@@ -68,7 +91,7 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                 <p>Profile</p>
             </MenuItem>
             <MenuItem>
-                <IconButton size="large" color="inherit">
+                <IconButton size="large" color="inherit" onClick={handleLogout}>
                     <LogoutIcon />
                 </IconButton>
                 sign out
@@ -81,7 +104,13 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
             <AppBar position="static">
                 <Toolbar>
                     <Tooltip title="resource">
-                        <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} onClick={handleLeftVisible}>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            sx={{ mr: 2 }}
+                            onClick={handleLeftVisible}
+                        >
                             <MenuIcon />
                         </IconButton>
                     </Tooltip>
@@ -110,7 +139,11 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                             <AccountCircle />
                         </IconButton>
                         {/* todo: 改成username */}
-                        <Typography sx={{ margin: "auto", paddingLeft: "20px" }}>Welcome XXX!</Typography>
+                        <Typography
+                            sx={{ margin: "auto", paddingLeft: "20px" }}
+                        >
+                            Welcome XXX!
+                        </Typography>
                     </Box>
                     <Box sx={{ display: { xs: "flex", md: "none" } }}>
                         <IconButton

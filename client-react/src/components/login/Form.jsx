@@ -19,6 +19,7 @@ import apiCall from "../../services/apiCall";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/userSlice";
 import { setIsLogin } from "../../redux/loginStateSlice";
+import { setMyProfile } from "../../redux/myProfileSlice";
 
 // import FormBox from './FormBox';
 
@@ -59,6 +60,7 @@ export default function Form() {
                             personal_info: response._doc.personal_info,
                         })
                     );
+                    // dispatch(setMyProfile());
                     localStorage.setItem("token", response.token);
                     navigate(`/home`);
                 } else {
