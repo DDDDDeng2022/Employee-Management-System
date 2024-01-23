@@ -8,6 +8,7 @@ const login = async (req, res) => {
     console.log(password);
     const result = await User.findOne({ username: username })
         .then((user) => {
+            console.log(user);
             if (!user) {
                 res.status(403).json({ message: "Invalid username" });
             } else if (user.password !== password) {

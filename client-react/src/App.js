@@ -15,15 +15,16 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DetailedProfilePage from './components/home/tabPanels/HRpages/DetailedProfilePage';
 import ApplicationPage from './components/home/tabPanels/HRpages/hiringPages/ApplicationPage';
 const theme = createTheme({
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    textTransform: "none",
+                },
+            },
         },
-      },
+        // 可以添加其他组件的样式定制
     },
-  },
 });
 function App() {
 
@@ -56,4 +57,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
