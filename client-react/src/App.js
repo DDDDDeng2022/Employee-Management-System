@@ -7,7 +7,12 @@ import VisaPage from './components/home/tabPanels/VisaPage';
 import ProfilePage from './components/home/tabPanels/ProfilePage';
 import { Provider } from 'react-redux';
 import store from './components/home/redux/store';
+import OnboardingReviewPage from './components/home/tabPanels/HRpages/OnboardingReviewPage';
+import HiringManagementPage from './components/home/tabPanels/HRpages/HiringManagementPage';
+import VisaManagementPage from './components/home/tabPanels/HRpages/VisaManagementPage';
+import EmployeeProfilesPage from './components/home/tabPanels/HRpages/EmployeeProfilesPage';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import DetailedProfilePage from './components/home/tabPanels/HRpages/DetailedProfilePage';
 const theme = createTheme({
   components: {
     MuiButton: {
@@ -17,7 +22,6 @@ const theme = createTheme({
         },
       },
     },
-    // 可以添加其他组件的样式定制
   },
 });
 function App() {
@@ -32,6 +36,15 @@ function App() {
             <Route path="profile" element={<ProfilePage />} />
             <Route path="onboarding" element={<OnboardingPage />} />
             <Route path="visa" element={<VisaPage />} />
+            {/* Hr页面 todo protected url*/}
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="employee" element={<EmployeeProfilesPage />}>
+              <Route path=':id' element={<DetailedProfilePage />} />
+            </Route>
+
+            <Route path="visaManagement" element={<VisaManagementPage />} />
+            <Route path="Hiring" element={<HiringManagementPage />} />
+            <Route path="onboardingReviews" element={<OnboardingReviewPage />} />
           </Route>
         </Routes>
       </Router>

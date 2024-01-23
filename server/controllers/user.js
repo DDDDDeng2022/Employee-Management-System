@@ -2,19 +2,40 @@ import User from "../db/models/user.js";
 
 const getAllUsers = async (req, res) => {
     await User.find()
-        .populate("personal_info")
-        .then((user) => {
-            const user_data = {
-                first_name: user.personal_info.first_name,
-                last_name: user.personal_info.last_name,
-                ssn: user.personal_info.ssn,
-                visa_type: user.personal_info.visa_type,
-                phone_num: user.personal_info.phone_num,
-                email: user.email,
-            };
+        .populate({
+            path: 'personal_info',
+            populate: [
+                { path: 'reference' },
+                { path: 'emergency_contact' },
+                { path: 'address' },
+                { path: 'opt' }
+            ]
+        })
+        .then((users) => {
+            const user_data = users.map((user) => {
+                const new_obj = {
+                    first_name: user.personal_info?.first_name,
+                    last_name: user.personal_info?.last_name,
+                    middle_name: user.personal_info?.middle_name,
+                    prefered_name: user.personal_info?.prefered_name,
+                    gender: user.personal_info?.gender,
+                    ssn: user.personal_info?.ssn,
+                    visa_type: user.personal_info?.visa_type,
+                    cell_phone_number: user.personal_info?.cell_phone_number,
+                    work_phone_number: user.personal_info?.work_phone_number,
+                    email: user.email,
+                    reference: user.personal_info?.reference,
+                    emergency_contact: user.personal_info?.emergency_contact,
+                    address: user.personal_info?.address,
+                    opt: user.personal_info?.opt
+                };
+                console.log(new_obj);
+                return new_obj;
+            });
             res.status(200).json(user_data);
         })
         .catch((err) => {
+            console.error("Error occurred: ", err);
             res.status(500).json({ err, message: "Server Error" });
         });
 };

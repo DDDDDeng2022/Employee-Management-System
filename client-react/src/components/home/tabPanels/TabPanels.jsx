@@ -12,10 +12,12 @@ export default function TabPanels(props) {
             style={{
                 height: "100%",
                 overflowY: "scroll",
-                background: "#faf8f8",
+                background: "#faf8f8"
             }}>
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{
+                    p: 3
+                }}>
                     {children}
                 </Box>
             )}

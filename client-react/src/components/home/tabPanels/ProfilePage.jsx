@@ -11,16 +11,16 @@ import { AddressSection } from './profileSections/AddressSecttion';
 import { ContactSection } from './profileSections/ContactSection';
 import { EmploymentSection } from './profileSections/EmploymentSection';
 import { EmergencyContactSection } from './profileSections/EmergencySection';
+
 export default function ProfilePage() {
     const profile = useSelector((state) => state.myProfile.profile);
     return (
-
         <Box sx={{ width: { xs: "100%", sm: "80%" }, margin: "auto" }}>
-            <NameSection formData={profile.nameSection} />
-            <AddressSection formData={profile.addressSection} />
-            <ContactSection formData={profile.contactSection} />
-            <EmploymentSection formData={profile.visa} />
-            <EmergencyContactSection formData={profile.emergencySection} />
+            <NameSection formData={profile} isEmployeeProfile={false} />
+            <AddressSection formData={profile.address} isEmployeeProfile={false} />
+            <ContactSection formData={profile} isEmployeeProfile={false} />
+            <EmploymentSection formData={profile.opt} isEmployeeProfile={false} />
+            <EmergencyContactSection formData={profile.emergency_contact} isEmployeeProfile={false} />
             {/* <DocumentsSection formData={profile.documentSection} />  */}
         </Box>
     );

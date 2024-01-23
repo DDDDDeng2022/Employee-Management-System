@@ -8,7 +8,7 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 import dayjs from 'dayjs';
 import { LineBox } from '../ProfilePage';
 import { useForm } from 'react-hook-form';
-export const EmploymentSection = ({ formData }) => {
+export const EmploymentSection = ({ formData, isEmployeeProfile }) => {
     const [localData, setLocalData] = React.useState(formData);
     const [isDisabled, setIsDisabled] = React.useState(true);
     const { register, handleSubmit, reset } = useForm({ defaultValues: formData });
@@ -23,6 +23,7 @@ export const EmploymentSection = ({ formData }) => {
             formData={formData}
             handleSubmit={handleSubmit}
             reset={reset}
+            isEmployeeProfile={isEmployeeProfile}
         >
 
             <FormControl fullWidth>
@@ -34,9 +35,9 @@ export const EmploymentSection = ({ formData }) => {
                     disabled={isDisabled}
                     onChange={(e) => setLocalData({ ...localData, visaStatus: e.target.value })}
                 >
-                    <MenuItem value="F1">F1</MenuItem>
-                    <MenuItem value="H1B">H1B</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
+                    <MenuItem value="f1">F1</MenuItem>
+                    <MenuItem value="h1b">H1B</MenuItem>
+                    <MenuItem value="other">Other</MenuItem>
                 </Select>
             </FormControl>
             <LineBox>
