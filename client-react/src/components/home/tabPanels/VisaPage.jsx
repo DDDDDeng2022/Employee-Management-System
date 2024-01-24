@@ -319,6 +319,7 @@ import Check from "@mui/icons-material/Check";
 import PDFViewer from 'pdf-viewer-reactjs';//npm install pdf-viewer-reactjs
 import { useEffect, useState } from 'react';
 // import { Page, Document} from 'react'
+import axios from "axios";
 
 import { VisuallyHiddenInput } from "./profileSections/NameSection";
 const steps = ["Receipt", "EAD", "I983", "I20"];
@@ -450,9 +451,21 @@ export default function VisaPage() {
 
         );
     };
-    const handleSubmit = () => {
-
-    };
+  
+    const handleUpload = async () =>{
+        console.log("test filelinks ", fileLinks)
+        try {
+            const response = await axios.put('http://localhost:8080/api/opt/upload', {
+                id: queryId,
+                docType: displayStep,
+                links: fileLinks,
+            });
+            console.log('Upload successful', response.data);
+            } catch (error) {
+                console.error('Error:', error);
+                throw error;
+            }
+    }
     const updateTempFiles = (newFile) => setFileLinks([...fileLinks, newFile]);
 
     return (
@@ -486,7 +499,7 @@ export default function VisaPage() {
                             <Button onClick={handleNext}>Next</Button>
                         )}
                         {displayStep === activeStep && (
-                            <Button onClick={handleSubmit}>upload</Button>
+                            <Button onClick={handleUpload}>upload</Button>
                         )}
                     </Box>
                 </React.Fragment>
@@ -516,7 +529,7 @@ const ActiveStepContent = ({ updateTempFiles, fileLinks }) => {
             throw error;
         }
     };
-    const handleUpload = async (e) => {
+    const handleChoose = async (e) => {
         const file = e.target.files[0];
         if (file) {
             try {
@@ -532,7 +545,7 @@ const ActiveStepContent = ({ updateTempFiles, fileLinks }) => {
     return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center", border: "lightgray solid 2px", margin: "20px 100px", width: "60vw", height: '60vh' }}>
         <Button color="error" component="label" size="small">
             Choose files
-            <VisuallyHiddenInput type="file" accept=".pdf, .jpg, .jpeg, .png" onChange={handleUpload} />
+            <VisuallyHiddenInput type="file" accept=".pdf, .jpg, .jpeg, .png" onChange={handleChoose} />
         </Button>
         {fileLinks && (
             <Typography variant="caption" color="textSecondary">

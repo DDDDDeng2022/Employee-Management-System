@@ -2,9 +2,9 @@ import { randomBytes } from 'crypto';
 import Registration from '../db/models/registration.js';
 
 const createRegistration = async (req, res) => {
-    const { email, firstName, lastName } = req.body;
-    if(!email){
-        res.status(400).json({message: "Required fields: email are missing"});
+    const { email, first_name, last_name } = req.body;
+    if(!email || !first_name || !last_name ){
+        res.status(400).json({message: "Required fields are missing"});
 
         return;
     }
