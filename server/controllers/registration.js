@@ -1,11 +1,11 @@
 import { randomBytes } from 'crypto';
 import Registration from '../db/models/registration.js';
 
-const sendRegistration = async (req, res) => {
+const createRegistration = async (req, res) => {
     const { email, first_name, last_name } = req.body;
-    console.log("req.body: ", req.body);
-    if (!email) {
-        res.status(400).json({ message: "Required fields: email are missing" });
+    if(!email || !first_name || !last_name ){
+        res.status(400).json({message: "Required fields are missing"});
+
         return;
     }
     try {
@@ -39,6 +39,19 @@ const sendRegistration = async (req, res) => {
 
 };
 
+const getRegistration = async (req, res) =>{
+    const { id } = req.params;
+    if(!id){
+        res.status(400).json({message: "Required fields: email are missing"});
+        return;
+    }
+    try{
+        const registration = await Registration.findById(id);
+        res.status(200).json(registration);
+    }catch(err){
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
 const getAllRegistors = async (req, res) => {
     try {
         const registors = await Registration.find();
@@ -53,9 +66,10 @@ const getAllRegistors = async (req, res) => {
 const test = async (req, res) => {
     res.status(200).json({ message: "test" });
 };
+   
 
 export {
-    sendRegistration,
-    test,
-    getAllRegistors
+    createRegistration,
+    getRegistration,
+    getAllRegistors,
 };
