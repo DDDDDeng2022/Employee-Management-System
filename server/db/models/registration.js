@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const registrationSchema = new mongoose.Schema({
     first_name: {
@@ -12,13 +12,12 @@ const registrationSchema = new mongoose.Schema({
     email: {
         type: String,
         required: "email adress is required",
-        unique: true,
         validate: {
             validator: function (input) {
-                return input.includes('@') && input.includes('.');
+                return input.includes("@") && input.includes(".");
             },
-            message: "invalid email format"
-        }
+            message: "invalid email format",
+        },
     },
     token: {
         type: String,
@@ -26,25 +25,22 @@ const registrationSchema = new mongoose.Schema({
     },
     updated_at: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     status: {
         type: Boolean,
-        default: false
-
+        default: false,
     },
     link: {
         type: String,
         unique: true,
         validate: {
             validator: function (input) {
-                return input.startsWith('http://localhost:3000/');
+                return input.startsWith("http://localhost:3000/");
             },
-            message: "invalid link"
-        }
-    }
-
-
+            message: "invalid link",
+        },
+    },
 });
 
 const Registration = mongoose.model("Registration", registrationSchema);
