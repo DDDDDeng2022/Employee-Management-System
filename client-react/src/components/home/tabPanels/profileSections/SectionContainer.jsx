@@ -9,17 +9,7 @@ import apiCall from "../../../../services/apiCall";
 import { useSelector } from "react-redux";
 
 export default function SectionContainer(props) {
-    const {
-        sectionName,
-        formData,
-        children,
-        handleEdit,
-        isDisabled,
-        handleSubmit,
-        reset,
-        resetAvatar,
-        isEmployeeProfile,
-    } = props;
+    const { sectionName, formData, children, handleEdit, isDisabled, handleSubmit, reset, resetAvatar, isEmployeeProfile } = props;
     const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false);
     const user_id = useSelector((state) => state.user.user_id);
     const handleCloseComfirmDialog = (type) => {
@@ -56,53 +46,28 @@ export default function SectionContainer(props) {
         handleEdit();
     };
     return (
-        <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{ display: "flex", flexDirection: "column", gap: "20px" }}
-        >
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: "flex", flexDirection: 'column', gap: "20px" }}>
             <Divider textAlign="left">
-                <Typography sx={{ fontSize: "14px", color: "grey" }}>
-                    {sectionName}
-                </Typography>
+                <Typography sx={{ fontSize: "14px", color: "grey" }}>{sectionName}</Typography>
             </Divider>
             {children}
             {!isEmployeeProfile &&
                 (isDisabled ? (
-                    <Button
-                        onClick={handleEdit}
-                        variant="outlined"
-                        size="small"
-                        style={{ margin: "10px 0" }}
-                    >
+                    <Button onClick={handleEdit} variant="outlined" size="small" style={{ margin: '10px 0' }} >
                         Edit
                     </Button>
                 ) : (
                     <Box sx={{ display: "flex" }}>
-                        <Button
-                            variant="contained"
-                            color="error"
-                            size="small"
-                            onClick={() => setOpenConfirmDialog(true)}
-                            sx={{ flex: 1 }}
-                        >
+                        <Button variant="contained" color="error" size="small" onClick={() => setOpenConfirmDialog(true)}
+                            sx={{ flex: 1 }}>
                             Cancel
                         </Button>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            size="small"
-                            color="primary"
-                            sx={{ flex: 1 }}
-                        >
+                        <Button type="submit" variant="contained" size="small" color="primary" sx={{ flex: 1 }}>
                             Save
                         </Button>
                     </Box>
                 ))}
-            <ComfirmDialog
-                openComfirmDialog={openConfirmDialog}
-                handleCloseComfirmDialog={handleCloseComfirmDialog}
-            />
+            < ComfirmDialog openComfirmDialog={openConfirmDialog} handleCloseComfirmDialog={handleCloseComfirmDialog} />
         </Box>
     );
 }
@@ -119,20 +84,8 @@ const ComfirmDialog = (props) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleCloseComfirmDialog("yes")}
-                >
-                    Yes
-                </Button>
-                <Button
-                    size="small"
-                    variant="contained"
-                    color="error"
-                    onClick={() => handleCloseComfirmDialog("no")}
-                >
+                <Button size="small" variant="contained" color="primary" onClick={() => handleCloseComfirmDialog("yes")}>Yes</Button>
+                <Button size="small" variant="contained" color="error" onClick={() => handleCloseComfirmDialog("no")}>
                     No
                 </Button>
             </DialogActions>

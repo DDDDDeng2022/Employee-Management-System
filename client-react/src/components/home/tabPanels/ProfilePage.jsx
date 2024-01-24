@@ -28,48 +28,31 @@ export default function ProfilePage() {
 }
 
 export const LineBox = ({ children }) => {
-    return (
-        <Box
-            sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: { xs: "10px", sm: "20px" },
-            }}
-        >
-            {children}
-        </Box>
-    );
-};
+    return <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: { xs: "10px", sm: "20px" } }}>
+        {children}
+    </Box>
+}
 
 export const ComfirmDialog = (props) => {
-    const { openComfirmDialog, handleCloseComfirmDialog } = props;
-    return (
-        <Dialog open={openComfirmDialog} onClose={handleCloseComfirmDialog}>
-            <DialogTitle>Comfirm Dialog</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    All the changes will be discarded. If you click “Yes”, all
-                    changes should be undone.
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleCloseComfirmDialog("yes")}
-                >
-                    Yes
-                </Button>
-                <Button
-                    size="small"
-                    variant="contained"
-                    color="error"
-                    onClick={() => handleCloseComfirmDialog("no")}
-                >
-                    No
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
-};
+    const { openComfirmDialog, handleCloseComfirmDialog } = props
+    return <Dialog
+        open={openComfirmDialog}
+        onClose={handleCloseComfirmDialog}
+    >
+        <DialogTitle>
+            Comfirm Dialog
+        </DialogTitle>
+        <DialogContent>
+            <DialogContentText>
+                All the changes will be discarded.
+                If you click “Yes”, all changes should be undone.
+            </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+            <Button size="small" variant="contained" color="primary" onClick={() => handleCloseComfirmDialog("yes")}>Yes</Button>
+            <Button size="small" variant="contained" color="error" onClick={() => handleCloseComfirmDialog("no")}>
+                No
+            </Button>
+        </DialogActions>
+    </Dialog>
+}

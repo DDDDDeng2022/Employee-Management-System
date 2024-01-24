@@ -1,17 +1,6 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import {
-    Box,
-    Typography,
-    TextField,
-    IconButton,
-    OutlinedInput,
-    InputLabel,
-    InputAdornment,
-    FormControl,
-    Button,
-    FormHelperText,
-} from "@mui/material";
+import { Box, Typography, TextField, IconButton, OutlinedInput, InputLabel, InputAdornment, FormControl, Button, FormHelperText } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
@@ -28,11 +17,7 @@ import { setMyProfile } from "../../redux/myProfileSlice";
 
 export default function Form() {
     const [showPassword, setShowPassword] = React.useState(false);
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -104,9 +89,7 @@ export default function Form() {
                 gap: "20px",
             }}
         >
-            <Typography
-                sx={{ fontSize: { xs: "24px", sm: "34px" }, fontWeight: "700" }}
-            >
+            <Typography sx={{ fontSize: { xs: "24px", sm: "34px" }, fontWeight: "700" }}>
                 Sign in
             </Typography>
             {/* <TextField
@@ -124,16 +107,10 @@ export default function Form() {
                 fullWidth
                 label="UserName"
             />
-            <FormControl
-                fullWidth
-                sx={{ m: 1 }}
-                error={Boolean(errors.password)}
-            >
+            <FormControl fullWidth sx={{ m: 1 }} error={Boolean(errors.password)}>
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <OutlinedInput
-                    {...register("password", {
-                        required: "Password is required",
-                    })}
+                    {...register("password", { required: "Password is required" })}
                     type={showPassword ? "text" : "password"}
                     endAdornment={
                         <InputAdornment position="end">
@@ -142,29 +119,16 @@ export default function Form() {
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"
                             >
-                                {showPassword ? (
-                                    <VisibilityOff />
-                                ) : (
-                                    <Visibility />
-                                )}
+                                {showPassword ? (<VisibilityOff />) : (<Visibility />)}
                             </IconButton>
                         </InputAdornment>
                     }
                     label="Password"
                 />
-                {errors.password && (
-                    <FormHelperText>{errors.password.message}</FormHelperText>
-                )}
+                {errors.password && (<FormHelperText>{errors.password.message}</FormHelperText>)}
             </FormControl>
             {/* <Button type="submit" variant="contained" color="success" sx={{ textTransform: "none" }}>Sign in</Button> */}
-            <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ textTransform: "none" }}
-            >
-                Sign in
-            </Button>
+            <Button type="submit" variant="contained" color="primary" sx={{ textTransform: "none" }}>Sign in</Button>
         </Box>
     );
 }

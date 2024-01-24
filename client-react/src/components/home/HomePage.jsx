@@ -35,9 +35,7 @@ const HomePage = () => {
         { label: "Hiring Management", path: "/home/hiring", icon: <ManageAccountsIcon /> },
     ];
     React.useEffect(() => {
-        const currentTab = tabs.findIndex(
-            (tab) => tab.path === location.pathname
-        );
+        const currentTab = tabs.findIndex((tab) => tab.path === location.pathname);
         if (currentTab >= 0) {
             setValue(currentTab);
         }
@@ -53,14 +51,7 @@ const HomePage = () => {
     };
 
     return isSmallScreen ? (
-        <Box
-            sx={{
-                height: "100vh",
-                display: "flex",
-                flexDirection: "column",
-                backgroundColor: "#dadada",
-            }}
-        >
+        <Box sx={{ height: "100vh", display: "flex", flexDirection: "column", backgroundColor: "#dadada" }}>
             <Header handleLeftVisible={handleLeftVisible} />
             {tabs.map((tab, index) => (
                 <TabPanels key={tab.label} value={value} index={index}>
@@ -93,14 +84,7 @@ const HomePage = () => {
             </Tabs>
         </Box>
     ) : (
-        <Box
-            sx={{
-                height: "100vh",
-                display: "flex",
-                flexDirection: "column",
-                backgroundColor: "#dadada",
-            }}
-        >
+        <Box sx={{ height: "100vh", display: "flex", flexDirection: "column", backgroundColor: "#dadada" }}>
             <Header handleLeftVisible={handleLeftVisible} />
             <Allotment
                 defaultSizes={[20, 80]}
