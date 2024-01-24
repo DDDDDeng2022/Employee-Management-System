@@ -103,4 +103,20 @@ const uploadPhoto = async (req, res) => {
         res.status(500).send({ error, message: "Server Error" });
     }
 };
-export { createPersonalInfo, updatePersonalInfo, uploadPhoto };
+
+const uploadDocument = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).send({ message: 'No file uploaded.' });
+        };
+        const file = req.file;
+        console.log("file: ", file);
+        const documentUrl = `${req.protocol}://${req.get('host')}/${file.path}`;
+        res.status(200).send({ documentUrl: documentUrl });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Server Error' });
+    }
+};
+
+export { createPersonalInfo, updatePersonalInfo, uploadPhoto, uploadDocument };
