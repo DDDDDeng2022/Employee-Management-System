@@ -64,8 +64,8 @@ export default function EmployeeProfilesPage() {
     React.useEffect(() => {
         const fetchAllProfiles = async () => {
             try {
-                const fetchedCProfiles = await getProfiles();
-                const transformedData = preprocessAndSortRows(fetchedCProfiles).map(item => ({
+                const fetchedProfiles = await getProfiles();
+                const transformedData = preprocessAndSortRows(fetchedProfiles).map(item => ({
                     ...item,
                     fullName: `${item.first_name} ${item.last_name}`,
                     workAuthTitle: item.visa_type,

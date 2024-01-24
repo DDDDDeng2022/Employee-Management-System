@@ -8,6 +8,8 @@ async function getProfiles() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         let profiles = await response.json();
+        // 过滤掉没有 last_name 的，也就是还没有填写application的
+        profiles = profiles.filter(profile => profile.last_name);
         profiles = profiles.map(profile => {
             let reviewStatus = profile.review_status;
             if (reviewStatus === true) {
@@ -17,7 +19,6 @@ async function getProfiles() {
             } else {
                 reviewStatus = 'Pending';
             }
-
             return {
                 ...profile,
                 review_status: reviewStatus
