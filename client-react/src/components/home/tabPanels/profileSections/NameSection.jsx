@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { LineBox } from '../ProfilePage';
 import { useForm } from 'react-hook-form';
 import { styled } from "@mui/material/styles";
+import uploadImage from "../../../../services/uploadPhoto"
 
 import SectionContainer from './SectionContainer';
 export const VisuallyHiddenInput = styled('input')({
@@ -26,24 +27,7 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
     const [localData, setLocalData] = React.useState(formData);
     const [isDisabled, setIsDisabled] = React.useState(true);
     const [avatar, setAvatar] = React.useState(formData.photo);
-    const uploadImage = async (file) => {
-        const formData = new FormData();
-        formData.append('image', file);
-        try {
-            const response = await fetch("http://localhost:8080/api/user/upload", {
-                method: 'POST',
-                body: formData,
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            return data.imageUrl;
-        } catch (error) {
-            console.error('Error:', error);
-            throw error;
-        }
-    };
+
     const handleAvatarChange = async (e) => {
         console.log("hhhh");
         const file = e.target.files[0];

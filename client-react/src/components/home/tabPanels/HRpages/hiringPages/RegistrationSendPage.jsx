@@ -1,6 +1,6 @@
 import { DialogTitle, DialogContentText, DialogContent, DialogActions, Dialog, TextField, Button } from "@mui/material";
 import { LineBox } from "../../ProfilePage";
-import { createRegistration } from "../api/registrationApi";
+import { createRegistration } from "../../../../../services/registrationApi";
 export default function RegistrationSendPage({ open, handleClose, updateRegistors }) {
     const handleSubmit = (e) => {
         e.preventDefault();

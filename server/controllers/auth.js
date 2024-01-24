@@ -7,7 +7,18 @@ const login = async (req, res) => {
     console.log(username);
     console.log(password);
     const result = await User.findOne({ username: username })
+        .populate("role")
+        .populate({
+            path: "personal_info",
+            populate: [
+                { path: "address", model: "Address" },
+                { path: "reference", model: "Contact" },
+                { path: "emergency_contact", model: "Contact" },
+                { path: "opt", model: "OPT" },
+            ],
+        })
         .then((user) => {
+            console.log(user);
             if (!user) {
                 res.status(403).json({ message: "Invalid username" });
             } else if (user.password !== password) {

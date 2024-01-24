@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const myProfileSlice = createSlice({
-    name: 'myProfile',
+    name: "myProfile",
     initialState: {
         // 格式可能会修改，可能nameSection和contactSection里的内容提出来，
         profile: {
@@ -14,18 +14,20 @@ export const myProfileSlice = createSlice({
             birth_date: "08-08-2008",
             cell_phone_number: "123456789",
             work_phone_number: "123456789",
+            review_status: false,
+            review_memo: null,
             address: {
                 street: "aptA 20th St",
                 buiding: "Unit A",
                 city: "Los Angeles",
                 state: "CA",
                 zip: "900000",
-
             },
+            // 我建议这个改为visa
             opt: {
                 title: "f1",
-                start_date: '05-09-2021',
-                end_date: '05-09-2029',
+                start_date: "05-09-2021",
+                end_date: "05-09-2029",
             },
             emergency_contact: {
                 last_name: "D",
@@ -35,7 +37,7 @@ export const myProfileSlice = createSlice({
                 relationship: "parents",
             },
             documentSection: null,
-        }
+        },
     },
     reducers: {
         setMyProfile: (state, action) => {
@@ -45,8 +47,8 @@ export const myProfileSlice = createSlice({
             const { sectionName, editable } = action.payload;
             state.profile[sectionName].editable = editable;
         },
-    }
-})
+    },
+});
 export const { setMyProfile, setEditable } = myProfileSlice.actions;
 
 export default myProfileSlice.reducer;

@@ -1,6 +1,6 @@
 
 import React from "react";
-import { getProfiles } from "../api/userApi";
+import { getProfiles } from "../../../../../services/userApi";
 import ApplicationList from "./ApplicationList";
 import { Box, CircularProgress } from "@mui/material";
 
