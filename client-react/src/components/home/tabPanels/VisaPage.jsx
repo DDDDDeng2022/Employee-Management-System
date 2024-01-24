@@ -502,7 +502,7 @@ const ActiveStepContent = ({ updateTempFiles, fileLinks }) => {
         const formData = new FormData();
         formData.append('document', file);
         try {
-            const response = await fetch("http://localhost:8080/api/opt/uploadDocument", {
+            const response = await fetch("http://localhost:8080/api/user/uploadDocument", {
                 method: 'POST',
                 body: formData,
             });
@@ -538,7 +538,7 @@ const ActiveStepContent = ({ updateTempFiles, fileLinks }) => {
             <Typography variant="caption" color="textSecondary">
                 Selected File:
                 {fileLinks.map((file, index) => <a key={index} href={file}>{file} </a>)}
-                <a href="https://us06web.zoom.us/postattendee?mn=JpGda2ja3pmTfEOp4WLkYP8KrKbvvcXOfoAr.HX-cvrPmeV8-nsSW">download</a>
+                {/* <a href={}>download</a> */}
             </Typography>
         )}
     </Box>
