@@ -11,7 +11,24 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
-
+import { useSelector, useDispatch } from 'react-redux';
+const SwitchTabs = (role) => {
+    if (role === "HR") {
+        return [
+            { label: "Profile", path: "/home/profile", icon: <AccountCircleIcon /> },
+            { label: "EmployeeProfiles", path: "/home/employee", icon: <GroupsIcon /> },
+            { label: "Visa Status Management", path: "/home/visaManagement", icon: <SwitchAccountIcon /> },
+            { label: "Hiring Management", path: "/home/hiring", icon: <ManageAccountsIcon /> },
+        ];
+    }
+    else {
+        return [
+            { label: "Profile", path: "/home/profile", icon: <AccountCircleIcon /> },
+            { label: "Onboarding Application", path: "/home/onboarding", icon: <AssignmentIcon /> },
+            { label: "Visa Status", path: "/home/visa", icon: <ContactMailIcon /> },
+        ];
+    }
+}
 const HomePage = () => {
     const [visible, setVisible] = React.useState(true);
     const [value, setValue] = React.useState(0);
@@ -19,21 +36,8 @@ const HomePage = () => {
     const navigate = useNavigate();
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-    // todo,之后根据role来判断应用哪个tabs
-
-    // const tabs = [
-    //     { label: "Profile", path: "/home/profile", icon: <AccountCircleIcon /> },
-    //     { label: "Onboarding Application", path: "/home/onboarding", icon: <AssignmentIcon /> },
-    //     { label: "Visa Status", path: "/home/visa", icon: <ContactMailIcon /> },
-    //     // 之后可以根据需要添加更多 Tabs
-    // ];
-
-    const tabs = [
-        { label: "Profile", path: "/home/profile", icon: <AccountCircleIcon /> },
-        { label: "EmployeeProfiles", path: "/home/employee", icon: <GroupsIcon /> },
-        { label: "Visa Status Management", path: "/home/visaManagement", icon: <SwitchAccountIcon /> },
-        { label: "Hiring Management", path: "/home/hiring", icon: <ManageAccountsIcon /> },
-    ];
+    const role = useSelector((state) => state.user.role);
+    const tabs = SwitchTabs(role);
     React.useEffect(() => {
         const currentTab = tabs.findIndex((tab) => tab.path === location.pathname);
         if (currentTab >= 0) {
