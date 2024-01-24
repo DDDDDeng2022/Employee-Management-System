@@ -12,18 +12,6 @@ import { LineBox } from "./ProfilePage";
 import uploadImage from "../../../services/uploadPhoto";
 import SectionContainer from "./profileSections/SectionContainer";
 
-// export const VisuallyHiddenInput = styled("input")({
-//     clip: "rect(0 0 0 0)",
-//     clipPath: "inset(50%)",
-//     height: 1,
-//     overflow: "hidden",
-//     position: "absolute",
-//     bottom: 0,
-//     left: 0,
-//     whiteSpace: "nowrap",
-//     width: 1,
-// });
-
 const ChipColor = (reviewStatus) => {
     switch (reviewStatus) {
         case "Never Submitted":
@@ -50,11 +38,11 @@ export default function OnboardingPage() {
     });
 
     useEffect(() => {
-        if (["Pending", "Approved"].includes(localData.review_status)) {
+        if (["Pending", "Approved"].includes(localData?.review_status)) {
             setIsDisabled(true);
         }
     }, []);
-    const chipColor = ChipColor(localData.review_status);
+    const chipColor = ChipColor(localData?.review_status);
 
     // handle functions
     const handleEdit = () => {
@@ -165,7 +153,7 @@ export default function OnboardingPage() {
                     resetAvatar={resetAvatar}
                     // isEmployeeProfile={isEmployeeProfile}
                 >
-                    <Chip label={localData.review_status} color={chipColor} />
+                    <Chip label={localData?.review_status || "Never Submitted"} color={chipColor} />
 
                     {/* User Section */}
                     <Divider textAlign="left">
@@ -180,7 +168,7 @@ export default function OnboardingPage() {
                             required
                             fullWidth
                             label="First Name"
-                            value={localData.first_name}
+                            value={localData?.first_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
@@ -193,7 +181,7 @@ export default function OnboardingPage() {
                             disabled={isDisabled}
                             label="Middle Name"
                             fullWidth
-                            value={localData.middle_name}
+                            value={localData?.middle_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
@@ -210,7 +198,7 @@ export default function OnboardingPage() {
                             fullWidth
                             disabled={isDisabled}
                             label="Last Name"
-                            value={localData.last_name}
+                            value={localData?.last_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
@@ -223,7 +211,7 @@ export default function OnboardingPage() {
                             fullWidth
                             disabled={isDisabled}
                             label="prefered Name"
-                            value={localData.prefered_name}
+                            value={localData?.prefered_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
@@ -238,7 +226,7 @@ export default function OnboardingPage() {
                         required
                         disabled
                         label="Email"
-                        value={localData.email}
+                        value={localData?.email}
                         margin="normal"
                     />
                     <LineBox>
@@ -253,7 +241,7 @@ export default function OnboardingPage() {
                                         gender: e.target.value,
                                     })
                                 }
-                                value={localData.gender}
+                                value={localData?.gender}
                                 label="Gender"
                             >
                                 <MenuItem value="female">Female</MenuItem>
@@ -269,7 +257,7 @@ export default function OnboardingPage() {
                             label="SSN"
                             required
                             disabled={isDisabled}
-                            value={localData.ssn}
+                            value={localData?.ssn}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
@@ -286,7 +274,7 @@ export default function OnboardingPage() {
                                 disabled={isDisabled}
                                 fullWidth
                                 label="Birth Date"
-                                value={dayjs(localData.birth_date)}
+                                value={dayjs(localData?.birth_date)}
                                 onChange={(newValue) =>
                                     setLocalData({
                                         ...localData,
@@ -309,12 +297,12 @@ export default function OnboardingPage() {
                             fullWidth
                             disabled={isDisabled}
                             label="Building"
-                            value={localData.address.building}
+                            value={localData?.address?.building}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
                                     address: {
-                                        ...localData.address,
+                                        ...localData?.address,
                                         building: e.target.value,
                                     },
                                 })
@@ -325,12 +313,12 @@ export default function OnboardingPage() {
                             fullWidth
                             disabled={isDisabled}
                             label="Street"
-                            value={localData.address.street}
+                            value={localData?.address?.street}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
                                     address: {
-                                        ...localData.address,
+                                        ...localData?.address,
                                         street: e.target.value,
                                     },
                                 })
@@ -343,12 +331,12 @@ export default function OnboardingPage() {
                             fullWidth
                             disabled={isDisabled}
                             label="City"
-                            value={localData.address.city}
+                            value={localData?.address?.city}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
                                     address: {
-                                        ...localData.address,
+                                        ...localData?.address,
                                         city: e.target.value,
                                     },
                                 })
@@ -359,12 +347,12 @@ export default function OnboardingPage() {
                             fullWidth
                             disabled={isDisabled}
                             label="State"
-                            value={localData.address.state}
+                            value={localData?.address?.state}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
                                     address: {
-                                        ...localData.address,
+                                        ...localData?.address,
                                         state: e.target.value,
                                     },
                                 })
@@ -375,12 +363,12 @@ export default function OnboardingPage() {
                             fullWidth
                             disabled={isDisabled}
                             label="Zip"
-                            value={localData.address.zip}
+                            value={localData?.address?.zip}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
                                     address: {
-                                        ...localData.address,
+                                        ...localData?.address,
                                         zip: e.target.value,
                                     },
                                 })
@@ -399,7 +387,7 @@ export default function OnboardingPage() {
                         fullWidth
                         disabled={isDisabled}
                         label="Cell Phone Number"
-                        defaultValue={localData.cell_phone_number}
+                        defaultValue={localData?.cell_phone_number}
                         onChange={(e) =>
                             setLocalData({
                                 ...localData,
@@ -412,7 +400,7 @@ export default function OnboardingPage() {
                         fullWidth
                         disabled={isDisabled}
                         label="Work Phone Number"
-                        defaultValue={localData.work_phone_number}
+                        defaultValue={localData?.work_phone_number}
                         onChange={(e) =>
                             setLocalData({
                                 ...localData,
@@ -433,12 +421,9 @@ export default function OnboardingPage() {
                         </InputLabel>
                         <Select
                             // {...register("visaStatus")}
-                            defaultValue={
-                                ["citizen", "greencard"].includes(
-                                    localData.opt.title
-                                )
-                                    ? "yes"
-                                    : "no"
+                            value={
+                                localData?.opt?.title ?
+                                    (["citizen", "greencard"].includes(localData?.opt?.title) ? "yes" : "no") : ""
                             }
                             label="Permanent resident or citizen of the U.S.?"
                             disabled={isDisabled}
@@ -452,19 +437,19 @@ export default function OnboardingPage() {
                         </Select>
                     </FormControl>
 
-                    {showIdentity && !isWorkVisa ? (
+                    {(localData?.opt?.title || showIdentity) && (!isWorkVisa ? (
                         <FormControl fullWidth>
                             <InputLabel>Visa Status</InputLabel>
                             <Select
                                 {...register("visaStatus")}
-                                defaultValue={localData.opt.title}
+                                defaultValue={localData?.opt?.title}
                                 label="Visa Status"
                                 disabled={isDisabled}
                                 onChange={(e) =>
                                     setLocalData({
                                         ...localData,
                                         opt: {
-                                            ...localData.opt,
+                                            ...localData?.opt,
                                             title: e.target.value,
                                         },
                                     })
@@ -482,11 +467,11 @@ export default function OnboardingPage() {
                             <Select
                                 {...register("visaStatus")}
                                 defaultValue={
-                                    ["h1b", "f1", "l2"].includes(
-                                        localData.opt.title
-                                    )
-                                        ? localData.opt.title
-                                        : "other"
+                                    localData?.opt?.title ?
+                                    (["h1b", "f1", "l2"].includes(localData?.opt?.title)
+                                        ? localData?.opt?.title
+                                        : "other") : ""
+                                    
                                 }
                                 label="Visa Status"
                                 disabled={isDisabled}
@@ -494,7 +479,7 @@ export default function OnboardingPage() {
                                     setLocalData({
                                         ...localData,
                                         opt: {
-                                            ...localData.opt,
+                                            ...localData?.opt,
                                             title: e.target.value,
                                         },
                                     })
@@ -506,9 +491,9 @@ export default function OnboardingPage() {
                                 <MenuItem value="other">Other</MenuItem>
                             </Select>
                         </FormControl>
-                    )}
+                    ))}
 
-                    {!isWorkVisa && localData.opt.title === "f1" && (
+                    {!isWorkVisa && localData?.opt?.title === "f1" && (
                         <Input
                             type="file"
                             disabled={isDisabled}
@@ -516,19 +501,21 @@ export default function OnboardingPage() {
                         />
                     )}
 
-                    {!isWorkVisa &&
-                        !["h1b", "f1", "l2"].includes(localData.opt.title) && (
+                    {console.log(localData?.opt?.title)}
+
+                    {localData?.opt?.title && isWorkVisa &&
+                        !["h1b", "f1", "l2"].includes(localData?.opt?.title) && (
                             <TextField
                                 {...register("other")}
                                 fullWidth
                                 disabled={isDisabled}
                                 label="Visa Status"
-                                value={localData.opt.title}
+                                value={localData?.opt?.title}
                                 onChange={(e) =>
                                     setLocalData({
                                         ...localData,
                                         opt: {
-                                            ...localData.opt,
+                                            ...localData?.opt,
                                             title: e.target.value,
                                         },
                                     })
@@ -549,12 +536,12 @@ export default function OnboardingPage() {
                                         disabled={isDisabled}
                                         fullWidth
                                         label="Visa Start Date"
-                                        value={dayjs(localData.opt.start_dat)}
+                                        value={dayjs(localData?.opt?.start_dat)}
                                         onChange={(newValue) =>
                                             setLocalData({
                                                 ...localData,
                                                 opt: {
-                                                    ...localData.opt,
+                                                    ...localData?.opt,
                                                     start_date: newValue,
                                                 },
                                             })
@@ -573,12 +560,12 @@ export default function OnboardingPage() {
                                         disabled={isDisabled}
                                         fullWidth
                                         label="Visa End Date"
-                                        value={dayjs(localData.opt.end_date)}
+                                        value={dayjs(localData?.opt?.end_date)}
                                         onChange={(newValue) =>
                                             setLocalData({
                                                 ...localData,
                                                 opt: {
-                                                    ...localData.opt,
+                                                    ...localData?.opt,
                                                     end_date: newValue,
                                                 },
                                             })
@@ -602,12 +589,12 @@ export default function OnboardingPage() {
                             required
                             fullWidth
                             label="First Name"
-                            value={localData.emergency_contact.first_name}
+                            value={localData?.emergency_contact?.first_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
                                     emergency_contact: {
-                                        ...localData.emergency_contact,
+                                        ...localData?.emergency_contact,
                                         first_name: e.target.value,
                                     },
                                 })
@@ -618,12 +605,12 @@ export default function OnboardingPage() {
                             disabled={isDisabled}
                             label="Middle Name"
                             fullWidth
-                            value={localData.emergency_contact.middle_name}
+                            value={localData?.emergency_contact?.middle_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
                                     emergency_contact: {
-                                        ...localData.emergency_contact,
+                                        ...localData?.emergency_contact,
                                         middle_name: e.target.value,
                                     },
                                 })
@@ -635,12 +622,12 @@ export default function OnboardingPage() {
                             fullWidth
                             disabled={isDisabled}
                             label="Last Name"
-                            value={localData.emergency_contact.last_name}
+                            value={localData?.emergency_contact?.last_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
                                     emergency_contact: {
-                                        ...localData.emergency_contact,
+                                        ...localData?.emergency_contact,
                                         last_name: e.target.value,
                                     },
                                 })
@@ -653,12 +640,12 @@ export default function OnboardingPage() {
                         required
                         disabled={isDisabled}
                         label="Email"
-                        value={localData.emergency_contact.email}
+                        value={localData?.emergency_contact?.email}
                         onChange={(e) =>
                             setLocalData({
                                 ...localData,
                                 emergency_contact: {
-                                    ...localData.emergency_contact,
+                                    ...localData?.emergency_contact,
                                     email: e.target.value,
                                 },
                             })
@@ -669,12 +656,12 @@ export default function OnboardingPage() {
                         fullWidth
                         label="Phone"
                         disabled={isDisabled}
-                        value={localData.emergency_contact.phone_num}
+                        value={localData?.emergency_contact?.phone_num}
                         onChange={(e) =>
                             setLocalData({
                                 ...localData,
                                 emergency_contact: {
-                                    ...localData.emergency_contact,
+                                    ...localData?.emergency_contact,
                                     phone_num: e.target.value,
                                 },
                             })
@@ -685,12 +672,12 @@ export default function OnboardingPage() {
                         fullWidth
                         label="Relationship"
                         disabled={isDisabled}
-                        value={localData.emergency_contact.relationship}
+                        value={localData?.emergency_contact?.relationship}
                         onChange={(e) =>
                             setLocalData({
                                 ...localData,
                                 emergency_contact: {
-                                    ...localData.emergency_contact,
+                                    ...localData?.emergency_contact,
                                     relationship: e.target.value,
                                 },
                             })

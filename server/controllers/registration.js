@@ -1,4 +1,3 @@
-import { randomBytes } from "crypto";
 import Registration from "../db/models/registration.js";
 import sendMail from "../services/mailer.js";
 
@@ -14,20 +13,30 @@ const createRegistration = async (req, res) => {
     const response = await sendMail({ email, first_name, last_name });
     if (response.success) {
         try {
-            const registration_info = {
-                email: email,
-                first_name: first_name,
-                last_name: last_name,
-                token: response.token,
-                updated_at: Date.now(),
-                link: response.link,
-            };
-            const new_registration = new Registration(registration_info);
-            await new_registration.save().then((result) => {
-                res.status(201).json(result);
+            let registration = await Registration.findOne({ email: email });
+            //if first time send registration link to this email address
+            if (!registration) {
+                const token = response.token;
+                const registration_info = {
+                    email: email,
+                    first_name: first_name,
+                    last_name: last_name,
+                    token: token,
+                    link: response.link,
+                };
+                registration = new Registration(registration_info);
+                //if generate a new registration link to this email address
+            } else {
+                const token = response.token;
+                registration.token = token;
+                registration.updated_at = Date.now();
+                registration.link = response.link;
+            }
+            await registration.save().then((reg) => {
+                res.status(201).json(reg);
             });
         } catch (err) {
-            res.status(500).json({ err, message: "Registration save error" });
+            res.status(500).json({ message: "Server Error" });
         }
     } else {
         res.status(500).json({

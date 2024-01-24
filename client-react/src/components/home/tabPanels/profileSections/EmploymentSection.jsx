@@ -30,7 +30,7 @@ export const EmploymentSection = ({ formData, isEmployeeProfile }) => {
                 <InputLabel>Visa Status</InputLabel>
                 <Select
                     {...register("visaStatus")}
-                    defaultValue={localData.title}
+                    defaultValue={localData?.title}
                     label="Visa Status"
                     disabled={isDisabled}
                     onChange={(e) => setLocalData({ ...localData, visaStatus: e.target.value })}
@@ -43,14 +43,14 @@ export const EmploymentSection = ({ formData, isEmployeeProfile }) => {
             <LineBox>
                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                     <DemoContainer components={['DatePicker']} sx={{ flex: 1 }}>
-                        <DateField required {...register("visa start_date")} disabled={isDisabled} fullWidth label="Visa Start Date" value={dayjs(localData.start_dat)}
+                        <DateField required {...register("visa start_date")} disabled={isDisabled} fullWidth label="Visa Start Date" value={dayjs(localData?.start_dat)}
                             onChange={(newValue) => setLocalData({ ...localData, start_dat: newValue })}
                         />
                     </DemoContainer>
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DatePicker']} sx={{ flex: 1 }}>
-                        <DateField required {...register("visa end_date")} disabled={isDisabled} fullWidth label="Visa End Date" value={dayjs(localData.end_date)}
+                        <DateField required {...register("visa end_date")} disabled={isDisabled} fullWidth label="Visa End Date" value={dayjs(localData?.end_date)}
                             onChange={(newValue) => setLocalData({ ...localData, end_date: newValue })}
                         />
                     </DemoContainer>
