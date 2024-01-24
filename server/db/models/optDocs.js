@@ -19,20 +19,20 @@ const optDocsSchema = new mongoose.Schema({
         default: 0,
     },
     Receipt: {
-        type: String,
-        default: null
+        type: [String],
+        default: []
     },
     EAD: {
-        type: String,
-        default: null
+        type: [String],
+        default: []
     },
     I983: {
-        type: String,
-        default: null
+        type: [String],
+        default: []
     },
     I20: {
-        type: String,
-        default: null
+        type: [String],
+        default: []
     }
 });
 

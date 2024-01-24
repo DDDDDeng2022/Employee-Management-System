@@ -331,7 +331,7 @@ const PENDING = 1;
 const APPROVED = 2;
 const REJECTED = 3;
 const status = ["Upload your document", "Pending for reviewing", "Your document is approved", "Your document is rejected"];
-const queryId = "65aefc287acdeb5c29a0e765";
+const queryId = "65b0ad3077279e830cc73822";
 const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     backgroundColor: "#ccc",
     zIndex: 1,
@@ -502,7 +502,7 @@ const ActiveStepContent = ({ updateTempFiles, fileLinks }) => {
         const formData = new FormData();
         formData.append('document', file);
         try {
-            const response = await fetch("http://localhost:8080/api/user/uploadDocument", {
+            const response = await fetch("http://localhost:8080/api/opt/uploadDocument", {
                 method: 'POST',
                 body: formData,
             });

@@ -1,7 +1,5 @@
 import OptDocs from "../db/models/optDocs.js";
-import fs from 'fs';
-import path from 'path';
-// const curDocs = []
+
 const RECEIPT = 0;
 const EAD = 1;
 const I983 = 2;
@@ -13,17 +11,8 @@ const APPROVED = 2;
 const REJECTED = 3;
 
 //enable employee to upload document
-const uploadDoc = async (req, res) => {
-    console.log("test calling upload doc")
-    // const { id, docType, link } = req.body;
-    const { id, docType } = req.body;
-    const file = req.file;
-    const link = `${req.protocol}://${req.get('host')}/uploads/opt/${file.filename}`;
-
-    console.log("id", id)
-    console.log("docType", docType);
-    console.log("link ", link);
-
+const uploadDoc = async (req, res) => {  
+    const { id, docType, links } = req.body;
     try {
         const optDoc = await OptDocs.findById(id);
         if (!optDoc) {
@@ -38,33 +27,28 @@ const uploadDoc = async (req, res) => {
         //     res.status(400).json({msg: `The document has been approved. You cannot re-upload.`});
         //     return;
         // }
-        console.log("test calling upload doc1")
         switch (docType) {
             case RECEIPT:
-                optDoc.Receipt = link;
+                optDoc.Receipt = links;
                 break;
             case EAD:
-                optDoc.EAD = link;
+                optDoc.EAD = links;
                 break;
             case I983:
-                optDoc.I983 = link;
+                optDoc.I983 = links;
                 break;
             case I20:
-                optDoc.I20 = link;
+                optDoc.I20 = links;
                 break;
             default:
                 res.status(400).json({ msg: "Unknown requested document type." });
                 return;
         }
-        console.log("test calling upload doc2")
         optDoc.curStatus = PENDING;
-        console.log("test calling upload do3")
         await optDoc.save();
-        console.log("test calling upload doc4")
         res.status(200).json(optDoc);
         return;
     } catch (err) {
-        console.log("err: ", err)
         res.status(500).json({ msg: "Internal Error in uploadDoc", err: err });
     }
 
@@ -84,16 +68,16 @@ const deleteDoc = async (req, res) => {
         }
         switch (docType) {
             case RECEIPT:
-                optDoc.Receipt = null;
+                optDoc.Receipt = [];
                 break;
             case EAD:
-                optDoc.EAD = null;
+                optDoc.EAD = [];
                 break;
             case I983:
-                optDoc.I983 = null;
+                optDoc.I983 = [];
                 break;
             case I20:
-                optDoc.I20 = null;
+                optDoc.I20 = [];
                 break;
             default:
                 res.status(400).json({ msg: "Unknown requested document type." });
@@ -168,7 +152,7 @@ const getOptDocs = async (req, res) => {
             return;
         }
 
-        res.status(201).json({ msg: "new optDocs created success.", optDoc: optDoc });
+        res.status(201).json(optDoc);
         return;
     } catch (err) {
         res.status(500).json({ mag: "Internal Error" }, err);
@@ -180,11 +164,27 @@ const createOptDocs = async (req, res) => {
     try {
         const optDocs = new OptDocs();
         await optDocs.save();
-        res.status(201).json({ msg: "new optDocs created success.", optDocs: optDocs });
+        res.status(201).json(optDocs);
         return;
     } catch (err) {
         res.status(500).json({ mag: "Internal Error" }, err);
         return;
+    }
+};
+
+
+const uploadDocument = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).send({ message: 'No file uploaded.' });
+        };
+        const file = req.file;
+        console.log("file: ", file);
+        const documentUrl = `${req.protocol}://${req.get('host')}/${file.path}`;
+        res.status(200).send({ documentUrl: documentUrl });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Server Error' });
     }
 };
 
@@ -194,5 +194,6 @@ export {
     deleteDoc,
     approveDoc,
     rejectDoc,
-    getOptDocs
+    getOptDocs,
+    uploadDocument
 }
