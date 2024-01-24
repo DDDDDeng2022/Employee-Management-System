@@ -9,29 +9,29 @@ const I20 = 3;
 
 const EMPTY = 0;
 const PENDING = 1;
-const APPROVED =2;
+const APPROVED = 2;
 const REJECTED = 3;
 
 //enable employee to upload document
-const uploadDoc = async (req, res)=>{
+const uploadDoc = async (req, res) => {
     console.log("test calling upload doc")
     // const { id, docType, link } = req.body;
-    const { id, docType} = req.body;
-    const file  = req.file;
+    const { id, docType } = req.body;
+    const file = req.file;
     const link = `${req.protocol}://${req.get('host')}/uploads/opt/${file.filename}`;
 
     console.log("id", id)
     console.log("docType", docType);
-    console.log("link ",link);
+    console.log("link ", link);
 
-    try{
+    try {
         const optDoc = await OptDocs.findById(id);
-        if(!optDoc){
-            res.status(404).json({msg: `optDoc id: ${id} is not found`});
+        if (!optDoc) {
+            res.status(404).json({ msg: `optDoc id: ${id} is not found` });
             return;
         }
-        if(docType !== optDoc.curDoc){
-            res.status(400).json({msg: `The document upload is illegal at current opt managment status.`});
+        if (docType !== optDoc.curDoc) {
+            res.status(400).json({ msg: `The document upload is illegal at current opt managment status.` });
             return;
         }
         // if(optDoc.curStatus === APPROVED){
@@ -39,7 +39,7 @@ const uploadDoc = async (req, res)=>{
         //     return;
         // }
         console.log("test calling upload doc1")
-        switch(docType){
+        switch (docType) {
             case RECEIPT:
                 optDoc.Receipt = link;
                 break;
@@ -49,11 +49,11 @@ const uploadDoc = async (req, res)=>{
             case I983:
                 optDoc.I983 = link;
                 break;
-            case I20:  
+            case I20:
                 optDoc.I20 = link;
                 break;
             default:
-                res.status(400).json({msg: "Unknown requested document type."});
+                res.status(400).json({ msg: "Unknown requested document type." });
                 return;
         }
         console.log("test calling upload doc2")
@@ -61,28 +61,28 @@ const uploadDoc = async (req, res)=>{
         console.log("test calling upload do3")
         await optDoc.save();
         console.log("test calling upload doc4")
-        res.status(200).json({msg: "document upload success", optDoc: optDoc});
+        res.status(200).json(optDoc);
         return;
-    }catch(err){
-        console.log("err: ",err)
-        res.status(500).json({msg: "Internal Error in uploadDoc", err:err});
+    } catch (err) {
+        console.log("err: ", err)
+        res.status(500).json({ msg: "Internal Error in uploadDoc", err: err });
     }
-   
+
 };
 
-const deleteDoc = async (req, res)=>{
+const deleteDoc = async (req, res) => {
     const { id, docType } = req.body;
-    try{
+    try {
         const optDoc = await OptDocs.findById(id);
-        if(!optDoc){
-            res.status(404).json({msg: `optDoc id: ${id} is not found`});
+        if (!optDoc) {
+            res.status(404).json({ msg: `optDoc id: ${id} is not found` });
             return;
         }
-        if(docType !== optDoc.curDoc ){
-            res.status(400).json({msg: `The operation is denied. You cannot delete a previously approved document.`});
+        if (docType !== optDoc.curDoc) {
+            res.status(400).json({ msg: `The operation is denied. You cannot delete a previously approved document.` });
             return;
         }
-        switch(docType){
+        switch (docType) {
             case RECEIPT:
                 optDoc.Receipt = null;
                 break;
@@ -92,98 +92,98 @@ const deleteDoc = async (req, res)=>{
             case I983:
                 optDoc.I983 = null;
                 break;
-            case I20:  
+            case I20:
                 optDoc.I20 = null;
                 break;
             default:
-                res.status(400).json({msg: "Unknown requested document type."});
+                res.status(400).json({ msg: "Unknown requested document type." });
                 return;
         }
         optDoc.curStatus = EMPTY;
         await optDoc.save();
-        res.status(200).json({msg: "document delete success", optDoc: optDoc});
+        res.status(200).json({ msg: "document delete success", optDoc: optDoc });
         return;
-    }catch(err){
-        res.status(500).json({msg: "Internal Error"});
+    } catch (err) {
+        res.status(500).json({ msg: "Internal Error" });
     }
 };
 
 //approve current document 
-const approveDoc = async (req, res)=>{
+const approveDoc = async (req, res) => {
     const { id } = req.params;
-    if(!id){
-        res.status(400).json({msg: "optDoc id is missing"});
+    if (!id) {
+        res.status(400).json({ msg: "optDoc id is missing" });
         return;
     }
-    try{
+    try {
         const optDoc = await OptDocs.findById(id);
-        if(!optDoc){
-            res.status(404).json({msg: `optDoc id: ${id} is not found`});
+        if (!optDoc) {
+            res.status(404).json({ msg: `optDoc id: ${id} is not found` });
             return;
         }
         optDoc.curDoc += 1;
         optDoc.curStatus = EMPTY;
         await optDoc.save();
-        res.status(200).json({msg: "document approval success", optDoc: optDoc});
+        res.status(200).json({ msg: "document approval success", optDoc: optDoc });
         return;
-    }catch(err){
-        res.status(500).json({msg: "Internal Error"});
+    } catch (err) {
+        res.status(500).json({ msg: "Internal Error" });
     }
 };
 
 //reject current document 
-const rejectDoc = async (req, res)=>{
+const rejectDoc = async (req, res) => {
     const { id } = req.params;
-    if(!id){
-        res.status(400).json({msg: "optDoc id is missing"});
+    if (!id) {
+        res.status(400).json({ msg: "optDoc id is missing" });
         return;
     }
-    try{
+    try {
         const optDoc = await OptDocs.findById(id);
-        if(!optDoc){
-            res.status(404).json({msg: `optDoc id: ${id} is not found`});
+        if (!optDoc) {
+            res.status(404).json({ msg: `optDoc id: ${id} is not found` });
             return;
         }
         /*need to decide whether the document is going to be deleted or not 
         automatically after rejection by HR later*/
         optDoc.curStatus = REJECTED;//need to decide whether being set to EMPTY later
         await optDoc.save();
-        res.status(200).json({msg: "document rejection success", optDoc: optDoc});
+        res.status(200).json({ msg: "document rejection success", optDoc: optDoc });
         return;
-    }catch(err){
-        res.status(500).json({msg: "Internal Error"});
+    } catch (err) {
+        res.status(500).json({ msg: "Internal Error" });
     }
 }
 
-const getOptDocs = async (req, res)=>{
+const getOptDocs = async (req, res) => {
     const { id } = req.params;
-    if(!id){
-        res.status(400).json({msg: "OptDoc id is missing. Try again."});
+    if (!id) {
+        res.status(400).json({ msg: "OptDoc id is missing. Try again." });
         return;
     }
-    try{
+    try {
         const optDoc = await OptDocs.findById(id);
-        if(!optDoc){
-            res.status(404).json({msg: `optDoc id: ${id} is not found`});
+        if (!optDoc) {
+            res.status(404).json({ msg: `optDoc id: ${id} is not found` });
             return;
         }
-       
-        res.status(201).json({msg: "new optDocs created success.", optDoc: optDoc });
+
+        res.status(201).json({ msg: "new optDocs created success.", optDoc: optDoc });
         return;
-    }catch(err){
-        res.status(500).json({mag: "Internal Error"}, err);
+    } catch (err) {
+        res.status(500).json({ mag: "Internal Error" }, err);
         return;
     }
 };
 
-const createOptDocs = async (req, res)=>{
-    try{
+const createOptDocs = async (req, res) => {
+    try {
         const optDocs = new OptDocs();
         await optDocs.save();
-        res.status(201).json({msg: "new optDocs created success.", optDocs: optDocs });
+        res.status(201).json({ msg: "new optDocs created success.", optDocs: optDocs });
         return;
-    }catch(err){
-        res.status(500).json({mag: "Internal Error"}, err);
+    } catch (err) {
+        res.status(500).json({ mag: "Internal Error" }, err);
         return;
     }
 };
