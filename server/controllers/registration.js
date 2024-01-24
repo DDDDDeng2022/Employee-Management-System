@@ -3,44 +3,38 @@ import Registration from "../db/models/registration.js";
 import sendMail from "../services/mailer.js";
 
 const createRegistration = async (req, res) => {
-    const { email, first_name, last_name } = req.body;
+    const { first_name, last_name } = req.body;
+    const email = req.body?.email.toLowerCase();
     if (!email || !first_name || !last_name) {
         res.status(400).json({ message: "Required fields are missing" });
 
         return;
     }
 
-    // try {
-    //     let registration = await Registration.findOne({ email: email });
-    //     const baseUrl = "http://localhost:3000/";
-    //     //if first time send registration link to this email address
-    //     if (!registration) {
-    //         const token = randomBytes(20).toString("hex");
-    //         const response = {
-    //             email: email,
-    //             first_name: first_name,
-    //             last_name: last_name,
-    //             token: token,
-    //             updated_at: Date.now(),
-    //             link: `${baseUrl}?email=${encodeURIComponent(
-    //                 email
-    //             )}&token=${encodeURIComponent(token)}`,
-    //         };
-    //         registration = new Registration(response);
-    //         //if generate a new registration link to this email address
-    //     } else {
-    //         const token = randomBytes(20).toString("hex");
-    //         registration.token = token;
-    //         registration.updated_at = Date.now();
-    //         registration.link = `${baseUrl}?email=${encodeURIComponent(
-    //             email
-    //         )}&token=${encodeURIComponent(token)}`;
-    //     }
-    //     await registration.save();
-    //     res.status(201).json(registration);
-    // } catch (err) {
-    //     res.status(500).json({ message: "Server Error" });
-    // }
+    const response = await sendMail({ email, first_name, last_name });
+    if (response.success) {
+        try {
+            const registration_info = {
+                email: email,
+                first_name: first_name,
+                last_name: last_name,
+                token: response.token,
+                updated_at: Date.now(),
+                link: response.link,
+            };
+            const new_registration = new Registration(registration_info);
+            await new_registration.save().then((result) => {
+                res.status(201).json(result);
+            });
+        } catch (err) {
+            res.status(500).json({ err, message: "Registration save error" });
+        }
+    } else {
+        res.status(500).json({
+            err: response.err,
+            message: "Error sending email",
+        });
+    }
 };
 
 const getRegistration = async (req, res) => {

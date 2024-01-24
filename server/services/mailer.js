@@ -14,11 +14,11 @@ const mailGenerator = new Mailgen({
     theme: "salted",
     product: {
         name: "Manage U Future",
-        link: "https://localhost:3000",
+        link: "http://localhost:3000/",
     },
 });
 
-export default function sendMail({ email, first_name, last_name }) {
+async function sendMail({ email, first_name, last_name }) {
     const transporter = nodemailer.createTransport(config);
 
     const token = jwt.sign(
@@ -31,7 +31,7 @@ export default function sendMail({ email, first_name, last_name }) {
     const emailBody = {
         body: {
             name: `${first_name} ${last_name}`,
-            intro: "Welcome to Chuwa!",
+            intro: "Welcome to Chuwa! We are happy to see you onboard.",
             action: {
                 instructions:
                     "Please click the following button to create your P2HR account:",
@@ -41,9 +41,8 @@ export default function sendMail({ email, first_name, last_name }) {
                     link: signupLink,
                 },
             },
-            reminder:
-                "This link will be expired in 3 hours, please contact HR if you missed it.",
             outro: [
+                "This link will be expired in 3 hours, please contact us if you missed it.",
                 `If you have any question, please contact us: ${process.env.EMAIL}`,
                 "This email is system generated, please do not response.",
             ],
@@ -58,12 +57,15 @@ export default function sendMail({ email, first_name, last_name }) {
         html: emailContent,
     };
 
-    transporter
-        .sendMail(mailOptions)
-        .then(() => {
-            return { res, success: true, link: signupLink };
-        })
-        .catch((err) => {
-            return { err, success: false };
-        });
+    const result = await transporter.sendMail(mailOptions).then((info) => {
+        if (info.rejected.length === 0) {
+            return { token, success: true, link: signupLink };
+        } else {
+            return { success: false, error: "Error sending email" };
+        }
+    });
+
+    return result;
 }
+
+export default sendMail;
