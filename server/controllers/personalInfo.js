@@ -97,7 +97,7 @@ const uploadPhoto = async (req, res) => {
             return res.status(400).send({ message: "No file uploaded." });
         }
         const file = req.file;
-        const imageUrl = `${req.protocol}://${req.get("host")}/${file.path}`;
+        const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${file.filename}`;
         res.status(200).send({ imageUrl: imageUrl });
     } catch (error) {
         res.status(500).send({ error, message: "Server Error" });
