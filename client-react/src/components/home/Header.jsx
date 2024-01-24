@@ -1,17 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import apiCall from "../../services/apiCall";
-import {
-    AppBar,
-    Box,
-    Typography,
-    Toolbar,
-    IconButton,
-    Badge,
-    MenuItem,
-    Menu,
-    Tooltip,
-} from "@mui/material";
+import { AppBar, Box, Typography, Toolbar, IconButton, Badge, MenuItem, Menu, Tooltip } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
@@ -84,11 +74,7 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
 
     const renderMenu = (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
-            <MenuItem
-                onClick={() => {
-                    navigate("/home/profile");
-                }}
-            >
+            <MenuItem onClick={() => { navigate("/home/profile") }}>
                 <IconButton size="large" color="inherit">
                     <AccountCircle />
                 </IconButton>
@@ -117,11 +103,7 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                 </IconButton>
                 <p>Notifications</p>
             </MenuItem>
-            <MenuItem
-                onClick={() => {
-                    navigate("/home/profile");
-                }}
-            >
+            <MenuItem onClick={() => { navigate("/home/profile") }}>
                 <IconButton size="large" color="inherit">
                     <AccountCircle />
                 </IconButton>
@@ -141,13 +123,7 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
             <AppBar position="static">
                 <Toolbar>
                     <Tooltip title="resource">
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            sx={{ mr: 2 }}
-                            onClick={handleLeftVisible}
-                        >
+                        <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} onClick={handleLeftVisible}>
                             <MenuIcon />
                         </IconButton>
                     </Tooltip>
@@ -167,27 +143,16 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton> */}
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
+                        <IconButton size="large" edge="end" onClick={handleProfileMenuOpen} color="inherit">
                             <AccountCircle />
                         </IconButton>
                         {/* todo: 改成username */}
-                        <Typography
-                            sx={{ margin: "auto", paddingLeft: "20px" }}
-                        >
+                        <Typography sx={{ margin: "auto", paddingLeft: "20px" }}>
                             Welcome {username}!
                         </Typography>
                     </Box>
                     <Box sx={{ display: { xs: "flex", md: "none" } }}>
-                        <IconButton
-                            size="large"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
+                        <IconButton size="large" onClick={handleMobileMenuOpen} color="inherit">
                             <MoreIcon />
                         </IconButton>
                     </Box>

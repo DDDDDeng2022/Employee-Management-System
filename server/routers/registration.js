@@ -1,9 +1,5 @@
 import express from "express";
-import {
-    createRegistration,
-    getRegistration,
-    getAllRegistors,
-} from "../controllers/registration.js";
+import { createRegistration, getRegistration, getAllRegistors } from "../controllers/registration.js";
 // import sendMail from "../controllers/mailer.js";
 
 const router = express.Router();
