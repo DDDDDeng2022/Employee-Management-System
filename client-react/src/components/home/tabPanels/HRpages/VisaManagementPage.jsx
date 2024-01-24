@@ -1,12 +1,20 @@
 import React from "react";
-import PropTypes from "prop-types";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 
+import CommomTabsLayout from "./CommomTabsLayout";
+import InProcessPage from "./visaPages/InProcessPage";
+import AllEmployeeVisaPages from "./visaPages/AllEmployeeVisaPages";
 export default function VisaManagementPage() {
     return (
-        <div>
-            VisaManagementPage
-        </div>
+        <CommomTabsLayout
+            tabs={[
+                { label: "All" },
+                { label: "In Process" }
+            ]}
+            tabPanels={[
+                <AllEmployeeVisaPages />,
+                <InProcessPage />
+            ]}
+        />
+
     );
 }
