@@ -57,9 +57,12 @@ const personalInfoSchema = new mongoose.Schema({
         required: true,
     },
     review_status: {
-        type: String,
+        type: Boolean,
         required: true,
-        default: false,
+        default: null,
+    },
+    review_memo: {
+        type: String,
     },
     preferred_name: {
         type: String,

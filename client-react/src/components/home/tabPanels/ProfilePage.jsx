@@ -1,19 +1,20 @@
-import React from 'react';
-import { Box, Button } from '@mui/material';
-import { useSelector } from 'react-redux';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { NameSection } from './profileSections/NameSection';
-import { AddressSection } from './profileSections/AddressSecttion';
-import { ContactSection } from './profileSections/ContactSection';
-import { EmploymentSection } from './profileSections/EmploymentSection';
-import { EmergencyContactSection } from './profileSections/EmergencySection';
+import React, { useEffect } from "react";
+import { Box, Button } from "@mui/material";
+import { useSelector } from "react-redux";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { NameSection } from "./profileSections/NameSection";
+import { AddressSection } from "./profileSections/AddressSecttion";
+import { ContactSection } from "./profileSections/ContactSection";
+import { EmploymentSection } from "./profileSections/EmploymentSection";
+import { EmergencyContactSection } from "./profileSections/EmergencySection";
 
 export default function ProfilePage() {
     const profile = useSelector((state) => state.myProfile.profile);
+    console.log(useSelector((state) => state));
     return (
         <Box sx={{ width: { xs: "100%", sm: "80%" }, margin: "auto" }}>
             <NameSection formData={profile} isEmployeeProfile={false} />

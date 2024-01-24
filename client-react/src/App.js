@@ -6,13 +6,14 @@ import OnboardingPage from './components/home/tabPanels/OnboardingPage';
 import VisaPage from './components/home/tabPanels/VisaPage';
 import ProfilePage from './components/home/tabPanels/ProfilePage';
 import { Provider } from 'react-redux';
-import store from './components/home/redux/store';
+import store from './redux/store';
 import OnboardingReviewPage from './components/home/tabPanels/HRpages/OnboardingReviewPage';
 import HiringManagementPage from './components/home/tabPanels/HRpages/HiringManagementPage';
 import VisaManagementPage from './components/home/tabPanels/HRpages/VisaManagementPage';
 import EmployeeProfilesPage from './components/home/tabPanels/HRpages/EmployeeProfilesPage';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DetailedProfilePage from './components/home/tabPanels/HRpages/DetailedProfilePage';
+import ApplicationPage from './components/home/tabPanels/HRpages/hiringPages/ApplicationPage';
 const theme = createTheme({
   components: {
     MuiButton: {
@@ -43,8 +44,10 @@ function App() {
             </Route>
 
             <Route path="visaManagement" element={<VisaManagementPage />} />
-            <Route path="Hiring" element={<HiringManagementPage />} />
-            <Route path="onboardingReviews" element={<OnboardingReviewPage />} />
+            <Route path="hiring" element={<HiringManagementPage />} >
+              <Route path=":id" element={<ApplicationPage />} >
+              </Route>
+            </Route>
           </Route>
         </Routes>
       </Router>

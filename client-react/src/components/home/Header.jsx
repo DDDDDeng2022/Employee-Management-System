@@ -1,17 +1,24 @@
 import * as React from "react";
-import { AppBar, Box, Typography, Toolbar, IconButton, Badge, MenuItem, Menu, Tooltip } from "@mui/material"
+import { AppBar, Box, Typography, Toolbar, IconButton, Badge, MenuItem, Menu, Tooltip } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setIsLogin } from "../../redux/loginStateSlice";
+import { resetUser } from "../../redux/userSlice";
 
 // eslint-disable-next-line react/prop-types
 export default function PrimarySearchAppBar({ handleLeftVisible }) {
+    const username = useSelector((state) => state.user.user_name);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -30,15 +37,22 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+    const handleLogout = () => {
+        dispatch(setIsLogin(false));
+        dispatch(resetUser());
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
+
     const renderMenu = (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
-            <MenuItem>
+            <MenuItem onClick={() => { navigate("/home/profile") }}>
                 <IconButton size="large" color="inherit">
                     <AccountCircle />
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={handleLogout}>
                 <IconButton size="large" color="inherit">
                     <LogoutIcon />
                 </IconButton>
@@ -61,13 +75,14 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                 </IconButton>
                 <p>Notifications</p>
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={() => { navigate("/home/profile") }}
+            >
                 <IconButton size="large" color="inherit">
                     <AccountCircle />
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={handleLogout}>
                 <IconButton size="large" color="inherit">
                     <LogoutIcon />
                 </IconButton>
@@ -85,10 +100,10 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                             <MenuIcon />
                         </IconButton>
                     </Tooltip>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
+                    <Typography 
+                        variant="h6" 
+                        noWrap 
+                        component="div" 
                         sx={{ display: { xs: "none", sm: "block" } }}
                     >
                         P2HR Management
@@ -101,23 +116,16 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton> */}
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
+                        <IconButton size="large" edge="end" onClick={handleProfileMenuOpen} color="inherit">
                             <AccountCircle />
                         </IconButton>
                         {/* todo: 改成username */}
-                        <Typography sx={{ margin: "auto", paddingLeft: "20px" }}>Welcome XXX!</Typography>
+                        <Typography sx={{ margin: "auto", paddingLeft: "20px" }}>
+                            Welcome {username}!
+                        </Typography>
                     </Box>
                     <Box sx={{ display: { xs: "flex", md: "none" } }}>
-                        <IconButton
-                            size="large"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
+                        <IconButton size="large" onClick={handleMobileMenuOpen} color="inherit">
                             <MoreIcon />
                         </IconButton>
                     </Box>

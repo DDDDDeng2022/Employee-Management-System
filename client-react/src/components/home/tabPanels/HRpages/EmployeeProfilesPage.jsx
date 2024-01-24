@@ -1,9 +1,9 @@
 import React from "react";
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import { CircularProgress, TableBody, Table, Paper, Box, InputBase, IconButton, Typography, Chip, Link, TableRow, TablePagination, TableHead, TableContainer } from "@mui/material";
-import { getProfiles } from "./api";
+import { Tooltip, CircularProgress, TableBody, Table, Paper, Box, InputBase, IconButton, Typography, Chip, Link, TableRow, TablePagination, TableHead, TableContainer } from "@mui/material";
+import { getProfiles } from "../../../../services/userApi";
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
-import { styled, createTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import SearchIcon from "@mui/icons-material/Search";
 
 const COLUMNS = [
@@ -18,25 +18,31 @@ const preprocessAndSortRows = (rows) => {
     return rows.sort((a, b) => a.last_name.localeCompare(b.last_name));
 };
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#3157db",
         color: theme.palette.common.white,
         whiteSpace: "nowrap",
+
         [theme.breakpoints.down('sm')]: {
             padding: "5px",
-            fontSize: "12px"
+            fontSize: "12px",
+            maxWidth: "300px",
         },
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 14,
+        textOverflow: "ellipsis",
+        overflow: "hidden",
         [theme.breakpoints.down('sm')]: {
             padding: "5px",
-            fontSize: "12px"
+            fontSize: "12px",
+            maxWidth: "200px"
+
         },
     },
 }));
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+export const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
     },
@@ -58,8 +64,8 @@ export default function EmployeeProfilesPage() {
     React.useEffect(() => {
         const fetchAllProfiles = async () => {
             try {
-                const fetchedCProfiles = await getProfiles();
-                const transformedData = preprocessAndSortRows(fetchedCProfiles).map(item => ({
+                const fetchedProfiles = await getProfiles();
+                const transformedData = preprocessAndSortRows(fetchedProfiles).map(item => ({
                     ...item,
                     fullName: `${item.first_name} ${item.last_name}`,
                     workAuthTitle: item.visa_type,
@@ -141,10 +147,10 @@ export default function EmployeeProfilesPage() {
                                                                 return (
                                                                     <StyledTableCell key={column.id} align="center">
                                                                         {column.id === "fullName" ? (
-                                                                            <Link onClick={() => { handleClick(row.fullName, row) }}>{row.fullName}</Link>
-                                                                        ) : (
-                                                                            value
-                                                                        )}
+                                                                            <Tooltip title={value}><Link onClick={() => { handleClick(row.fullName, row) }}>{row.fullName}</Link></Tooltip>
+                                                                        )
+                                                                            : <Tooltip title={value}>{value}</Tooltip>
+                                                                        }
                                                                     </StyledTableCell>
                                                                 );
                                                             })}
