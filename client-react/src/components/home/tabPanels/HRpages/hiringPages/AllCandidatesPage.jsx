@@ -3,7 +3,7 @@ import { CircularProgress, Box, Button, Table, TableBody, TableHead, TableRow, C
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from '@mui/icons-material/Add';
 import RegistrationSendPage from "./RegistrationSendPage";
-import { getRegistors } from "../api/registrationApi";
+import { getRegistors } from "../../../../../services/registrationApi";
 import { StyledTableCell, StyledTableRow } from "../EmployeeProfilesPage";
 const AllCandidatesPage = () => {
     const [open, setOpen] = React.useState(false);

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AppBar,Box,Typography,Toolbar,IconButton,Badge,MenuItem,Menu,Tooltip } from "@mui/material";
+import { AppBar, Box, Typography, Toolbar, IconButton, Badge, MenuItem, Menu, Tooltip } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
@@ -100,7 +100,12 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                             <MenuIcon />
                         </IconButton>
                     </Tooltip>
-                    <Typography variant="h6" noWrap component="div" sx={{ display: { xs: "none", sm: "block" } }}>
+                    <Typography 
+                        variant="h6" 
+                        noWrap 
+                        component="div" 
+                        sx={{ display: { xs: "none", sm: "block" } }}
+                    >
                         P2HR Management
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />

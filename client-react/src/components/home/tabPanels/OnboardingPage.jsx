@@ -1,19 +1,4 @@
-import {
-    Box,
-    Avatar,
-    Select,
-    TextField,
-    Button,
-    IconButton,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    styled,
-    Divider,
-    Typography,
-    Input,
-    Chip,
-} from "@mui/material";
+import { Box, Avatar, Select, TextField, Button, IconButton, FormControl, InputLabel, MenuItem, styled, Divider, Typography, Input, Chip } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -60,26 +45,16 @@ export default function OnboardingPage() {
     const [isDisabled, setIsDisabled] = useState(false);
     const [isWorkVisa, setIsWorkVisa] = useState(false);
     const [showIdentity, setShowIdentity] = useState(false);
-    const [reviewStatus, setReviewStatus] = useState("Never Submitted");
     const { register, handleSubmit, reset } = useForm({
         defaultValues: profile,
     });
 
     useEffect(() => {
-        if (
-            Object.keys(localData).length !== 0 &&
-            localData.review_status === null
-        ) {
-            setReviewStatus("Pending");
-            setIsDisabled(true);
-        } else if (localData.review_status === false) {
-            setReviewStatus("Rejected");
-        } else if (localData.review_status === true) {
-            setReviewStatus("Approved");
+        if (["Pending", "Approved"].includes(localData.review_status)) {
             setIsDisabled(true);
         }
     }, []);
-    const chipColor = ChipColor(reviewStatus);
+    const chipColor = ChipColor(localData.review_status);
 
     // handle functions
     const handleEdit = () => {
@@ -190,7 +165,7 @@ export default function OnboardingPage() {
                     resetAvatar={resetAvatar}
                     // isEmployeeProfile={isEmployeeProfile}
                 >
-                    <Chip label={reviewStatus} color={chipColor} />
+                    <Chip label={localData.review_status} color={chipColor} />
 
                     {/* User Section */}
                     <Divider textAlign="left">

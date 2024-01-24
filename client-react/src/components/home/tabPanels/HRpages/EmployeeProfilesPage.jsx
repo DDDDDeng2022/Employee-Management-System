@@ -1,7 +1,7 @@
 import React from "react";
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { Tooltip, CircularProgress, TableBody, Table, Paper, Box, InputBase, IconButton, Typography, Chip, Link, TableRow, TablePagination, TableHead, TableContainer } from "@mui/material";
-import { getProfiles } from "./api/userApi";
+import { getProfiles } from "../../../../services/userApi";
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import SearchIcon from "@mui/icons-material/Search";

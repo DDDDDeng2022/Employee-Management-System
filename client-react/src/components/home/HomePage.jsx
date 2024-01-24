@@ -72,7 +72,6 @@ const HomePage = () => {
                     width: "100%",
                 }}
             >
-                {" "}
                 {tabs.map((tab, index) => (
                     <Tab
                         key={tab.label}
