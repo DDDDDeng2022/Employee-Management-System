@@ -135,11 +135,13 @@ export default function OnboardingPage(props) {
         });
         const resJson = await response.json();
         console.log(resJson);
-        const uploadRes = await apiCall({ url: '/api/opt/upload', method: 'PUT', data: {
-            id: createOptDocs._id,
-            docType: 0,
-            links: [ resJson.documentUrl ]
-        } });
+        const uploadRes = await apiCall({
+            url: '/api/opt/upload', method: 'PUT', data: {
+                id: createOptDocs._id,
+                docType: 0,
+                links: [resJson.documentUrl]
+            }
+        });
         setValue('optDocs', uploadRes._id);
     };
 
@@ -176,7 +178,7 @@ export default function OnboardingPage(props) {
                         label={localData?.review_status || "Never Submitted"}
                         color={chipColor}
                     />
-                    {localData?.review_status === "Rejected" && localData?.review_memo && 
+                    {localData?.review_status === "Rejected" && localData?.review_memo &&
                         <Typography sx={{ fontSize: "14px", color: "black" }}>
                             {localData?.review_memo}
                         </Typography>
@@ -273,7 +275,7 @@ export default function OnboardingPage(props) {
                             >
                                 <MenuItem value="female">Female</MenuItem>
                                 <MenuItem value="male">Male</MenuItem>
-                                <MenuItem value="I do not wish to answer">
+                                <MenuItem value="other">
                                     I do not wish to answer
                                 </MenuItem>
                             </Select>
@@ -499,7 +501,7 @@ export default function OnboardingPage(props) {
                                 <Select
                                     {...register("opt.title")}
                                     required
-                                    value={ localData?.opt?.title ?
+                                    value={localData?.opt?.title ?
                                         (["h1b", "f1", "l2"].includes(localData?.opt?.title)
                                             ? localData?.opt?.title
                                             : "other") : ""

@@ -11,7 +11,13 @@ import { VISA_COLUMNS } from "./InProcessPage";
 import { NoResultComponent } from "../EmployeeProfilesPage";
 import { handlePreviewClick } from "../../FilePreviewButton";
 
-const COLUMNS = VISA_COLUMNS.slice(0, -1);
+const COLUMNS = [
+    { id: "name", label: "Name" },
+    { id: "visaTitle", label: "Work Authorization" },
+    { id: "startDate", label: "Authorization Start" },
+    { id: "endDate", label: "Authorization End" },
+    { id: "daysRemaining", label: "Days Remaining" },
+];
 const transformOptDocs = (optDocs) => {
     let transformed = [];
     optDocs.Docs.forEach((docType, i) => {
@@ -137,7 +143,7 @@ function EmployeeRow({ employee }) {
                                             <StyledTableCell align="center">{file.docs_type}</StyledTableCell>
                                             <StyledTableCell align="center"><Chip label={file.status} color={ChipColor(file.status)} variant="outlined" /></StyledTableCell>
                                             <StyledTableCell align="center">
-                                                <IconButton onClick={() => {handlePreviewClick(file.name)}}>
+                                                <IconButton onClick={() => { handlePreviewClick(file.name) }}>
                                                     <VisibilityIcon />
                                                 </IconButton>
                                                 <IconButton component="a" href={file.name} download>
