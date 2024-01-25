@@ -14,21 +14,21 @@ import { setMyProfile } from "../../redux/myProfileSlice";
 
 // todo : 之后可能改用FormBox。
 // 该组件之后会进行修改，通过判断渲染成register或者是login
-const checkReviewStatus = (profile) => {
-    let reviewStatus = profile?.review_status || "Never Submitted";
-    if (reviewStatus === true) {
-        reviewStatus = 'Approved';
-    } else if (reviewStatus === false) {
-        reviewStatus = 'Rejected';
-    } else {
-        reviewStatus = 'Pending';
-    }
+// const checkReviewStatus = (profile) => {
+//     let reviewStatus = profile?.review_status || "Never Submitted";
+//     if (reviewStatus === true) {
+//         reviewStatus = 'Approved';
+//     } else if (reviewStatus === false) {
+//         reviewStatus = 'Rejected';
+//     } else {
+//         reviewStatus = 'Pending';
+//     }
 
-    return {
-        ...profile,
-        review_status: reviewStatus
-    };
-}
+//     return {
+//         ...profile,
+//         review_status: reviewStatus
+//     };
+// }
 
 export default function Form({ isSignup }) {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -94,8 +94,8 @@ export default function Form({ isSignup }) {
 
                 if (response.status === 201) {
                     console.log("Login Success", response);
-                    console.log()
-                    response._doc.personal_info = checkReviewStatus(response._doc.personal_info);
+                    // console.log()
+                    // response._doc.personal_info = checkReviewStatus(response._doc.personal_info);
                     dispatch(setIsLogin(true));
                     dispatch(
                         setUser({
