@@ -37,11 +37,7 @@ const FilePreviewButton = ({ fileUrl, fileName }) => {
   );
 };
 
-export default FilePreviewButton;
-
-
-export const handlePreview = async (fileUrl) => {
-  const fileName = getfileName(fileUrl)
+const handlePreviewClick = async (fileUrl) => {
   try {
     const response = await axios.get(fileUrl, {
       responseType: 'blob',
@@ -56,9 +52,11 @@ export const handlePreview = async (fileUrl) => {
     // Open the URL in a new window
     const pdfWindow = window.open();
     pdfWindow.location.href = fileURL;
-    pdfWindow.document.title = 'fileName';
-    console.log("test file tab ", fileName);
+   
   } catch (error) {
     console.error('Error fetching or previewing the PDF:', error);
   }
 };
+
+export {handlePreviewClick};
+export default FilePreviewButton;

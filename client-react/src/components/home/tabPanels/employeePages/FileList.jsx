@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stepper, Step, StepLabel, Button, Typography, StepIcon, StepButton, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Button, Typography, StepIcon, StepButton, List, ListItem, ListItemIcon, ListItemText, IconButton } from "@mui/material";
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import GetAppIcon from '@mui/icons-material/GetApp'; // Download icon
@@ -8,7 +8,8 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
 import { getfileName } from "../HRpages/visaPages/AllEmployeeVisaPages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilePreviewButton from "../FilePreviewButton";
+// import FilePreviewButton from "../FilePreviewButton";
+import { handlePreviewClick } from "../FilePreviewButton";
 const FileList = ({ files, updateTempFiles, isEditable }) => {
     console.log("filelist :", files);
     return (
@@ -39,9 +40,16 @@ const FileList = ({ files, updateTempFiles, isEditable }) => {
                             {fileIcon}
                         </ListItemIcon>
                         <ListItemText primary={fileName} />
-                        <Button size="small" sx={{ margin: '0 5px', padding: '3px' }}
-                            startIcon={<GetAppIcon />} href={file}>Download File</Button>
-                        <FilePreviewButton fileUrl={file} fileName={fileName} />
+                        {/* <Button size="small" sx={{ margin: '0 5px', padding: '3px' }}
+                            startIcon={<GetAppIcon />} href={file}>Download File</Button> */}
+                        {/* <FilePreviewButton fileUrl={file} fileName={fileName} /> */}
+                        <IconButton onClick={() => {handlePreviewClick(file.name)}}>
+                            <VisibilityIcon />
+                        </IconButton>
+                        <IconButton component="a" href={file.name} download>
+                            <GetAppIcon />
+                        </IconButton>
+
                         {isEditable &&
                             <Button size="small" sx={{ margin: '0 5px', padding: '3px' }}
                                 startIcon={<DeleteIcon />} onClick={() => updateTempFiles("delete", file)}>Remove</Button>}
