@@ -24,7 +24,7 @@ export default function SectionContainer(props) {
         setOpenConfirmDialog(!openConfirmDialog);
     };
     const onSubmit = async (data) => {
-        // console.log("Form Data: ", data);
+        console.log("Form Data: ", data);
         alert("form data: " + JSON.stringify(data, null, 2));
         try {
             await apiCall({

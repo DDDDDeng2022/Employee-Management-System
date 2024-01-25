@@ -49,18 +49,6 @@ export default function OnboardingPage() {
         setIsDisabled(!isDisabled);
     };
 
-    // Name Section
-    // const handleAvatarChange = async (e) => {
-    //     const file = e.target.files[0];
-    //     if (file) {
-    //         try {
-    //             const imageUrl = await uploadImage(file);
-    //             setAvatar(imageUrl);
-    //         } catch (error) {
-    //             console.error("Upload error:", error);
-    //         }
-    //     }
-    // };
     const handleAvatarChange = () => {
         // 触发文件选择的点击事件
         const input = document.createElement("input");
@@ -74,6 +62,7 @@ export default function OnboardingPage() {
                 try {
                     const imageUrl = await uploadImage(file);
                     setAvatar(imageUrl);
+                    profile.photo = imageUrl;
                 } catch (error) {
                     console.error("Upload error:", error);
                 }
@@ -111,36 +100,7 @@ export default function OnboardingPage() {
                         onClick={handleAvatarChange}
                     >
                         <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
-                        {/* <VisuallyHiddenInput
-                            type="file"
-                            accept="image/*"
-                            onChange={handleAvatarChange}
-                        /> */}
                     </IconButton>
-                    {/* {!isDisabled && (
-                        <Box>
-                            <Button
-                                variant="contained"
-                                size="small"
-                                component="label"
-                            >
-                                Upload Image
-                                <VisuallyHiddenInput
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleAvatarChange}
-                                />
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                size="small"
-                                onClick={handleRemoveAvatar}
-                            >
-                                Remove
-                            </Button>
-                        </Box>
-                    )} */}
                 </Box>
 
                 <SectionContainer

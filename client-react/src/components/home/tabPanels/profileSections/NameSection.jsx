@@ -34,6 +34,7 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
             try {
                 const imageUrl = await uploadImage(file);
                 setAvatar(imageUrl);
+                formData.photo = imageUrl;
             } catch (error) {
                 console.error('Upload error:', error);
             }
