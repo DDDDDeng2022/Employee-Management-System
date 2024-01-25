@@ -5,28 +5,41 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
+export const update = (id, updateData) => axios.put(`http://localhost:8080/api/user/profileInfo/${id}`, updateData)
+    .then(response => {
+        console.log('Response:', response.data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 const ApplicationList = ({ status, applications, updateApplications }) => {
+    React.useEffect(() => { updateApplications() }, [])
     const [open, setOpen] = React.useState(false);
     const handleClose = () => {
         setOpen(false);
     };
     const filteredApplications = applications.filter((app) => app.review_status === status);
+    console.log("filteredApplications: ", filteredApplications);
     const chipColor = {
         "Pending": "primary",
         "Rejected": "error",
         "Approved": "success"
     }
-    const handleApprove = () => {
-        //    todo 添加修改application的API
+    const handleApprove = (id) => {
+        const updateData = {
+            review_status: true
+        };
+        update(id, updateData);
         updateApplications();
     };
+
     const handleReject = () => {
         setOpen(true);
     }
     const navigate = useNavigate();
     const handleView = (id, app) => {
-        navigate(`/home/hiring/${id}`, { state: { application: app, status: status } });
+        navigate(`/home/hiring/${id}`, { state: { id: app._id } });
     }
     return (
         <Accordion defaultExpanded={status === "Pending"}>
@@ -50,12 +63,14 @@ const ApplicationList = ({ status, applications, updateApplications }) => {
                                     </Button>
                                     {status === "Pending" && (
                                         <>
-                                            <Button variant="contained" color="primary" size="small" onClick={handleApprove}>
+                                            <Button variant="contained" color="primary" size="small" onClick={() => handleApprove(app.id)}>
                                                 Approve
                                             </Button>
-                                            <Button variant="contained" color="error" size="small" onClick={handleReject}>
+                                            <Button variant="contained" color="error" size="small" onClick={() => handleReject(app.id)}>
                                                 Reject
                                             </Button>
+                                            <ReviewSendPage open={open} handleClose={handleClose} updateApplications={updateApplications} id={app.id} />
+
                                         </>
                                     )}
                                 </Box>
@@ -63,19 +78,21 @@ const ApplicationList = ({ status, applications, updateApplications }) => {
                         </ListItem>
                     ))}
                 </List>
-                <ReviewSendPage open={open} handleClose={handleClose} updateApplications={updateApplications} />
             </AccordionDetails>
         </Accordion>
     );
 };
 
-export function ReviewSendPage({ open, handleClose, updateApplications }) {
+export function ReviewSendPage({ open, handleClose, updateApplications, id }) {
+    const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        //    todo 添加修改application的API
+        update(id, { ...formJson, review_status: false });
         updateApplications && updateApplications();
+        navigate(`/home/hiring/`);
+
         handleClose();
     }
     return <Dialog
@@ -94,7 +111,7 @@ export function ReviewSendPage({ open, handleClose, updateApplications }) {
             <TextField
                 autoFocus
                 required
-                name="email"
+                name="review_memo"
                 label="Feedback"
                 fullWidth
                 variant="standard"

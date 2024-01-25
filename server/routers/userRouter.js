@@ -10,6 +10,7 @@ import {
 import {
     createPersonalInfo,
     updatePersonalInfo,
+    updatInfo,
     uploadPhoto,
     uploadDocument
 } from "../controllers/personalInfo.js";
@@ -44,7 +45,7 @@ const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
-
+router.put("/profileInfo/:id", updatInfo);
 router.put("/:id", updateUser);
 router.post("/info/:id", createPersonalInfo);
 router.put("/info/:id", updatePersonalInfo);

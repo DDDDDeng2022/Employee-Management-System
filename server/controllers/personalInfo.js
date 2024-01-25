@@ -91,6 +91,40 @@ const updatePersonalInfo = async (req, res) => {
         });
     }
 };
+
+
+const updatInfo = async (req, res) => {
+    try {
+        const profile_id = req.params.id;
+        const update_info = req.body;
+        if (!profile_id) {
+            return res.status(400).json({ message: "Profile ID is required." });
+        }
+        if (Object.keys(update_info).length === 0) {
+            return res.status(400).json({ message: "Update data is required." });
+        }
+        const personal_info = await PersonalInfo.findById(profile_id);
+        if (!personal_info) {
+            return res.status(404).json({ message: "Personal info not found." });
+        }
+        const update_fields = {
+            address: Address,
+            reference: Contact,
+            emergency_contact: Contact,
+            opt: OPT,
+        };
+
+        await updateRefs({ update_fields, update_info, personal_info });
+        await PersonalInfo.findByIdAndUpdate(profile_id, update_info, { new: true });
+        res.status(200).json({ message: "Personal info updated successfully." });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error updating personal info.", error: err.message });
+    }
+};
+
+export default updatePersonalInfo;
+
 const uploadPhoto = async (req, res) => {
     try {
         if (!req.file) {
@@ -119,4 +153,4 @@ const uploadDocument = async (req, res) => {
     }
 };
 
-export { createPersonalInfo, updatePersonalInfo, uploadPhoto, uploadDocument };
+export { createPersonalInfo, updatePersonalInfo, uploadPhoto, uploadDocument, updatInfo };
