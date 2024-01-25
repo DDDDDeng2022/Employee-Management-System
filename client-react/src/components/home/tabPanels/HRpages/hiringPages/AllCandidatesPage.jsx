@@ -23,7 +23,7 @@ const AllCandidatesPage = () => {
     };
     React.useEffect(() => {
         fetchRegistors();
-    }, [loading])
+    }, [])
     const handleClickOpen = () => {
         setOpen(true);
     };
