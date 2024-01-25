@@ -10,6 +10,7 @@ import {
 import {
     createPersonalInfo,
     getPersonalInfo,
+    updatInfo,
     uploadPhoto,
     uploadDocument
 } from "../controllers/personalInfo.js";
@@ -56,6 +57,7 @@ router.get("/", getAllUsers);
 router.get("/:id", getUserById);
 router.get("/info/:id", getPersonalInfo);
 
+router.put("/profileInfo/:id", updatInfo);
 router.put("/:id", updateUser);
 router.post("/info/:id", createPersonalInfo);
 // router.put("/info/:id", updatePersonalInfo);

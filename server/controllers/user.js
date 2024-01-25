@@ -9,12 +9,13 @@ const getAllUsers = async (req, res) => {
                 { path: 'emergency_contact' },
                 { path: 'address' },
                 { path: 'opt' },
-                { path: 'optDocs' }
+                { path: 'optDocs' },
             ]
         })
         .then((users) => {
             const user_data = users.map((user) => {
                 const new_obj = {
+                    id: user.personal_info?._id,
                     first_name: user.personal_info?.first_name,
                     last_name: user.personal_info?.last_name,
                     middle_name: user.personal_info?.middle_name,
@@ -49,9 +50,11 @@ const getUserById = async (req, res) => {
         .populate({
             path: "personal_info",
             populate: [
-                { path: "current_address", model: "Address" },
+                { path: "address", model: "Address" },
                 { path: "reference", model: "Contact" },
                 { path: "emergency_contact", model: "Contact" },
+                { path: "opt", model: "OPT" },
+                { path: 'optDocs', model: "OptDocs" },
             ],
         })
         .then((user) => {
