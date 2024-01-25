@@ -85,6 +85,10 @@ const personalInfoSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "OPT",
     },
+    optDocs: {
+        type: mongoose.Types.ObjectId,
+        ref: "OptDocs"
+    }
     // uploaded_files: [ fileRecord ]
 });
 

@@ -14,7 +14,7 @@ import { setUser, resetUser } from "../../redux/userSlice";
 import { setMyProfile } from "../../redux/myProfileSlice";
 
 // eslint-disable-next-line react/prop-types
-export default function PrimarySearchAppBar({ handleLeftVisible }) {
+export default function Header({ handleLeftVisible }) {
     const username = useSelector((state) => state.user.user_name);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);

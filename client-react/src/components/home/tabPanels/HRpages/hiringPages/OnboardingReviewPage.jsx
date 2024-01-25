@@ -3,6 +3,7 @@ import React from "react";
 import { getProfiles } from "../../../../../services/userApi";
 import ApplicationList from "./ApplicationList";
 import { Box, CircularProgress } from "@mui/material";
+import { LoadingComponent } from "../EmployeeProfilesPage";
 
 const OnboardingReviewPage = () => {
     const [applications, setApplications] = React.useState([]);
@@ -20,9 +21,7 @@ const OnboardingReviewPage = () => {
         fetchApplications();
     }, [])
     return (loading ?
-        <Box sx={{ width: "100%", height: "700px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <CircularProgress size="100px" />
-        </Box >
+        <LoadingComponent />
         :
         <Box sx={{ paddingTop: "15px" }}>
             <ApplicationList status="Pending" applications={applications} updateApplications={fetchApplications} />
