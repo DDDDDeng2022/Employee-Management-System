@@ -433,7 +433,7 @@ export default function OnboardingPage(props) {
                                 <Select
                                     {...register("opt.title")}
                                     required
-                                    defaultValue={localData?.opt?.title}
+                                    value={localData?.opt?.title}
                                     label="Visa Status"
                                     disabled={isDisabled}
                                     onChange={(e) =>
@@ -458,25 +458,23 @@ export default function OnboardingPage(props) {
                                 <Select
                                     {...register("opt.title")}
                                     required
-                                    defaultValue={
-                                    localData?.opt?.title ?
-                                    (["h1b", "f1", "l2"].includes(localData?.opt?.title)
-                                        ? localData?.opt?.title
-                                        : "other") : ""
-                                    
-                                }
-                                label="Visa Status"
-                                disabled={isDisabled}
-                                onChange={(e) =>
-                                    setLocalData({
-                                        ...localData,
-                                        opt: {
-                                            ...localData?.opt,
-                                            title: e.target.value,
-                                        },
-                                    })
-                                }
-                            >
+                                    value={ localData?.opt?.title ?
+                                        (["h1b", "f1", "l2"].includes(localData?.opt?.title)
+                                            ? localData?.opt?.title
+                                            : "other") : ""
+                                    }
+                                    label="Visa Status"
+                                    disabled={isDisabled}
+                                    onChange={(e) =>
+                                        setLocalData({
+                                            ...localData,
+                                            opt: {
+                                                ...localData?.opt,
+                                                title: e.target.value,
+                                            },
+                                        })
+                                    }
+                                >
                                 <MenuItem value="f1">F1(CPT/OPT)</MenuItem>
                                 <MenuItem value="h1b">H1-B</MenuItem>
                                 <MenuItem value="l2">L2</MenuItem>
@@ -515,7 +513,8 @@ export default function OnboardingPage(props) {
                                     })
                                 }
                             />
-                        )}
+                        )
+                    }
 
                     {isWorkVisa && (
                         <LineBox>
@@ -697,18 +696,10 @@ export default function OnboardingPage(props) {
                                     required
                                     fullWidth
                                     label="First Name"
-                                    // value={contact.first_name}
                                     value={getValues()[`emergency_contact[${index}].first_name`]}
                                     onChange={(e) => {
                                         console.log(e.target.value)
                                         setValue(`emergency_contact[${index}].first_name`, e.target.value);
-                                        // setLocalData({
-                                        //     ...localData,
-                                        //     emergency_contact: {
-                                        //         ...localData?.emergency_contact,
-                                        //         first_name: e.target.value,
-                                        //     },
-                                        // })
                                     }}
                                 />
                                 <TextField
@@ -717,15 +708,9 @@ export default function OnboardingPage(props) {
                                     label="Middle Name"
                                     fullWidth
                                     value={getValues()[`emergency_contact[${index}].middle_name`]}
-                                    onChange={(e) =>
-                                        setLocalData({
-                                            ...localData,
-                                            emergency_contact: {
-                                                ...localData?.emergency_contact,
-                                                middle_name: e.target.value,
-                                            },
-                                        })
-                                    }
+                                    onChange={(e) => {
+                                        setValue(`emergency_contact[${index}].middle_name`, e.target.value);
+                                    }}
                                 />
                                 <TextField
                                     {...register(`emergency_contact[${index}].last_name`)}
@@ -734,15 +719,9 @@ export default function OnboardingPage(props) {
                                     disabled={isDisabled}
                                     label="Last Name"
                                     value={getValues()[`emergency_contact[${index}].last_name`]}
-                                    onChange={(e) =>
-                                        setLocalData({
-                                            ...localData,
-                                            emergency_contact: {
-                                                ...localData?.emergency_contact,
-                                                last_name: e.target.value,
-                                            },
-                                        })
-                                    }
+                                    onChange={(e) => {
+                                        setValue(`emergency_contact[${index}].last_name`, e.target.value);
+                                    }}
                                 />
                             </LineBox>
                             <TextField
@@ -751,15 +730,9 @@ export default function OnboardingPage(props) {
                                 disabled={isDisabled}
                                 label="Email"
                                 value={getValues()[`emergency_contact[${index}].email`]}
-                                onChange={(e) =>
-                                    setLocalData({
-                                        ...localData,
-                                        emergency_contact: {
-                                            ...localData?.emergency_contact,
-                                            email: e.target.value,
-                                        },
-                                    })
-                                }
+                                onChange={(e) => {
+                                    setValue(`emergency_contact[${index}].email`, e.target.value);
+                                }}
                             />
                             <TextField
                                 {...register(`emergency_contact[${index}].phone_num`)}
@@ -767,15 +740,9 @@ export default function OnboardingPage(props) {
                                 label="Phone"
                                 disabled={isDisabled}
                                 value={getValues()[`emergency_contact[${index}].phone_num`]}
-                                onChange={(e) =>
-                                    setLocalData({
-                                        ...localData,
-                                        emergency_contact: {
-                                            ...localData?.emergency_contact,
-                                            phone_num: e.target.value,
-                                        },
-                                    })
-                                }
+                                onChange={(e) => {
+                                    setValue(`emergency_contact[${index}].phone_num`, e.target.value);
+                                }}
                             />
                             <TextField
                                 {...register(`emergency_contact[${index}].relationship`)}
@@ -784,15 +751,9 @@ export default function OnboardingPage(props) {
                                 label="Relationship"
                                 disabled={isDisabled}
                                 value={getValues()[`emergency_contact[${index}].relationship`]}
-                                onChange={(e) =>
-                                    setLocalData({
-                                        ...localData,
-                                        emergency_contact: {
-                                            ...localData?.emergency_contact,
-                                            relationship: e.target.value,
-                                        },
-                                    })
-                                }
+                                onChange={(e) => {
+                                    setValue(`emergency_contact[${index}].relationship`, e.target.value);
+                                }}
                             />
 
                             <Button type="button" onClick={() => remove(index)}>
