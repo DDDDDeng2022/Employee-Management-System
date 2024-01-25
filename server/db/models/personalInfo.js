@@ -80,10 +80,10 @@ const personalInfoSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Contact",
     },
-    emergency_contact: {
+    emergency_contact: [{
         type: mongoose.Types.ObjectId,
         ref: "Contact",
-    },
+    }],
     opt: {
         type: mongoose.Types.ObjectId,
         ref: "OPT",

@@ -2,11 +2,7 @@ import React from 'react';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { IconButton, Box, Button } from "@mui/material";
-import { NameSection } from '../../profileSections/NameSection';
-import { AddressSection } from '../../profileSections/AddressSecttion';
-import { ContactSection } from '../../profileSections/ContactSection';
-import { EmergencyContactSection } from '../../profileSections/EmergencySection';
-import { EmploymentSection } from '../../profileSections/EmploymentSection';
+import OnboardingPage from '../../OnboardingPage';
 import { ReviewSendPage } from './ApplicationList';
 export default function ApplicationPage() {
     const [open, setOpen] = React.useState(false);
@@ -30,13 +26,8 @@ export default function ApplicationPage() {
         <IconButton onClick={handleBack}>
             <KeyboardBackspaceIcon />
         </IconButton>
-        {/* todo: 换成onboarding application page */}
         <Box sx={{ width: { xs: "100%", sm: "80%" }, margin: "auto" }}>
-            <NameSection formData={application} isEmployeeProfile={true} />
-            <AddressSection formData={application.address} isEmployeeProfile={true} />
-            <ContactSection formData={application} isEmployeeProfile={true} />
-            <EmploymentSection formData={application.opt} isEmployeeProfile={true} />
-            <EmergencyContactSection formData={application.emergency_contact} isEmployeeProfile={true} />
+            <OnboardingPage isEmployeeProfile={true} />
         </Box>
         {status === "Pending" && (
             <Box sx={{ display: "flex", justifyContent: "center" }}>

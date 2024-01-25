@@ -1,7 +1,7 @@
 import { Box, Avatar, Select, TextField, Button, IconButton, FormControl, InputLabel, MenuItem, styled, Divider, Typography, Input, Chip } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -25,7 +25,8 @@ const ChipColor = (reviewStatus) => {
     }
 };
 
-export default function OnboardingPage() {
+export default function OnboardingPage(props) {
+    const isEmployeeProfile = props?.isEmployeeProfile || false;
     const profile = useSelector((state) => state.myProfile.profile);
     const [localData, setLocalData] = useState(profile);
     console.log(localData);
@@ -33,15 +34,35 @@ export default function OnboardingPage() {
     const [isDisabled, setIsDisabled] = useState(false);
     const [isWorkVisa, setIsWorkVisa] = useState(false);
     const [showIdentity, setShowIdentity] = useState(false);
-    const { register, handleSubmit, reset } = useForm({
+    const { register, handleSubmit, reset, control, setValue, getValues } = useForm({
         defaultValues: profile,
+    });
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "emergency_contact",
     });
 
     useEffect(() => {
-        if (["Pending", "Approved"].includes(localData?.review_status)) {
-            setIsDisabled(true);
+        if (profile?.emergency_contact) {
+          profile.emergency_contact.forEach((contact, index) => {
+            setValue(`emergency_contact[${index}].first_name`, contact.first_name || '');
+            setValue(`emergency_contact[${index}].middle_name`, contact.middle_name || '');
+            setValue(`emergency_contact[${index}].last_name`, contact.last_name || '');
+            setValue(`emergency_contact[${index}].email`, contact.email || '');
+            setValue(`emergency_contact[${index}].phone_num`, contact.phone_num || '');
+            setValue(`emergency_contact[${index}].relationship`, contact.relationship || '');
+          });
         }
-    }, []);
+    
+        if (["Pending", "Approved"].includes(localData?.review_status)) {
+          setIsDisabled(true);
+        }
+    
+        if (fields.length === 0) {
+          append({});
+        }
+      }, [profile, setValue, localData, fields, append]);
+
     const chipColor = ChipColor(localData?.review_status);
 
     // handle functions
@@ -50,7 +71,6 @@ export default function OnboardingPage() {
     };
 
     const handleAvatarChange = () => {
-        // 触发文件选择的点击事件
         const input = document.createElement("input");
         input.type = "file";
         input.accept = "image/*";
@@ -111,9 +131,12 @@ export default function OnboardingPage() {
                     handleSubmit={handleSubmit}
                     reset={reset}
                     resetAvatar={resetAvatar}
-                    // isEmployeeProfile={isEmployeeProfile}
+                    isEmployeeProfile={isEmployeeProfile}
                 >
-                    <Chip label={localData?.review_status || "Never Submitted"} color={chipColor} />
+                    <Chip
+                        label={localData?.review_status || "Never Submitted"}
+                        color={chipColor}
+                    />
 
                     {/* User Section */}
                     <Divider textAlign="left">
@@ -253,6 +276,23 @@ export default function OnboardingPage() {
                     </Divider>
                     <LineBox>
                         <TextField
+                            {...register("address.street")}
+                            fullWidth
+                            required
+                            disabled={isDisabled}
+                            label="Street"
+                            value={localData?.address?.street}
+                            onChange={(e) =>
+                                setLocalData({
+                                    ...localData,
+                                    address: {
+                                        ...localData?.address,
+                                        street: e.target.value,
+                                    },
+                                })
+                            }
+                        />
+                        <TextField
                             {...register("address.building")}
                             fullWidth
                             disabled={isDisabled}
@@ -268,27 +308,12 @@ export default function OnboardingPage() {
                                 })
                             }
                         />
-                        <TextField
-                            {...register("address.street")}
-                            fullWidth
-                            disabled={isDisabled}
-                            label="Street"
-                            value={localData?.address?.street}
-                            onChange={(e) =>
-                                setLocalData({
-                                    ...localData,
-                                    address: {
-                                        ...localData?.address,
-                                        street: e.target.value,
-                                    },
-                                })
-                            }
-                        />
                     </LineBox>
                     <LineBox>
                         <TextField
                             {...register("address.city")}
                             fullWidth
+                            required
                             disabled={isDisabled}
                             label="City"
                             value={localData?.address?.city}
@@ -305,6 +330,7 @@ export default function OnboardingPage() {
                         <TextField
                             {...register("address.state")}
                             fullWidth
+                            required
                             disabled={isDisabled}
                             label="State"
                             value={localData?.address?.state}
@@ -321,6 +347,7 @@ export default function OnboardingPage() {
                         <TextField
                             {...register("address.zip")}
                             fullWidth
+                            required
                             disabled={isDisabled}
                             label="Zip"
                             value={localData?.address?.zip}
@@ -345,6 +372,7 @@ export default function OnboardingPage() {
                     <TextField
                         {...register("cell_phone_number")}
                         fullWidth
+                        required
                         disabled={isDisabled}
                         label="Cell Phone Number"
                         defaultValue={localData?.cell_phone_number}
@@ -381,6 +409,7 @@ export default function OnboardingPage() {
                         </InputLabel>
                         <Select
                             // {...register("visaStatus")}
+                            required
                             value={
                                 localData?.opt?.title ?
                                     (["citizen", "greencard"].includes(localData?.opt?.title) ? "yes" : "no") : ""
@@ -397,36 +426,39 @@ export default function OnboardingPage() {
                         </Select>
                     </FormControl>
 
-                    {(localData?.opt?.title || showIdentity) && (!isWorkVisa ? (
-                        <FormControl fullWidth>
-                            <InputLabel>Visa Status</InputLabel>
-                            <Select
-                                {...register("opt.title")}
-                                defaultValue={localData?.opt?.title}
-                                label="Visa Status"
-                                disabled={isDisabled}
-                                onChange={(e) =>
-                                    setLocalData({
-                                        ...localData,
-                                        opt: {
-                                            ...localData?.opt,
-                                            title: e.target.value,
-                                        },
-                                    })
-                                }
-                            >
-                                <MenuItem value="citizen">Citizen</MenuItem>
-                                <MenuItem value="greencard">
-                                    Green Card
-                                </MenuItem>
-                            </Select>
-                        </FormControl>
-                    ) : (
-                        <FormControl fullWidth>
-                            <InputLabel>Visa Status</InputLabel>
-                            <Select
-                                {...register("opt.title")}
-                                defaultValue={
+                    {(localData?.opt?.title || showIdentity) &&
+                        (!isWorkVisa ? (
+                            <FormControl fullWidth>
+                                <InputLabel>Visa Status</InputLabel>
+                                <Select
+                                    {...register("opt.title")}
+                                    required
+                                    defaultValue={localData?.opt?.title}
+                                    label="Visa Status"
+                                    disabled={isDisabled}
+                                    onChange={(e) =>
+                                        setLocalData({
+                                            ...localData,
+                                            opt: {
+                                                ...localData?.opt,
+                                                title: e.target.value,
+                                            },
+                                        })
+                                    }
+                                >
+                                    <MenuItem value="citizen">Citizen</MenuItem>
+                                    <MenuItem value="greencard">
+                                        Green Card
+                                    </MenuItem>
+                                </Select>
+                            </FormControl>
+                        ) : (
+                            <FormControl fullWidth>
+                                <InputLabel>Visa Status</InputLabel>
+                                <Select
+                                    {...register("opt.title")}
+                                    required
+                                    defaultValue={
                                     localData?.opt?.title ?
                                     (["h1b", "f1", "l2"].includes(localData?.opt?.title)
                                         ? localData?.opt?.title
@@ -453,9 +485,10 @@ export default function OnboardingPage() {
                         </FormControl>
                     ))}
 
-                    {!isWorkVisa && localData?.opt?.title === "f1" && (
+                    {isWorkVisa && localData?.opt?.title === "f1" && (
                         <Input
                             type="file"
+                            required
                             disabled={isDisabled}
                             onChange={handleFileUpload}
                         />
@@ -468,6 +501,7 @@ export default function OnboardingPage() {
                             <TextField
                                 {...register("opt.title")}
                                 fullWidth
+                                required
                                 disabled={isDisabled}
                                 label="Visa Status"
                                 value={localData?.opt?.title}
@@ -536,58 +570,58 @@ export default function OnboardingPage() {
                         </LineBox>
                     )}
 
-                    {/* Emergency Contact Section */}
+                    {/* Reference Section */}
                     <Divider textAlign="left">
                         <Typography sx={{ fontSize: "14px", color: "grey" }}>
-                            Emergency Contact
+                            Reference
                         </Typography>
                     </Divider>
                     <LineBox>
                         <TextField
-                            {...register("emergency_contact.first_name")}
+                            {...register("reference.first_name")}
                             disabled={isDisabled}
                             required
                             fullWidth
                             label="First Name"
-                            value={localData?.emergency_contact?.first_name}
+                            value={localData?.reference?.first_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
-                                    emergency_contact: {
-                                        ...localData?.emergency_contact,
+                                    reference: {
+                                        ...localData?.reference,
                                         first_name: e.target.value,
                                     },
                                 })
                             }
                         />
                         <TextField
-                            {...register("emergency_contact.middle_name")}
+                            {...register("reference.middle_name")}
                             disabled={isDisabled}
                             label="Middle Name"
                             fullWidth
-                            value={localData?.emergency_contact?.middle_name}
+                            value={localData?.reference?.middle_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
-                                    emergency_contact: {
-                                        ...localData?.emergency_contact,
+                                    reference: {
+                                        ...localData?.reference,
                                         middle_name: e.target.value,
                                     },
                                 })
                             }
                         />
                         <TextField
-                            {...register("emergency_contact.last_name")}
+                            {...register("reference.last_name")}
                             required
                             fullWidth
                             disabled={isDisabled}
                             label="Last Name"
-                            value={localData?.emergency_contact?.last_name}
+                            value={localData?.reference?.last_name}
                             onChange={(e) =>
                                 setLocalData({
                                     ...localData,
-                                    emergency_contact: {
-                                        ...localData?.emergency_contact,
+                                    reference: {
+                                        ...localData?.reference,
                                         last_name: e.target.value,
                                     },
                                 })
@@ -595,54 +629,181 @@ export default function OnboardingPage() {
                         />
                     </LineBox>
                     <TextField
-                        {...register("emergency_contact.email")}
+                        {...register("reference.email")}
                         fullWidth
-                        required
                         disabled={isDisabled}
                         label="Email"
-                        value={localData?.emergency_contact?.email}
+                        value={localData?.reference?.email}
                         onChange={(e) =>
                             setLocalData({
                                 ...localData,
-                                emergency_contact: {
-                                    ...localData?.emergency_contact,
+                                reference: {
+                                    ...localData?.reference,
                                     email: e.target.value,
                                 },
                             })
                         }
                     />
                     <TextField
-                        {...register("emergency_contact.phone_num")}
+                        {...register("reference.phone_num")}
                         fullWidth
                         label="Phone"
                         disabled={isDisabled}
-                        value={localData?.emergency_contact?.phone_num}
+                        value={localData?.reference?.phone_num}
                         onChange={(e) =>
                             setLocalData({
                                 ...localData,
-                                emergency_contact: {
-                                    ...localData?.emergency_contact,
+                                reference: {
+                                    ...localData?.reference,
                                     phone_num: e.target.value,
                                 },
                             })
                         }
                     />
                     <TextField
-                        {...register("emergency_contact.relationship")}
+                        {...register("reference.relationship")}
                         fullWidth
+                        required
                         label="Relationship"
                         disabled={isDisabled}
-                        value={localData?.emergency_contact?.relationship}
+                        value={localData?.reference?.relationship}
                         onChange={(e) =>
                             setLocalData({
                                 ...localData,
-                                emergency_contact: {
-                                    ...localData?.emergency_contact,
+                                reference: {
+                                    ...localData?.reference,
                                     relationship: e.target.value,
                                 },
                             })
                         }
                     />
+
+                    {/* Emergency Contact Section */}
+                    <Divider textAlign="left">
+                        <Typography sx={{ fontSize: "14px", color: "grey" }}>
+                            Emergency Contacts
+                        </Typography>
+                    </Divider>
+
+                    {/* TODO: emergency-contact setlocalData */}
+                    {fields.map((contact, index) => (
+                        <Box key={index} sx={{ display: "flex", flexDirection: 'column', gap: "20px" }}>
+                            {console.log(index)}
+                            {console.log(getValues()[`emergency_contact[0]`])}
+                            <LineBox>
+                                <TextField
+                                    {...register(`emergency_contact[${index}].first_name`)}
+                                    disabled={isDisabled}
+                                    required
+                                    fullWidth
+                                    label="First Name"
+                                    // value={contact.first_name}
+                                    value={getValues()[`emergency_contact[${index}].first_name`]}
+                                    onChange={(e) => {
+                                        console.log(e.target.value)
+                                        setValue(`emergency_contact[${index}].first_name`, e.target.value);
+                                        // setLocalData({
+                                        //     ...localData,
+                                        //     emergency_contact: {
+                                        //         ...localData?.emergency_contact,
+                                        //         first_name: e.target.value,
+                                        //     },
+                                        // })
+                                    }}
+                                />
+                                <TextField
+                                    {...register(`emergency_contact[${index}].middle_name`)}
+                                    disabled={isDisabled}
+                                    label="Middle Name"
+                                    fullWidth
+                                    value={getValues()[`emergency_contact[${index}].middle_name`]}
+                                    onChange={(e) =>
+                                        setLocalData({
+                                            ...localData,
+                                            emergency_contact: {
+                                                ...localData?.emergency_contact,
+                                                middle_name: e.target.value,
+                                            },
+                                        })
+                                    }
+                                />
+                                <TextField
+                                    {...register(`emergency_contact[${index}].last_name`)}
+                                    required
+                                    fullWidth
+                                    disabled={isDisabled}
+                                    label="Last Name"
+                                    value={getValues()[`emergency_contact[${index}].last_name`]}
+                                    onChange={(e) =>
+                                        setLocalData({
+                                            ...localData,
+                                            emergency_contact: {
+                                                ...localData?.emergency_contact,
+                                                last_name: e.target.value,
+                                            },
+                                        })
+                                    }
+                                />
+                            </LineBox>
+                            <TextField
+                                {...register(`emergency_contact[${index}].email`)}
+                                fullWidth
+                                disabled={isDisabled}
+                                label="Email"
+                                value={getValues()[`emergency_contact[${index}].email`]}
+                                onChange={(e) =>
+                                    setLocalData({
+                                        ...localData,
+                                        emergency_contact: {
+                                            ...localData?.emergency_contact,
+                                            email: e.target.value,
+                                        },
+                                    })
+                                }
+                            />
+                            <TextField
+                                {...register(`emergency_contact[${index}].phone_num`)}
+                                fullWidth
+                                label="Phone"
+                                disabled={isDisabled}
+                                value={getValues()[`emergency_contact[${index}].phone_num`]}
+                                onChange={(e) =>
+                                    setLocalData({
+                                        ...localData,
+                                        emergency_contact: {
+                                            ...localData?.emergency_contact,
+                                            phone_num: e.target.value,
+                                        },
+                                    })
+                                }
+                            />
+                            <TextField
+                                {...register(`emergency_contact[${index}].relationship`)}
+                                fullWidth
+                                required
+                                label="Relationship"
+                                disabled={isDisabled}
+                                value={getValues()[`emergency_contact[${index}].relationship`]}
+                                onChange={(e) =>
+                                    setLocalData({
+                                        ...localData,
+                                        emergency_contact: {
+                                            ...localData?.emergency_contact,
+                                            relationship: e.target.value,
+                                        },
+                                    })
+                                }
+                            />
+
+                            <Button type="button" onClick={() => remove(index)}>
+                                Remove
+                            </Button>
+                        </Box>
+                    ))}
+
+                    <Button type="button" onClick={() => append({})}>
+                        Add Emergency Contact
+                    </Button>
                 </SectionContainer>
             </Box>
         </Box>

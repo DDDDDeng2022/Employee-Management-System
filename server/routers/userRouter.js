@@ -45,8 +45,8 @@ const upload = multer({ storage: storage, fileFilter: fileFilter });
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
 
-router.post("/info/:id", createPersonalInfo);
 router.put("/:id", updateUser);
+router.post("/info/:id", createPersonalInfo);
 router.put("/info/:id", updatePersonalInfo);
 router.delete("/:id", deleteUser);
 router.post('/upload', upload.single('image'), uploadPhoto);
