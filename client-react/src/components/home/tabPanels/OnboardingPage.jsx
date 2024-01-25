@@ -49,18 +49,6 @@ export default function OnboardingPage() {
         setIsDisabled(!isDisabled);
     };
 
-    // Name Section
-    // const handleAvatarChange = async (e) => {
-    //     const file = e.target.files[0];
-    //     if (file) {
-    //         try {
-    //             const imageUrl = await uploadImage(file);
-    //             setAvatar(imageUrl);
-    //         } catch (error) {
-    //             console.error("Upload error:", error);
-    //         }
-    //     }
-    // };
     const handleAvatarChange = () => {
         // 触发文件选择的点击事件
         const input = document.createElement("input");
@@ -74,6 +62,7 @@ export default function OnboardingPage() {
                 try {
                     const imageUrl = await uploadImage(file);
                     setAvatar(imageUrl);
+                    profile.photo = imageUrl;
                 } catch (error) {
                     console.error("Upload error:", error);
                 }
@@ -111,36 +100,7 @@ export default function OnboardingPage() {
                         onClick={handleAvatarChange}
                     >
                         <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
-                        {/* <VisuallyHiddenInput
-                            type="file"
-                            accept="image/*"
-                            onChange={handleAvatarChange}
-                        /> */}
                     </IconButton>
-                    {/* {!isDisabled && (
-                        <Box>
-                            <Button
-                                variant="contained"
-                                size="small"
-                                component="label"
-                            >
-                                Upload Image
-                                <VisuallyHiddenInput
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleAvatarChange}
-                                />
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                size="small"
-                                onClick={handleRemoveAvatar}
-                            >
-                                Remove
-                            </Button>
-                        </Box>
-                    )} */}
                 </Box>
 
                 <SectionContainer
@@ -274,7 +234,7 @@ export default function OnboardingPage() {
                                 disabled={isDisabled}
                                 fullWidth
                                 label="Birth Date"
-                                value={dayjs(localData?.birth_date)}
+                                value={localData?.birth_date && (dayjs(localData?.birth_date))}
                                 onChange={(newValue) =>
                                     setLocalData({
                                         ...localData,
@@ -293,7 +253,7 @@ export default function OnboardingPage() {
                     </Divider>
                     <LineBox>
                         <TextField
-                            {...register("building")}
+                            {...register("address.building")}
                             fullWidth
                             disabled={isDisabled}
                             label="Building"
@@ -309,7 +269,7 @@ export default function OnboardingPage() {
                             }
                         />
                         <TextField
-                            {...register("street")}
+                            {...register("address.street")}
                             fullWidth
                             disabled={isDisabled}
                             label="Street"
@@ -327,7 +287,7 @@ export default function OnboardingPage() {
                     </LineBox>
                     <LineBox>
                         <TextField
-                            {...register("city")}
+                            {...register("address.city")}
                             fullWidth
                             disabled={isDisabled}
                             label="City"
@@ -343,7 +303,7 @@ export default function OnboardingPage() {
                             }
                         />
                         <TextField
-                            {...register("state")}
+                            {...register("address.state")}
                             fullWidth
                             disabled={isDisabled}
                             label="State"
@@ -359,7 +319,7 @@ export default function OnboardingPage() {
                             }
                         />
                         <TextField
-                            {...register("zip")}
+                            {...register("address.zip")}
                             fullWidth
                             disabled={isDisabled}
                             label="Zip"
@@ -441,7 +401,7 @@ export default function OnboardingPage() {
                         <FormControl fullWidth>
                             <InputLabel>Visa Status</InputLabel>
                             <Select
-                                {...register("visaStatus")}
+                                {...register("opt.title")}
                                 defaultValue={localData?.opt?.title}
                                 label="Visa Status"
                                 disabled={isDisabled}
@@ -465,7 +425,7 @@ export default function OnboardingPage() {
                         <FormControl fullWidth>
                             <InputLabel>Visa Status</InputLabel>
                             <Select
-                                {...register("visaStatus")}
+                                {...register("opt.title")}
                                 defaultValue={
                                     localData?.opt?.title ?
                                     (["h1b", "f1", "l2"].includes(localData?.opt?.title)
@@ -506,7 +466,7 @@ export default function OnboardingPage() {
                     {localData?.opt?.title && isWorkVisa &&
                         !["h1b", "f1", "l2"].includes(localData?.opt?.title) && (
                             <TextField
-                                {...register("other")}
+                                {...register("opt.title")}
                                 fullWidth
                                 disabled={isDisabled}
                                 label="Visa Status"
@@ -532,11 +492,11 @@ export default function OnboardingPage() {
                                 >
                                     <DateField
                                         required
-                                        {...register("visa start_date")}
+                                        {...register("opt.start_date")}
                                         disabled={isDisabled}
                                         fullWidth
                                         label="Visa Start Date"
-                                        value={dayjs(localData?.opt?.start_dat)}
+                                        value={localData?.opt?.start_date && (dayjs(localData?.opt?.start_date))}
                                         onChange={(newValue) =>
                                             setLocalData({
                                                 ...localData,
@@ -556,11 +516,11 @@ export default function OnboardingPage() {
                                 >
                                     <DateField
                                         required
-                                        {...register("visa end_date")}
+                                        {...register("opt.end_date")}
                                         disabled={isDisabled}
                                         fullWidth
                                         label="Visa End Date"
-                                        value={dayjs(localData?.opt?.end_date)}
+                                        value={localData?.opt?.end_date && (dayjs(localData?.opt?.end_date))}
                                         onChange={(newValue) =>
                                             setLocalData({
                                                 ...localData,
@@ -584,7 +544,7 @@ export default function OnboardingPage() {
                     </Divider>
                     <LineBox>
                         <TextField
-                            {...register("emergency Contact firstName")}
+                            {...register("emergency_contact.first_name")}
                             disabled={isDisabled}
                             required
                             fullWidth
@@ -601,7 +561,7 @@ export default function OnboardingPage() {
                             }
                         />
                         <TextField
-                            {...register("emergency Contact  middleName")}
+                            {...register("emergency_contact.middle_name")}
                             disabled={isDisabled}
                             label="Middle Name"
                             fullWidth
@@ -617,7 +577,7 @@ export default function OnboardingPage() {
                             }
                         />
                         <TextField
-                            {...register("emergency Contact lastName")}
+                            {...register("emergency_contact.last_name")}
                             required
                             fullWidth
                             disabled={isDisabled}
@@ -635,7 +595,7 @@ export default function OnboardingPage() {
                         />
                     </LineBox>
                     <TextField
-                        {...register("emergency Contact email")}
+                        {...register("emergency_contact.email")}
                         fullWidth
                         required
                         disabled={isDisabled}
@@ -652,7 +612,7 @@ export default function OnboardingPage() {
                         }
                     />
                     <TextField
-                        {...register("emergency Contact Phone")}
+                        {...register("emergency_contact.phone_num")}
                         fullWidth
                         label="Phone"
                         disabled={isDisabled}
@@ -668,7 +628,7 @@ export default function OnboardingPage() {
                         }
                     />
                     <TextField
-                        {...register("emergency Contact relation")}
+                        {...register("emergency_contact.relationship")}
                         fullWidth
                         label="Relationship"
                         disabled={isDisabled}

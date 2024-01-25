@@ -6,6 +6,7 @@ import RegistrationSendPage from "./RegistrationSendPage";
 import { getRegistors } from "../../../../../services/registrationApi";
 import { StyledTableCell, StyledTableRow } from "../EmployeeProfilesPage";
 import { LoadingComponent, NoResultComponent } from "../EmployeeProfilesPage";
+import apiCall from "../../../../../services/apiCall";
 
 const AllCandidatesPage = () => {
     const [open, setOpen] = React.useState(false);
@@ -14,9 +15,19 @@ const AllCandidatesPage = () => {
     const [searchTerm, setSearchTerm] = React.useState("");
     const fetchRegistors = async () => {
         try {
-            const fetchedRegistors = await getRegistors();
-            setRegistors(fetchedRegistors);
-            setLoading(false);
+            await getRegistors().then(async fetchedRegistors => {
+                await Promise.all(
+                    fetchedRegistors.map(async (registor) => {
+                        await apiCall({ url: "/api/auth/decode", method: "POST", data: { token: registor.token }})
+                            .then(decoded => {
+                                registor.expires_at = decoded.exp;
+                        })
+                    })
+                )
+                setRegistors(fetchedRegistors);
+            }).then(() => {
+                setLoading(false);
+            });
         } catch (err) {
             console.error('Fetch error:', err);
         }
@@ -46,20 +57,28 @@ const AllCandidatesPage = () => {
             row.email.toLowerCase().includes(searchTerm)
         );
     });
-    const isExpried = () => {
-        // todo: 判断链接是否expired
+    const isExpried = (expires_at) => {
+        if (expires_at === undefined) {
+            return true;
+        }
+        const isTokenExpired = expires_at < Date.now() / 1000;
+        if (!isTokenExpired) {
+            return false;
+        } else {
+            return true;
+        }
         // return true;
-        return false;
     }
-    const resendEmail = (email) => {
-        // todo: 实现在发送一次链接 + 更新该用户的link
+    const resendEmail = async (email) => {
+        const curr_employee = registors.find(user => user.email === email);
+        await apiCall({ url: "/api/registration/new", method: "POST", data: { email, first_name: curr_employee.first_name, last_name: curr_employee.last_name }})
         fetchRegistors();
-        console.log("rend a link to ", email);
+        console.log("resend a link to ", email);
     }
-    const renderChip = (value, link, email) => {
+    const renderChip = (value, link, email, expires_at) => {
         return value
             ? <Chip label="Submitted" color="success" sx={{ fontSize: { xs: "10px", sm: "15px" } }} />
-            : isExpried(link)
+            : isExpried(expires_at)
                 ? <>
                     <Chip label="Expried" sx={{ fontSize: { xs: "10px", sm: "15px" } }} />
                     <Button onClick={() => resendEmail(email)} >Resend</Button>
@@ -109,7 +128,7 @@ const AllCandidatesPage = () => {
                                         return (
                                             <StyledTableCell key={column.id} align="center" sx={{ maxWidth: "100px" }}>
                                                 {column.id === "status"
-                                                    ? (renderChip(value, row.link, row.email))
+                                                    ? (renderChip(value, row.link, row.email, row.expires_at))
                                                     : <Tooltip title={value}>{value}</Tooltip>
                                                 }
                                             </StyledTableCell>

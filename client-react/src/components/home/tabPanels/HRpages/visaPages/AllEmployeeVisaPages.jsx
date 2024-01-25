@@ -83,6 +83,12 @@ const ChipColor = (status) => {
             return "info";
     }
 };
+export const getfileName = (filelink) => {
+    const parsedUrl = new URL(filelink);
+    const pathname = parsedUrl.pathname;
+    const filename = pathname.substring(pathname.lastIndexOf("/") + 1, pathname.indexOf("-", pathname.lastIndexOf("/")));
+    return filename;
+}
 function EmployeeRow({ employee }) {
     const [open, setOpen] = React.useState(false);
     const files = transformOptDocs(employee.optDocs);
@@ -93,13 +99,6 @@ function EmployeeRow({ employee }) {
         endDate: employee.opt.end_date,
         daysRemaining: calculateDaysRemaining(employee.opt.end_date)
     };
-    const getfileName = (filelink) => {
-        const parsedUrl = new URL(filelink);
-        const pathname = parsedUrl.pathname;
-        const filename = pathname.substring(pathname.lastIndexOf("/") + 1, pathname.indexOf("-", pathname.lastIndexOf("/")));
-        return filename;
-    }
-
     return (
         <React.Fragment>
             <StyledTableRow sx={{ "& > *": { borderBottom: "unset" } }}>

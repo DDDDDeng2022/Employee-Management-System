@@ -11,6 +11,9 @@ const personalInfoSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    photo: {
+        type: String,
+    },
     middle_name: {
         type: String,
     },

@@ -42,8 +42,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-router.post('/uploadDocument', upload.single('document'), uploadDocument);
-
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
 
