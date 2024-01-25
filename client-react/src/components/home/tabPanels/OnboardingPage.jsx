@@ -32,7 +32,7 @@ export default function OnboardingPage(props) {
     console.log(localData);
     const [avatar, setAvatar] = useState(profile?.photo);
     const [isDisabled, setIsDisabled] = useState(false);
-    const [isWorkVisa, setIsWorkVisa] = useState(false);
+    const [isWorkVisa, setIsWorkVisa] = useState((!["citizen", "greencard"].includes(localData?.opt?.title)) ? true : false);
     const [showIdentity, setShowIdentity] = useState(false);
     const { register, handleSubmit, reset, control, setValue, getValues } = useForm({
         defaultValues: profile,
@@ -410,10 +410,7 @@ export default function OnboardingPage(props) {
                         <Select
                             // {...register("visaStatus")}
                             required
-                            value={
-                                localData?.opt?.title ?
-                                    (["citizen", "greencard"].includes(localData?.opt?.title) ? "yes" : "no") : ""
-                            }
+                            value={!isWorkVisa ? "yes" : "no"}
                             label="Permanent resident or citizen of the U.S.?"
                             disabled={isDisabled}
                             onChange={(e) => {
@@ -426,6 +423,7 @@ export default function OnboardingPage(props) {
                         </Select>
                     </FormControl>
 
+                    {console.log('isWorkVisa?', isWorkVisa)}
                     {(localData?.opt?.title || showIdentity) &&
                         (!isWorkVisa ? (
                             <FormControl fullWidth>
