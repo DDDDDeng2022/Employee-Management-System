@@ -39,7 +39,7 @@ const ApplicationList = ({ status, applications, updateApplications }) => {
     }
     const navigate = useNavigate();
     const handleView = (id, app) => {
-        navigate(`/home/hiring/${id}`, { state: { id: app._id } });
+        navigate(`/home/hiring/${id}`, { state: { id: app.id } });
     }
     return (
         <Accordion defaultExpanded={status === "Pending"}>

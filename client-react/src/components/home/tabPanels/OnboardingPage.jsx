@@ -31,22 +31,6 @@ export default function OnboardingPage(props) {
 
     const { profile_id } = props;
     const [profile, setProfile] = useState(useSelector((state) => state.myProfile.profile));
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                if (profile_id) {
-                    const getProfile = await apiCall({ url: `/api/user/info/${profile_id}`, method: 'GET' })
-                    if (getProfile.status === 201) {
-                        console.log(getProfile);
-                        setProfile(getProfile);
-                    }
-                }
-            } catch (err) {
-                console.error('Error fetching profile:', err)
-            }
-        }
-        fetchProfile();
-    }, [profile_id])
     const [localData, setLocalData] = useState(profile);
     const [avatar, setAvatar] = useState(profile?.photo);
     const [isDisabled, setIsDisabled] = useState(isEmployeeProfile);
@@ -79,7 +63,24 @@ export default function OnboardingPage(props) {
         if (fields.length === 0) {
             append({});
         }
-    }, [profile, setValue, localData, fields, append]);
+
+        const fetchProfile = async () => {
+            try {
+                if (profile_id) {
+                    console.log('profile_id: ', profile_id)
+                    const getProfile = await apiCall({ url: `/api/user/info/${profile_id}`, method: 'GET' })
+                    console.log('getProfile', getProfile);
+                    if (getProfile.status === 201) {
+                        setProfile(getProfile);
+                        setLocalData(getProfile);
+                    }
+                }
+            } catch (err) {
+                console.error('Error fetching profile:', err)
+            }
+        }
+        fetchProfile();
+    }, [profile, setValue, localData, fields, append, profile_id]);
 
     const chipColor = ChipColor(localData?.review_status);
 
