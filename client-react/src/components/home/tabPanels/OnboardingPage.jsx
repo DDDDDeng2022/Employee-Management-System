@@ -14,6 +14,16 @@ import SectionContainer from "./profileSections/SectionContainer";
 import apiCall from "../../../services/apiCall";
 import { FeedbackDialog } from "./HRpages/visaPages/InProcessPage"
 
+const configReviewStatus = (review_status, localData) => {
+    if (review_status === true) {
+        return 'Approved';
+    } else if (review_status === false) {
+        return 'Rejected';
+    } else {
+        return 'Pending';
+    }
+}
+
 const ChipColor = (reviewStatus) => {
     switch (reviewStatus) {
         case "Never Submitted":
@@ -37,6 +47,8 @@ export default function OnboardingPage(props) {
     const [isDisabled, setIsDisabled] = useState(isEmployeeProfile);
     const [isWorkVisa, setIsWorkVisa] = useState((!["citizen", "greencard"].includes(localData?.opt?.title)) ? true : false);
     const [showIdentity, setShowIdentity] = useState(false);
+    const [reviewStatus, setReviewStatus] = useState("Never Submitted");
+    // const [reviewStatus, setReviewStatus] = useState("Rejected");
     const { register, handleSubmit, reset, control, setValue, getValues } = useForm({
         defaultValues: profile,
     });
@@ -76,7 +88,7 @@ export default function OnboardingPage(props) {
             });
         }
 
-        if (["Pending", "Approved"].includes(localData?.review_status)) {
+        if (["Pending", "Approved"].includes(reviewStatus)) {
             setIsDisabled(true);
         }
 
@@ -84,9 +96,15 @@ export default function OnboardingPage(props) {
             append({});
         }
 
-    }, [profile, setValue, localData, fields, append]);
+        if (Object.keys(localData).length !== 1) {
+            setReviewStatus(configReviewStatus(localData.review_status, localData));
+        }
 
-    const chipColor = ChipColor(localData?.review_status);
+        // setLocalData({ ...localData, review_memo: "test for memo" })
+
+    }, []);
+
+    const chipColor = ChipColor(reviewStatus);
 
     // handle functions
     const handleEdit = () => {
@@ -175,10 +193,10 @@ export default function OnboardingPage(props) {
                     isEmployeeProfile={isEmployeeProfile}
                 >
                     <Chip
-                        label={localData?.review_status || "Never Submitted"}
+                        label={reviewStatus}
                         color={chipColor}
                     />
-                    {localData?.review_status === "Rejected" && localData?.review_memo &&
+                    {reviewStatus === "Rejected" && localData?.review_memo && 
                         <Typography sx={{ fontSize: "14px", color: "black" }}>
                             {localData?.review_memo}
                         </Typography>

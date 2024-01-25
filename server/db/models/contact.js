@@ -15,7 +15,6 @@ const contactSchema = new mongoose.Schema({
     },
     phone_num: {
         type: String,
-        required: true
     },
     middle_name: {
         type: String
