@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Box, Typography, TextField, IconButton, OutlinedInput, InputLabel, InputAdornment, FormControl, Button, FormHelperText } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import apiCall from "../../services/apiCall";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/userSlice";
@@ -30,17 +30,47 @@ const checkReviewStatus = (profile) => {
     };
 }
 
-export default function Form() {
+export default function Form({ isSignup }) {
     const [showPassword, setShowPassword] = React.useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { token } = useParams();
+    
 
-    const onSubmit = async (data) => {
+    const onSignupSubmit = async (data) => {
         alert("form data: " + JSON.stringify(data, null, 2));
         console.log("data: ", data);
 
-        // todo:根据我们的后端更新
+        try {
+            await apiCall({
+                url: "/api/auth/signup",
+                method: "POST",
+                data: {
+                    ...data,
+                    token,
+                    role: "Employee"
+                },
+            }).then((response) => {
+                console.log(response._doc);
+
+                if (response.status === 201) {
+                    console.log("Signup Success", response);
+                    navigate('/login')
+                } else {
+                    alert(response.message || "Signup failed");
+                }
+            });
+        } catch (error) {
+            console.error("Signup Error:", error);
+            alert("Signup failed. Please try again later.");
+        }
+    }
+
+    const onLoginSubmit = async (data) => {
+        alert("form data: " + JSON.stringify(data, null, 2));
+        console.log("data: ", data);
+
         try {
             await apiCall({
                 url: "/api/auth/login",
@@ -76,17 +106,17 @@ export default function Form() {
             console.error("Login Error:", error);
             alert("Login failed. Please try again later.");
         }
-        // navigate(`/home`);
     };
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
     return (
         <Box
             component="form"
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(isSignup ? onSignupSubmit : onLoginSubmit)}
             sx={{
                 backgroundColor: "white",
                 padding: "20px",
@@ -106,7 +136,7 @@ export default function Form() {
             }}
         >
             <Typography sx={{ fontSize: { xs: "24px", sm: "34px" }, fontWeight: "700" }}>
-                Sign in
+                {isSignup ? "Sign up" : "Sign in"}
             </Typography>
             {/* <TextField
                 {...register("email", { required: "Email is required" })}
@@ -144,7 +174,9 @@ export default function Form() {
                 {errors.password && (<FormHelperText>{errors.password.message}</FormHelperText>)}
             </FormControl>
             {/* <Button type="submit" variant="contained" color="success" sx={{ textTransform: "none" }}>Sign in</Button> */}
-            <Button type="submit" variant="contained" color="primary" sx={{ textTransform: "none" }}>Sign in</Button>
+            <Button type="submit" variant="contained" color="primary" sx={{ textTransform: "none" }}>
+                {isSignup ? "Sign up" : "Sign in"}
+            </Button>
         </Box>
     );
 }

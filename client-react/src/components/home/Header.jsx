@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useEffect } from "react";
+import apiCall from "../../services/apiCall";
 import { AppBar, Box, Typography, Toolbar, IconButton, Badge, MenuItem, Menu, Tooltip } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -8,7 +10,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setIsLogin } from "../../redux/loginStateSlice";
-import { resetUser } from "../../redux/userSlice";
+import { setUser, resetUser } from "../../redux/userSlice";
+import { setMyProfile } from "../../redux/myProfileSlice";
 
 // eslint-disable-next-line react/prop-types
 export default function Header({ handleLeftVisible }) {
@@ -19,6 +22,31 @@ export default function Header({ handleLeftVisible }) {
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+            apiCall({
+                url: "/api/auth/checkLogin",
+                method: "POST",
+                data: { token: storedToken },
+            }).then((response) => {
+                if (response) {
+                    dispatch(setIsLogin(true));
+                    console.log(response);
+                    dispatch(
+                        setUser({
+                            id: response._id,
+                            username: response.username,
+                            role: response.role,
+                            personal_info: response.personal_info?._id,
+                        })
+                    );
+                    dispatch(setMyProfile({ ...response.personal_info, email: response.email }));
+                }
+            });
+        }
+    }, []);
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -75,8 +103,7 @@ export default function Header({ handleLeftVisible }) {
                 </IconButton>
                 <p>Notifications</p>
             </MenuItem>
-            <MenuItem onClick={() => { navigate("/home/profile") }}
-            >
+            <MenuItem onClick={() => { navigate("/home/profile") }}>
                 <IconButton size="large" color="inherit">
                     <AccountCircle />
                 </IconButton>

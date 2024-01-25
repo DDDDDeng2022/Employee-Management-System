@@ -27,7 +27,7 @@ const LoginPage = () => {
                     This is designed by Bei Deng, Qingyu Zhou, Wentai Liu at Chuwa®.
                 </Typography>
             </Box>
-            <Form />
+            <Form isSignup={false} />
         </Box >
     )
 }

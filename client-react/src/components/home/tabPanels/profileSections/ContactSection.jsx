@@ -25,7 +25,7 @@ export const ContactSection = ({ formData, isEmployeeProfile }) => {
                 fullWidth
                 disabled={isDisabled}
                 label="Cell Phone Number"
-                defaultValue={localData.cell_phone_number}
+                defaultValue={localData?.cell_phone_number}
                 onChange={(e) => setLocalData({ ...localData, cell_phone_number: e.target.value })}
             />
             <TextField
@@ -33,7 +33,7 @@ export const ContactSection = ({ formData, isEmployeeProfile }) => {
                 fullWidth
                 disabled={isDisabled}
                 label="Work Phone Number"
-                defaultValue={localData.work_phone_number}
+                defaultValue={localData?.work_phone_number}
                 onChange={(e) => setLocalData({ ...localData, work_phone_number: e.target.value })}
             />
         </SectionContainer>
