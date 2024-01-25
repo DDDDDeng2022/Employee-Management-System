@@ -318,7 +318,7 @@ import { Box, Stepper, Step, StepLabel, Button, Typography, StepIcon, StepButton
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import GetAppIcon from '@mui/icons-material/GetApp'; // Download icon
-import VisibilityIcon from '@mui/icons-material/Visibility'; // Eye icon
+// import VisibilityIcon from '@mui/icons-material/Visibility'; // Eye icon
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
@@ -330,6 +330,8 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 
 import { VisuallyHiddenInput } from "./profileSections/NameSection";
+// import FilePreview from "./FilePreview";
+import FilePreviewButton from './FilePreviewButton'; 
 const steps = ["Receipt", "EAD", "I983", "I20"];
 const RECEIPT = 0;
 const EAD = 1;
@@ -407,6 +409,7 @@ export default function VisaPage() {
     const handleNext = () => {
         setDisplayStep((prevDisplayStep) => prevDisplayStep + 1);
     };
+    
     const renderPdfViewer = () => {
         console.log("test opt data: ", curStep);
         let displayDoc = "";
@@ -560,7 +563,6 @@ const ActiveStepContent = ({ updateTempFiles, fileLinks }) => {
             <Typography variant="caption" color="textSecondary">
                 Selected File:
                 {fileLinks.map((file, index) => <a key={index} href={file}>{file} </a>)}
-                {/* <a href={}>download</a> */}
             </Typography>
         )}
     </Box>
@@ -568,14 +570,15 @@ const ActiveStepContent = ({ updateTempFiles, fileLinks }) => {
 };
 
 const FileList = ({ optData, step }) => {
+
     return (
       <List>
         {optData[step].map(file => {
-          const linkParse = file.split('<')[1].split('>');
-          const fileName = linkParse[0];
+        const parsedUrl = new URL(file);
+        const pathname = parsedUrl.pathname;
+        const fileName = pathname.substring(pathname.lastIndexOf("/") + 1, pathname.indexOf("-", pathname.lastIndexOf("/")));
           const fileExtension = fileName.split('.').pop(); // Extract file extension
-  
-          // Map file extensions to corresponding Material-UI icons
+        
           const iconByExtension = {
             pdf: <PictureAsPdfIcon />,
             doc: <DescriptionIcon />,
@@ -583,13 +586,8 @@ const FileList = ({ optData, step }) => {
             jpg: <PermMediaIcon />,
             jpeg: <PermMediaIcon />
 
-            // Add more file types and their icons as needed
           };
-  
-          // Default icon for unknown file types
           const defaultIcon = <InsertDriveFileIcon />;
-  
-          // Choose the appropriate icon based on the file extension
           const fileIcon = iconByExtension[fileExtension.toLowerCase()] || defaultIcon;
   
           return (
@@ -597,12 +595,10 @@ const FileList = ({ optData, step }) => {
               <ListItemIcon>
                 {fileIcon}
               </ListItemIcon>
-            
               <ListItemText primary={fileName} />
               <Button variant="contained"  size="small" sx={{margin: '0 10px', padding: '3px'}}
-              startIcon={<GetAppIcon />}>Download</Button>
-              <Button variant="contained"  size="small" sx={{margin: '0 5px', padding: '3px'}}
-              startIcon={<VisibilityIcon />}>Preview</Button>
+              startIcon={<GetAppIcon />} href={file}>Download File</Button>
+              <FilePreviewButton fileUrl={file} fileName={fileName} />
             </ListItem>
           );
         })}
@@ -617,12 +613,6 @@ const CompletedStepContent = ({ curStep, optData }) => {
     
     return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center", border: "lightgray solid 2px", margin: "20px 100px", width: "60vw", height: '60vh' }}>
         <Typography sx={{ mt: 2, mb: 1 }}>Your current Step: {step}</Typography>
-{/*      
-        {optData[step].map(file => { 
-            const linkParse = file.split('<')[1].split('>');
-            const fileName = linkParse[0];
-            return ( <div key={file}>{fileName}</div>)} )}
-        <a href={optData[step]}></a> */}
         <FileList optData={optData} step={step}/>
     </Box>
 }
