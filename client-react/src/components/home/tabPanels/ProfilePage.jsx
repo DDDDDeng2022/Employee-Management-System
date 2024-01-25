@@ -18,10 +18,10 @@ export default function ProfilePage() {
     return (
         <Box sx={{ width: { xs: "100%", sm: "80%" }, margin: "auto" }}>
             <NameSection formData={profile} isEmployeeProfile={false} />
-            <AddressSection formData={profile.address} isEmployeeProfile={false} />
+            <AddressSection formData={profile?.address} isEmployeeProfile={false} />
             <ContactSection formData={profile} isEmployeeProfile={false} />
-            <EmploymentSection formData={profile.opt} isEmployeeProfile={false} />
-            <EmergencyContactSection formData={profile.emergency_contact} isEmployeeProfile={false} />
+            <EmploymentSection formData={profile?.opt} isEmployeeProfile={false} />
+            <EmergencyContactSection formData={profile?.emergency_contact} isEmployeeProfile={false} />
             {/* <DocumentsSection formData={profile.documentSection} />  */}
         </Box>
     );

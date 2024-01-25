@@ -27,7 +27,7 @@ export const EmergencyContactSection = ({ formData, isEmployeeProfile }) => {
                     required
                     fullWidth
                     label="First Name"
-                    value={localData.first_name}
+                    value={localData?.first_name}
                     onChange={(e) => setLocalData({ ...localData, first_name: e.target.value })}
                 />
                 <TextField
@@ -35,7 +35,7 @@ export const EmergencyContactSection = ({ formData, isEmployeeProfile }) => {
                     disabled={isDisabled}
                     label="Middle Name"
                     fullWidth
-                    value={localData.middle_name}
+                    value={localData?.middle_name}
                     onChange={(e) => setLocalData({ ...localData, middle_name: e.target.value })}
                 />
                 <TextField
@@ -44,7 +44,7 @@ export const EmergencyContactSection = ({ formData, isEmployeeProfile }) => {
                     fullWidth
                     disabled={isDisabled}
                     label="Last Name"
-                    value={localData.last_name}
+                    value={localData?.last_name}
                     onChange={(e) => setLocalData({ ...localData, last_name: e.target.value })}
                 />
             </LineBox>
@@ -54,7 +54,7 @@ export const EmergencyContactSection = ({ formData, isEmployeeProfile }) => {
                 required
                 disabled={isDisabled}
                 label="Email"
-                value={localData.email}
+                value={localData?.email}
                 onChange={(e) => setLocalData({ ...localData, email: e.target.value })}
 
             />
@@ -63,7 +63,7 @@ export const EmergencyContactSection = ({ formData, isEmployeeProfile }) => {
                 fullWidth
                 label="Phone"
                 disabled={isDisabled}
-                value={localData.phone_num}
+                value={localData?.phone_num}
                 onChange={(e) => setLocalData({ ...localData, phone_num: e.target.value })}
             />
             <TextField
@@ -71,7 +71,7 @@ export const EmergencyContactSection = ({ formData, isEmployeeProfile }) => {
                 fullWidth
                 label="Relationship"
                 disabled={isDisabled}
-                value={localData.relationship}
+                value={localData?.relationship}
                 onChange={(e) => setLocalData({ ...localData, relationship: e.target.value })}
             />
         </SectionContainer>

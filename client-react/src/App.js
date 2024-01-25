@@ -14,6 +14,7 @@ import EmployeeProfilesPage from './components/home/tabPanels/HRpages/EmployeePr
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DetailedProfilePage from './components/home/tabPanels/HRpages/DetailedProfilePage';
 import ApplicationPage from './components/home/tabPanels/HRpages/hiringPages/ApplicationPage';
+import SignupPage from './components/login/SignupPage';
 const theme = createTheme({
   components: {
     MuiButton: {
@@ -33,6 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup/:token" element={<SignupPage />} />
           <Route path="/home" element={<HomePage />}>
             <Route path="profile" element={<ProfilePage />} />
             <Route path="onboarding" element={<OnboardingPage />} />
