@@ -47,8 +47,8 @@ export default function OnboardingPage(props) {
     const [isDisabled, setIsDisabled] = useState(isEmployeeProfile);
     const [isWorkVisa, setIsWorkVisa] = useState((!["citizen", "greencard"].includes(localData?.opt?.title)) ? true : false);
     const [showIdentity, setShowIdentity] = useState(false);
-    // const [reviewStatus, setReviewStatus] = useState("Never Submitted");
-    const [reviewStatus, setReviewStatus] = useState("Rejected");
+    const [reviewStatus, setReviewStatus] = useState("Never Submitted");
+    // const [reviewStatus, setReviewStatus] = useState("Rejected");
     const { register, handleSubmit, reset, control, setValue, getValues } = useForm({
         defaultValues: profile,
     });
@@ -100,7 +100,9 @@ export default function OnboardingPage(props) {
             setReviewStatus(configReviewStatus(localData.review_status, localData));
         }
 
-    }, [profile, setValue, localData, fields, append]);
+        // setLocalData({ ...localData, review_memo: "test for memo" })
+
+    }, []);
 
     const chipColor = ChipColor(reviewStatus);
 

@@ -105,7 +105,7 @@ export default function Form({ isSignup }) {
                             personal_info: response._doc.personal_info?._id,
                         })
                     );
-                    dispatch(setMyProfile(response._doc?.personal_info));
+                    dispatch(setMyProfile({ ...response._doc?.personal_info, email: response._doc.email }));
                     localStorage.setItem("token", response.token);
                     if (response._doc.personal_info) {
                         navigate(`/home/profile`);
