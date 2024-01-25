@@ -11,6 +11,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { LineBox } from "./ProfilePage";
 import uploadImage from "../../../services/uploadPhoto";
 import SectionContainer from "./profileSections/SectionContainer";
+import apiCall from "../../../services/apiCall";
+import { FeedbackDialog } from "./HRpages/visaPages/InProcessPage"
 
 const ChipColor = (reviewStatus) => {
     switch (reviewStatus) {
@@ -27,12 +29,13 @@ const ChipColor = (reviewStatus) => {
 
 export default function OnboardingPage(props) {
     const isEmployeeProfile = props?.isEmployeeProfile || false;
-    const profile = useSelector((state) => state.myProfile.profile);
+
+    const { profile_id } = props;
+    const [profile, setProfile] = useState(useSelector((state) => state.myProfile.profile));
     const [localData, setLocalData] = useState(profile);
-    console.log(localData);
     const [avatar, setAvatar] = useState(profile?.photo);
     const [isDisabled, setIsDisabled] = useState(isEmployeeProfile);
-    const [isWorkVisa, setIsWorkVisa] = useState(false);
+    const [isWorkVisa, setIsWorkVisa] = useState((!["citizen", "greencard"].includes(localData?.opt?.title)) ? true : false);
     const [showIdentity, setShowIdentity] = useState(false);
     const { register, handleSubmit, reset, control, setValue, getValues } = useForm({
         defaultValues: profile,
@@ -41,6 +44,25 @@ export default function OnboardingPage(props) {
         control,
         name: "emergency_contact",
     });
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                if (profile_id) {
+                    console.log('profile_id: ', profile_id)
+                    const getProfile = await apiCall({ url: `/api/user/info/${profile_id}`, method: 'GET' })
+                    console.log('getProfile', getProfile);
+                    if (getProfile.status === 201) {
+                        setProfile(getProfile);
+                        setLocalData(getProfile);
+                    }
+                }
+            } catch (err) {
+                console.error('Error fetching profile:', err)
+            }
+        }
+        fetchProfile();
+    }, [])
 
     useEffect(() => {
         if (profile?.emergency_contact) {
@@ -61,6 +83,7 @@ export default function OnboardingPage(props) {
         if (fields.length === 0) {
             append({});
         }
+
     }, [profile, setValue, localData, fields, append]);
 
     const chipColor = ChipColor(localData?.review_status);
@@ -82,7 +105,7 @@ export default function OnboardingPage(props) {
                 try {
                     const imageUrl = await uploadImage(file);
                     setAvatar(imageUrl);
-                    profile.photo = imageUrl;
+                    setValue('photo', imageUrl);
                 } catch (error) {
                     console.error("Upload error:", error);
                 }
@@ -92,16 +115,32 @@ export default function OnboardingPage(props) {
 
     const handleRemoveAvatar = () => {
         setAvatar(null);
+        setValue('photo', null);
     };
 
     const resetAvatar = () => {
         setAvatar(profile.photo);
+        setValue('photo', profile.photo);
     };
 
     // upload file section
-    const handleFileUpload = (event) => {
+    const handleFileUpload = async (event) => {
         const selectedFile = event.target.files[0];
-        console.log("Selected file:", selectedFile);
+        const createOptDocs = await apiCall({ url: '/api/opt/new', method: 'POST', data: {} });
+        const formData = new FormData();
+        formData.append('document', selectedFile);
+        const response = await fetch("http://localhost:8080/api/user/uploadDocument", {
+            method: 'POST',
+            body: formData,
+        });
+        const resJson = await response.json();
+        console.log(resJson);
+        const uploadRes = await apiCall({ url: '/api/opt/upload', method: 'PUT', data: {
+            id: createOptDocs._id,
+            docType: 0,
+            links: [ resJson.documentUrl ]
+        } });
+        setValue('optDocs', uploadRes._id);
     };
 
     return (
@@ -137,6 +176,11 @@ export default function OnboardingPage(props) {
                         label={localData?.review_status || "Never Submitted"}
                         color={chipColor}
                     />
+                    {localData?.review_status === "Rejected" && localData?.review_memo && 
+                        <Typography sx={{ fontSize: "14px", color: "black" }}>
+                            {localData?.review_memo}
+                        </Typography>
+                    }
 
                     {/* User Section */}
                     <Divider textAlign="left">
@@ -410,10 +454,7 @@ export default function OnboardingPage(props) {
                         <Select
                             // {...register("visaStatus")}
                             required
-                            value={
-                                localData?.opt?.title ?
-                                    (["citizen", "greencard"].includes(localData?.opt?.title) ? "yes" : "no") : ""
-                            }
+                            value={!isWorkVisa ? "yes" : "no"}
                             label="Permanent resident or citizen of the U.S.?"
                             disabled={isDisabled}
                             onChange={(e) => {
@@ -433,7 +474,7 @@ export default function OnboardingPage(props) {
                                 <Select
                                     {...register("opt.title")}
                                     required
-                                    defaultValue={localData?.opt?.title}
+                                    value={localData?.opt?.title}
                                     label="Visa Status"
                                     disabled={isDisabled}
                                     onChange={(e) =>
@@ -458,12 +499,10 @@ export default function OnboardingPage(props) {
                                 <Select
                                     {...register("opt.title")}
                                     required
-                                    defaultValue={
-                                        localData?.opt?.title ?
-                                            (["h1b", "f1", "l2"].includes(localData?.opt?.title)
-                                                ? localData?.opt?.title
-                                                : "other") : ""
-
+                                    value={ localData?.opt?.title ?
+                                        (["h1b", "f1", "l2"].includes(localData?.opt?.title)
+                                            ? localData?.opt?.title
+                                            : "other") : ""
                                     }
                                     label="Visa Status"
                                     disabled={isDisabled}
@@ -515,7 +554,8 @@ export default function OnboardingPage(props) {
                                     })
                                 }
                             />
-                        )}
+                        )
+                    }
 
                     {isWorkVisa && (
                         <LineBox>
@@ -697,18 +737,10 @@ export default function OnboardingPage(props) {
                                     required
                                     fullWidth
                                     label="First Name"
-                                    // value={contact.first_name}
                                     value={getValues()[`emergency_contact[${index}].first_name`]}
                                     onChange={(e) => {
                                         console.log(e.target.value)
                                         setValue(`emergency_contact[${index}].first_name`, e.target.value);
-                                        // setLocalData({
-                                        //     ...localData,
-                                        //     emergency_contact: {
-                                        //         ...localData?.emergency_contact,
-                                        //         first_name: e.target.value,
-                                        //     },
-                                        // })
                                     }}
                                 />
                                 <TextField
@@ -717,15 +749,9 @@ export default function OnboardingPage(props) {
                                     label="Middle Name"
                                     fullWidth
                                     value={getValues()[`emergency_contact[${index}].middle_name`]}
-                                    onChange={(e) =>
-                                        setLocalData({
-                                            ...localData,
-                                            emergency_contact: {
-                                                ...localData?.emergency_contact,
-                                                middle_name: e.target.value,
-                                            },
-                                        })
-                                    }
+                                    onChange={(e) => {
+                                        setValue(`emergency_contact[${index}].middle_name`, e.target.value);
+                                    }}
                                 />
                                 <TextField
                                     {...register(`emergency_contact[${index}].last_name`)}
@@ -734,15 +760,9 @@ export default function OnboardingPage(props) {
                                     disabled={isDisabled}
                                     label="Last Name"
                                     value={getValues()[`emergency_contact[${index}].last_name`]}
-                                    onChange={(e) =>
-                                        setLocalData({
-                                            ...localData,
-                                            emergency_contact: {
-                                                ...localData?.emergency_contact,
-                                                last_name: e.target.value,
-                                            },
-                                        })
-                                    }
+                                    onChange={(e) => {
+                                        setValue(`emergency_contact[${index}].last_name`, e.target.value);
+                                    }}
                                 />
                             </LineBox>
                             <TextField
@@ -751,15 +771,9 @@ export default function OnboardingPage(props) {
                                 disabled={isDisabled}
                                 label="Email"
                                 value={getValues()[`emergency_contact[${index}].email`]}
-                                onChange={(e) =>
-                                    setLocalData({
-                                        ...localData,
-                                        emergency_contact: {
-                                            ...localData?.emergency_contact,
-                                            email: e.target.value,
-                                        },
-                                    })
-                                }
+                                onChange={(e) => {
+                                    setValue(`emergency_contact[${index}].email`, e.target.value);
+                                }}
                             />
                             <TextField
                                 {...register(`emergency_contact[${index}].phone_num`)}
@@ -767,15 +781,9 @@ export default function OnboardingPage(props) {
                                 label="Phone"
                                 disabled={isDisabled}
                                 value={getValues()[`emergency_contact[${index}].phone_num`]}
-                                onChange={(e) =>
-                                    setLocalData({
-                                        ...localData,
-                                        emergency_contact: {
-                                            ...localData?.emergency_contact,
-                                            phone_num: e.target.value,
-                                        },
-                                    })
-                                }
+                                onChange={(e) => {
+                                    setValue(`emergency_contact[${index}].phone_num`, e.target.value);
+                                }}
                             />
                             <TextField
                                 {...register(`emergency_contact[${index}].relationship`)}
@@ -784,15 +792,9 @@ export default function OnboardingPage(props) {
                                 label="Relationship"
                                 disabled={isDisabled}
                                 value={getValues()[`emergency_contact[${index}].relationship`]}
-                                onChange={(e) =>
-                                    setLocalData({
-                                        ...localData,
-                                        emergency_contact: {
-                                            ...localData?.emergency_contact,
-                                            relationship: e.target.value,
-                                        },
-                                    })
-                                }
+                                onChange={(e) => {
+                                    setValue(`emergency_contact[${index}].relationship`, e.target.value);
+                                }}
                             />
 
                             {!isEmployeeProfile && <Button type="button" onClick={() => remove(index)}>

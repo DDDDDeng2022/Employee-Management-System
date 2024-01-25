@@ -6,11 +6,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import apiCall from "../../../../services/apiCall";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setMyProfile } from "../../../../redux/myProfileSlice";
 
 export default function SectionContainer(props) {
     const { sectionName, formData, children, handleEdit, isDisabled, handleSubmit, reset, resetAvatar, isEmployeeProfile } = props;
     const [openConfirmDialog, setOpenConfirmDialog] = React.useState(false);
+    const dispatch = useDispatch();
     const user_id = useSelector((state) => state.user.user_id);
     const handleCloseComfirmDialog = (type) => {
         if (type === "yes") {
@@ -32,8 +34,8 @@ export default function SectionContainer(props) {
                 method: "POST",
                 data,
             }).then((response) => {
-                console.log(response._doc);
                 if (response.status === 201) {
+                    dispatch(setMyProfile(response.info))
                     alert("Update Successfully");
                 } else {
                     alert("Update failed");
