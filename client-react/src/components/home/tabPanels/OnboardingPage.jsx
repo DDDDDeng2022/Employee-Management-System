@@ -11,6 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { LineBox } from "./ProfilePage";
 import uploadImage from "../../../services/uploadPhoto";
 import SectionContainer from "./profileSections/SectionContainer";
+import apiCall from "../../../services/apiCall";
 
 const ChipColor = (reviewStatus) => {
     switch (reviewStatus) {
@@ -27,9 +28,26 @@ const ChipColor = (reviewStatus) => {
 
 export default function OnboardingPage(props) {
     const isEmployeeProfile = props?.isEmployeeProfile || false;
-    const profile = useSelector((state) => state.myProfile.profile);
+
+    const { profile_id } = props;
+    const [profile, setProfile] = useState(useSelector((state) => state.myProfile.profile));
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                if (profile_id) {
+                    const getProfile = await apiCall({ url: `/api/user/info/${profile_id}`, method: 'GET' })
+                    if (getProfile.status === 201) {
+                        console.log(getProfile);
+                        setProfile(getProfile);
+                    }
+                }
+            } catch (err) {
+                console.error('Error fetching profile:', err)
+            }
+        }
+        fetchProfile();
+    }, [profile_id])
     const [localData, setLocalData] = useState(profile);
-    console.log(localData);
     const [avatar, setAvatar] = useState(profile?.photo);
     const [isDisabled, setIsDisabled] = useState(false);
     const [isWorkVisa, setIsWorkVisa] = useState((!["citizen", "greencard"].includes(localData?.opt?.title)) ? true : false);
@@ -82,7 +100,7 @@ export default function OnboardingPage(props) {
                 try {
                     const imageUrl = await uploadImage(file);
                     setAvatar(imageUrl);
-                    profile.photo = imageUrl;
+                    setValue('photo', imageUrl);
                 } catch (error) {
                     console.error("Upload error:", error);
                 }
@@ -92,16 +110,29 @@ export default function OnboardingPage(props) {
 
     const handleRemoveAvatar = () => {
         setAvatar(null);
+        setValue('photo', null);
     };
 
     const resetAvatar = () => {
         setAvatar(profile.photo);
+        setValue('photo', profile.photo);
     };
 
     // upload file section
-    const handleFileUpload = (event) => {
+    const handleFileUpload = async (event) => {
         const selectedFile = event.target.files[0];
-        console.log("Selected file:", selectedFile);
+        const createOptDocs = await apiCall({ url: '/api/opt/new', method: 'POST', data: {} });
+        const formData = new FormData();
+        formData.append('document', selectedFile);
+        const response = await fetch("http://localhost:8080/api/user/uploadDocument", {
+            method: 'POST',
+            body: formData,
+        });
+        await apiCall({ url: '/api/opt/upload', method: 'PUT', data: {
+            id: createOptDocs._id,
+            docType: 0,
+            links: response.documentUrl
+        } });
     };
 
     return (
@@ -423,7 +454,6 @@ export default function OnboardingPage(props) {
                         </Select>
                     </FormControl>
 
-                    {console.log('isWorkVisa?', isWorkVisa)}
                     {(localData?.opt?.title || showIdentity) &&
                         (!isWorkVisa ? (
                             <FormControl fullWidth>
