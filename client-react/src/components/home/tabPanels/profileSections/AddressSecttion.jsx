@@ -26,7 +26,7 @@ export const AddressSection = ({ formData, isEmployeeProfile }) => {
                     fullWidth
                     disabled={isDisabled}
                     label="Building"
-                    value={localData.building}
+                    value={localData?.building}
                     onChange={(e) => setLocalData({ ...localData, building: e.target.value })}
                 />
                 <TextField
@@ -34,7 +34,7 @@ export const AddressSection = ({ formData, isEmployeeProfile }) => {
                     fullWidth
                     disabled={isDisabled}
                     label="Street"
-                    value={localData.street}
+                    value={localData?.street}
                     onChange={(e) => setLocalData({ ...localData, street: e.target.value })}
                 />
             </LineBox>
@@ -44,7 +44,7 @@ export const AddressSection = ({ formData, isEmployeeProfile }) => {
                     fullWidth
                     disabled={isDisabled}
                     label="City"
-                    value={localData.city}
+                    value={localData?.city}
                     onChange={(e) => setLocalData({ ...localData, city: e.target.value })}
                 />
                 <TextField
@@ -52,7 +52,7 @@ export const AddressSection = ({ formData, isEmployeeProfile }) => {
                     fullWidth
                     disabled={isDisabled}
                     label="State"
-                    value={localData.state}
+                    value={localData?.state}
                     onChange={(e) => setLocalData({ ...localData, state: e.target.value })}
                 />
                 <TextField
@@ -60,7 +60,7 @@ export const AddressSection = ({ formData, isEmployeeProfile }) => {
                     fullWidth
                     disabled={isDisabled}
                     label="Zip"
-                    value={localData.zip}
+                    value={localData?.zip}
                     onChange={(e) => setLocalData({ ...localData, zip: e.target.value })}
                 />
             </LineBox>

@@ -26,10 +26,9 @@ export const VisuallyHiddenInput = styled('input')({
 export const NameSection = ({ formData, isEmployeeProfile }) => {
     const [localData, setLocalData] = React.useState(formData);
     const [isDisabled, setIsDisabled] = React.useState(true);
-    const [avatar, setAvatar] = React.useState(formData.photo);
+    const [avatar, setAvatar] = React.useState(formData?.photo);
 
     const handleAvatarChange = async (e) => {
-        console.log("hhhh");
         const file = e.target.files[0];
         if (file) {
             try {
@@ -49,10 +48,11 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
         setIsDisabled(!isDisabled);
     };
     const resetAvatar = () => {
-        setAvatar(formData.photo);
+        setAvatar(formData?.photo);
     };
     return (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
+            {/* TODO: move onboarding image upload way to here and add delete photo */}
             <Box sx={{ display: "flex", justifyContent: "center", alignItems: "baseline" }}>
                 <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
                 {!isDisabled && <Box>
@@ -81,7 +81,7 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
                         required
                         fullWidth
                         label="First Name"
-                        value={localData.first_name}
+                        value={localData?.first_name}
                         onChange={(e) => setLocalData({ ...localData, first_name: e.target.value })}
                     />
                     <TextField
@@ -89,7 +89,7 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
                         disabled={isDisabled}
                         label="Middle Name"
                         fullWidth
-                        value={localData.middle_name}
+                        value={localData?.middle_name}
                         onChange={(e) => setLocalData({ ...localData, middle_name: e.target.value })}
                     />
                 </LineBox>
@@ -101,7 +101,7 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
                         fullWidth
                         disabled={isDisabled}
                         label="Last Name"
-                        value={localData.last_name}
+                        value={localData?.last_name}
                         onChange={(e) => setLocalData({ ...localData, last_name: e.target.value })}
                     />
                     <TextField
@@ -109,7 +109,7 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
                         fullWidth
                         disabled={isDisabled}
                         label="prefered Name"
-                        value={localData.prefered_name}
+                        value={localData?.prefered_name}
                         onChange={(e) => setLocalData({ ...localData, prefered_name: e.target.value })}
 
                     />
@@ -120,7 +120,7 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
                     required
                     disabled
                     label="Email"
-                    value={localData.email}
+                    value={localData?.email}
                     margin="normal"
                 />
                 <LineBox>
@@ -129,7 +129,7 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
                         <Select {...register("gender")}
                             disabled={isDisabled}
                             onChange={(e) => setLocalData({ ...localData, gender: e.target.value })}
-                            value={localData.gender} label="Gender">
+                            value={localData?.gender} label="Gender">
                             <MenuItem value="female">Female</MenuItem>
                             <MenuItem value="male">Male</MenuItem>
                             <MenuItem value="I do not wish to answer">I do not wish to answer</MenuItem>
@@ -141,14 +141,14 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
                         label="SSN"
                         required
                         disabled={isDisabled}
-                        value={localData.ssn}
+                        value={localData?.ssn}
                         onChange={(e) => setLocalData({ ...localData, ssn: e.target.value })}
                     />
 
                 </LineBox>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DatePicker']}>
-                        <DateField required {...register("birth_date")} disabled={isDisabled} fullWidth label="Birth Date" value={dayjs(localData.birth_date)}
+                        <DateField required {...register("birth_date")} disabled={isDisabled} fullWidth label="Birth Date" value={dayjs(localData?.birth_date)}
                             onChange={(newValue) => setLocalData({ ...localData, birth_date: newValue })}
                         />
                     </DemoContainer>

@@ -7,11 +7,10 @@ const I20 = 3;
 
 const EMPTY = 0;
 const PENDING = 1;
-const APPROVED = 2;
-const REJECTED = 3;
+const REJECTED = 2;
 
 //enable employee to upload document
-const uploadDoc = async (req, res) => {  
+const uploadDoc = async (req, res) => {
     const { id, docType, links } = req.body;
     try {
         const optDoc = await OptDocs.findById(id);
