@@ -45,6 +45,25 @@ export default function OnboardingPage(props) {
     });
 
     useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                if (profile_id) {
+                    console.log('profile_id: ', profile_id)
+                    const getProfile = await apiCall({ url: `/api/user/info/${profile_id}`, method: 'GET' })
+                    console.log('getProfile', getProfile);
+                    if (getProfile.status === 201) {
+                        setProfile(getProfile);
+                        setLocalData(getProfile);
+                    }
+                }
+            } catch (err) {
+                console.error('Error fetching profile:', err)
+            }
+        }
+        fetchProfile();
+    }, [])
+
+    useEffect(() => {
         if (profile?.emergency_contact) {
             profile.emergency_contact.forEach((contact, index) => {
                 setValue(`emergency_contact[${index}].first_name`, contact.first_name || '');
@@ -64,23 +83,7 @@ export default function OnboardingPage(props) {
             append({});
         }
 
-        const fetchProfile = async () => {
-            try {
-                if (profile_id) {
-                    console.log('profile_id: ', profile_id)
-                    const getProfile = await apiCall({ url: `/api/user/info/${profile_id}`, method: 'GET' })
-                    console.log('getProfile', getProfile);
-                    if (getProfile.status === 201) {
-                        setProfile(getProfile);
-                        setLocalData(getProfile);
-                    }
-                }
-            } catch (err) {
-                console.error('Error fetching profile:', err)
-            }
-        }
-        fetchProfile();
-    }, [profile, setValue, localData, fields, append, profile_id]);
+    }, [profile, setValue, localData, fields, append]);
 
     const chipColor = ChipColor(localData?.review_status);
 
