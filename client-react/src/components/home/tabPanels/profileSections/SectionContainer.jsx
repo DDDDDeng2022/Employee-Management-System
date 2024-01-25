@@ -29,7 +29,7 @@ export default function SectionContainer(props) {
         try {
             await apiCall({
                 url: `/api/user/info/${user_id}`,
-                method: "PUT",
+                method: "POST",
                 data,
             }).then((response) => {
                 console.log(response._doc);

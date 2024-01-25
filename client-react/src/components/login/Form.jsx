@@ -32,11 +32,24 @@ const checkReviewStatus = (profile) => {
 
 export default function Form({ isSignup }) {
     const [showPassword, setShowPassword] = React.useState(false);
+    const [userEmail, setUserEmail] = React.useState('');
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { token } = useParams();
-
+    
+    React.useEffect(() => {
+        async function fetchToken(token) {
+            await apiCall({ url: "/api/auth/decode", method: "POST", data: { token }})
+                .then(decoded => {
+                    console.log(decoded);
+                    setUserEmail(decoded.email);
+            })
+        };
+        if (isSignup && token) {
+            fetchToken(token);
+        }
+    }, [])
 
     const onSignupSubmit = async (data) => {
         alert("form data: " + JSON.stringify(data, null, 2));
@@ -138,14 +151,13 @@ export default function Form({ isSignup }) {
             <Typography sx={{ fontSize: { xs: "24px", sm: "34px" }, fontWeight: "700" }}>
                 {isSignup ? "Sign up" : "Sign in"}
             </Typography>
-            {/* <TextField
-                {...register("email", { required: "Email is required" })}
-                error={Boolean(errors.email)}
-                helperText={errors.email?.message}
+            {isSignup && (<TextField
                 fullWidth
                 label="Email"
                 type="email"
-            /> */}
+                disabled="true"
+                value={userEmail}
+            />)}
             <TextField
                 {...register("username", { required: "Username is required" })}
                 error={Boolean(errors.username)}
