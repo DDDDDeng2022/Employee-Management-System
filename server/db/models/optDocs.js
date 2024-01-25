@@ -2,13 +2,13 @@ import mongoose from 'mongoose';
 
 const optDocsSchema = new mongoose.Schema({
     Docs: {
-        type:  [String],
+        type: [String],
         default: ["Receipt", "EAD", "I983", "I20"]
-        
+
     },
     Status: {
         type: [String],
-        default: ["empty", "pending", "approved", "rejected"]
+        default: ["empty", "pending", "rejected"]
     },
     curDoc: {
         type: Number,
@@ -39,4 +39,3 @@ const optDocsSchema = new mongoose.Schema({
 const OptDocs = mongoose.model("OptDocs", optDocsSchema);
 export default OptDocs;
 
-   

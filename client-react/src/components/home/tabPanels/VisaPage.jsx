@@ -310,18 +310,27 @@
 
 // todo: 1.修改后端相关文件为[]
 
+// import { Document, Page } from 'react-pdf';
+
+
+
 
 import React from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { styled } from "@mui/material/styles";
 import { Box, Stepper, Step, StepLabel, Button, Typography, StepIcon, StepButton } from "@mui/material";
 import Check from "@mui/icons-material/Check";
-import PDFViewer from 'pdf-viewer-reactjs';//npm install pdf-viewer-reactjs
+// import PDFViewer from 'pdf-viewer-reactjs';//npm install pdf-viewer-reactjs
 import { useEffect, useState } from 'react';
 // import { Page, Document} from 'react'
 import axios from "axios";
-
+// import { pdfjs } from 'react-pdf';
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import ReactPDF from '@react-pdf/renderer';
 import { VisuallyHiddenInput } from "./profileSections/NameSection";
+// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import ReactDOM from 'react-dom';
+import { PDFViewer } from '@react-pdf/renderer';
 const steps = ["Receipt", "EAD", "I983", "I20"];
 const RECEIPT = 0;
 const EAD = 1;
@@ -451,8 +460,8 @@ export default function VisaPage() {
 
         );
     };
-  
-    const handleUpload = async () =>{
+
+    const handleUpload = async () => {
         console.log("test filelinks ", fileLinks)
         try {
             const response = await axios.put('http://localhost:8080/api/opt/upload', {
@@ -461,10 +470,10 @@ export default function VisaPage() {
                 links: fileLinks,
             });
             console.log('Upload successful', response.data);
-            } catch (error) {
-                console.error('Error:', error);
-                throw error;
-            }
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
     }
     const updateTempFiles = (newFile) => setFileLinks([...fileLinks, newFile]);
 
@@ -552,6 +561,12 @@ const ActiveStepContent = ({ updateTempFiles, fileLinks }) => {
                 Selected File:
                 {fileLinks.map((file, index) => <a key={index} href={file}>{file} </a>)}
                 {/* <a href={}>download</a> */}
+                {/* <iframe src="https://www.clickdimensions.com/links/TestPDFfile.pdf"></iframe>
+                <PDFPreview fileUrl="https://www.clickdimensions.com/links/TestPDFfile.pdf" /> */}
+
+                <PDFViewer>
+                    <MyDocument />
+                </PDFViewer>
             </Typography>
         )}
     </Box>
@@ -566,4 +581,46 @@ const CompletedStepContent = ({ curStep, optData }) => {
         <div>{optData[step]}</div>
         <a href={optData[step]}></a>
     </Box>
+}
+const styles = StyleSheet.create({
+    page: {
+        flexDirection: 'row',
+        backgroundColor: '#E4E4E4'
+    },
+    section: {
+        margin: 10,
+        padding: 10,
+        flexGrow: 1
+    }
+});
+
+const MyDocument = () => (
+    <Document>
+        <Page size="A4" style={styles.page}>
+            <View style={styles.section}>
+                <Text>Section #1</Text>
+            </View>
+            <View style={styles.section}>
+                <Text>Section #2</Text>
+            </View>
+        </Page>
+    </Document>
+);
+function PDFPreview({ fileUrl }) {
+    const [numPages, setNumPages] = React.useState(null);
+
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+    }
+
+    return (
+        <div>
+            <Document file={fileUrl} onLoadSuccess={onDocumentLoadSuccess}
+                onLoadError={console.error}>
+                {Array.from(new Array(numPages), (el, index) => (
+                    <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+                ))}
+            </Document>
+        </div>
+    );
 }

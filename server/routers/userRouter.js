@@ -1,6 +1,6 @@
 import express from "express";
 import multer from 'multer';
-import fs from 'fs';
+// import fs from 'fs';
 import {
     getAllUsers,
     getUserById,
