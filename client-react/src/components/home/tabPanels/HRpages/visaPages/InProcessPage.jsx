@@ -4,6 +4,7 @@ import { StyledTableCell, StyledTableRow } from "../EmployeeProfilesPage";
 import GetAppIcon from '@mui/icons-material/GetApp';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios';
+import { DialogTitle, DialogContentText, DialogContent, DialogActions, Dialog, TextField } from "@mui/material";
 
 export const calculateDaysRemaining = (endDate) => {
     const end = new Date(endDate);
@@ -103,6 +104,7 @@ export default function InProcessPage({ employees, fetchEmployees }) {
 }
 
 const OPTActions = ({ id, fetchEmployees }) => {
+    const [openFeedbackDialog, setOpenFeedbackDialog] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const handleApprove = async () => {
         setDisabled(true);
@@ -110,22 +112,66 @@ const OPTActions = ({ id, fetchEmployees }) => {
             const response = await axios.put(`http://localhost:8080/api/opt/approval/${id}`);
             console.log('Document Approved:', response.data);
             fetchEmployees();
+            setDisabled(false);
         } catch (error) {
             console.error('Error Approving Document:', error);
         }
     };
     const handleReject = async () => {
-        setDisabled(true);
-        try {
-            const response = await axios.put(`http://localhost:8080/api/opt/rejection/${id}`);
-            console.log('Document Rejected:', response.data);
-            fetchEmployees();
-        } catch (error) {
-            console.error('Error Rejecting Document:', error);
-        }
+        setOpenFeedbackDialog(true);
     }
+    const handleCloseFeedbackDialog = () => {
+        setOpenFeedbackDialog(!openFeedbackDialog);
+        fetchEmployees();
+    };
     return <Box sx={{ display: "flex" }}>
         <Button onClick={handleApprove} disabled={disabled} color="success" size="small">approve</Button>
         <Button onClick={handleReject} disabled={disabled} color="error" size="small">reject</Button>
+        < FeedbackDialog openFeedbackDialog={openFeedbackDialog} handleCloseFeedbackDialog={handleCloseFeedbackDialog} id={id} />
+
     </Box>
+}
+
+export function FeedbackDialog({ openFeedbackDialog, handleCloseFeedbackDialog, id }) {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        try {
+            const response = await axios.put(`http://localhost:8080/api/opt/rejection/${id}`, formJson);
+            console.log('Document Rejected:', response.data);
+        } catch (error) {
+            console.error('Error Rejecting Document:', error);
+        }
+        handleCloseFeedbackDialog();
+    }
+    return <Dialog
+        open={openFeedbackDialog}
+        onClose={handleCloseFeedbackDialog}
+        PaperProps={{
+            component: 'form',
+            onSubmit: handleSubmit
+        }}
+    >
+        <DialogTitle sx={{ backgroundColor: "#227fe9", color: "white" }}>Invitation</DialogTitle>
+        <DialogContent>
+            <DialogContentText>
+                Please type in the reason why the file is rejected:
+            </DialogContentText>
+            <TextField
+                autoFocus
+                required
+                name="feedback"
+                label="Feedback"
+                fullWidth
+                variant="standard"
+            />
+
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={() => handleCloseFeedbackDialog()}> cancel</Button>
+            <Button type="submit">Send</Button>
+        </DialogActions>
+    </Dialog>
+
 }

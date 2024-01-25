@@ -123,6 +123,8 @@ const approveDoc = async (req, res) => {
 //reject current document 
 const rejectDoc = async (req, res) => {
     const { id } = req.params;
+    const { feedback } = req.body;
+    console.log("feedback: ", feedback);
     if (!id) {
         res.status(400).json({ msg: "optDoc id is missing" });
         return;
@@ -136,6 +138,7 @@ const rejectDoc = async (req, res) => {
         /*need to decide whether the document is going to be deleted or not 
         automatically after rejection by HR later*/
         optDoc.curStatus = REJECTED;//need to decide whether being set to EMPTY later
+        optDoc.feedback = feedback;
         await optDoc.save();
         res.status(200).json({ msg: "document rejection success", optDoc: optDoc });
         return;
