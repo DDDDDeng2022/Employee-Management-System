@@ -111,22 +111,6 @@ export default function InProcessPage({ employees, fetchEmployees }) {
 
 }
 
-const FileDialog = ({ open, handleClose, files }) => {
-    console.log("dialog files open:", open)
-    console.log("dialogfiles: ", files);
-    return <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Uploaded files </DialogTitle>
-        <DialogContent>
-            <DialogContentText>
-                <FileList files={files} isEditable={false} />
-            </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-            <Button onClick={handleClose}>close</Button>
-        </DialogActions>
-    </Dialog>
-}
-
 const OPTActions = ({ id, fetchEmployees }) => {
     const [openFeedbackDialog, setOpenFeedbackDialog] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
