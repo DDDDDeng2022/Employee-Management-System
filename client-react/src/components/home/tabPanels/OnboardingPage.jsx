@@ -12,6 +12,7 @@ import { LineBox } from "./ProfilePage";
 import uploadImage from "../../../services/uploadPhoto";
 import SectionContainer from "./profileSections/SectionContainer";
 import apiCall from "../../../services/apiCall";
+import { FeedbackDialog } from "./HRpages/visaPages/InProcessPage"
 
 const ChipColor = (reviewStatus) => {
     switch (reviewStatus) {
@@ -132,11 +133,14 @@ export default function OnboardingPage(props) {
             method: 'POST',
             body: formData,
         });
-        await apiCall({ url: '/api/opt/upload', method: 'PUT', data: {
+        const resJson = await response.json();
+        console.log(resJson);
+        const uploadRes = await apiCall({ url: '/api/opt/upload', method: 'PUT', data: {
             id: createOptDocs._id,
             docType: 0,
-            links: response.documentUrl
+            links: [ resJson.documentUrl ]
         } });
+        setValue('optDocs', uploadRes._id);
     };
 
     return (
@@ -172,6 +176,11 @@ export default function OnboardingPage(props) {
                         label={localData?.review_status || "Never Submitted"}
                         color={chipColor}
                     />
+                    {localData?.review_status === "Rejected" && localData?.review_memo && 
+                        <Typography sx={{ fontSize: "14px", color: "black" }}>
+                            {localData?.review_memo}
+                        </Typography>
+                    }
 
                     {/* User Section */}
                     <Divider textAlign="left">
