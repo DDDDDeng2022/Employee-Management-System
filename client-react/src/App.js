@@ -5,9 +5,8 @@ import LoginPage from './components/login/LoginPage';
 import OnboardingPage from './components/home/tabPanels/OnboardingPage';
 import VisaPage from './components/home/tabPanels/VisaPage';
 import ProfilePage from './components/home/tabPanels/ProfilePage';
-import { Provider } from 'react-redux';
-import store from './redux/store';
-import OnboardingReviewPage from './components/home/tabPanels/HRpages/OnboardingReviewPage';
+import GoBackPage from './components/home/tabPanels/GoBackPage';
+import { useSelector } from "react-redux";
 import HiringManagementPage from './components/home/tabPanels/HRpages/HiringManagementPage';
 import VisaManagementPage from './components/home/tabPanels/HRpages/VisaManagementPage';
 import EmployeeProfilesPage from './components/home/tabPanels/HRpages/EmployeeProfilesPage';
@@ -27,20 +26,20 @@ const theme = createTheme({
   },
 });
 function App() {
-
-  return (<ThemeProvider theme={theme}>
-    <Provider store={store}>
+  const profile = useSelector((state) => state.myProfile.profile);
+  return (
+    <ThemeProvider theme={theme}>
       <Router>
         <Routes>
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup/:token" element={<SignupPage />} />
           <Route path="/home" element={<HomePage />}>
-            <Route path="profile" element={<ProfilePage />} />
+            <Route path="profile" element={Object.keys(profile).length === 1 ? <GoBackPage /> : <ProfilePage />} />
             <Route path="onboarding" element={<OnboardingPage />} />
-            <Route path="visa" element={<VisaPage />} />
+            <Route path="visa" element={Object.keys(profile).length === 1 ? <GoBackPage /> : <VisaPage />} />
             {/* Hr页面 todo protected url*/}
-            <Route path="profile" element={<ProfilePage />} />
+            {/* <Route path="profile" element={<ProfilePage />} /> */}
             <Route path="employee" element={<EmployeeProfilesPage />}>
               <Route path=':id' element={<DetailedProfilePage />} />
             </Route>
@@ -53,8 +52,8 @@ function App() {
           </Route>
         </Routes>
       </Router>
-    </Provider>
-  </ThemeProvider >
+    </ThemeProvider >
+
   )
 }
 
