@@ -49,7 +49,7 @@ export default function OnboardingPage(props) {
     }, [profile_id])
     const [localData, setLocalData] = useState(profile);
     const [avatar, setAvatar] = useState(profile?.photo);
-    const [isDisabled, setIsDisabled] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(isEmployeeProfile);
     const [isWorkVisa, setIsWorkVisa] = useState((!["citizen", "greencard"].includes(localData?.opt?.title)) ? true : false);
     const [showIdentity, setShowIdentity] = useState(false);
     const { register, handleSubmit, reset, control, setValue, getValues } = useForm({
@@ -62,24 +62,24 @@ export default function OnboardingPage(props) {
 
     useEffect(() => {
         if (profile?.emergency_contact) {
-          profile.emergency_contact.forEach((contact, index) => {
-            setValue(`emergency_contact[${index}].first_name`, contact.first_name || '');
-            setValue(`emergency_contact[${index}].middle_name`, contact.middle_name || '');
-            setValue(`emergency_contact[${index}].last_name`, contact.last_name || '');
-            setValue(`emergency_contact[${index}].email`, contact.email || '');
-            setValue(`emergency_contact[${index}].phone_num`, contact.phone_num || '');
-            setValue(`emergency_contact[${index}].relationship`, contact.relationship || '');
-          });
+            profile.emergency_contact.forEach((contact, index) => {
+                setValue(`emergency_contact[${index}].first_name`, contact.first_name || '');
+                setValue(`emergency_contact[${index}].middle_name`, contact.middle_name || '');
+                setValue(`emergency_contact[${index}].last_name`, contact.last_name || '');
+                setValue(`emergency_contact[${index}].email`, contact.email || '');
+                setValue(`emergency_contact[${index}].phone_num`, contact.phone_num || '');
+                setValue(`emergency_contact[${index}].relationship`, contact.relationship || '');
+            });
         }
-    
+
         if (["Pending", "Approved"].includes(localData?.review_status)) {
-          setIsDisabled(true);
+            setIsDisabled(true);
         }
-    
+
         if (fields.length === 0) {
-          append({});
+            append({});
         }
-      }, [profile, setValue, localData, fields, append]);
+    }, [profile, setValue, localData, fields, append]);
 
     const chipColor = ChipColor(localData?.review_status);
 
@@ -503,13 +503,13 @@ export default function OnboardingPage(props) {
                                         })
                                     }
                                 >
-                                <MenuItem value="f1">F1(CPT/OPT)</MenuItem>
-                                <MenuItem value="h1b">H1-B</MenuItem>
-                                <MenuItem value="l2">L2</MenuItem>
-                                <MenuItem value="other">Other</MenuItem>
-                            </Select>
-                        </FormControl>
-                    ))}
+                                    <MenuItem value="f1">F1(CPT/OPT)</MenuItem>
+                                    <MenuItem value="h1b">H1-B</MenuItem>
+                                    <MenuItem value="l2">L2</MenuItem>
+                                    <MenuItem value="other">Other</MenuItem>
+                                </Select>
+                            </FormControl>
+                        ))}
 
                     {isWorkVisa && localData?.opt?.title === "f1" && (
                         <Input
@@ -784,15 +784,15 @@ export default function OnboardingPage(props) {
                                 }}
                             />
 
-                            <Button type="button" onClick={() => remove(index)}>
+                            {!isEmployeeProfile && <Button type="button" onClick={() => remove(index)}>
                                 Remove
-                            </Button>
+                            </Button>}
                         </Box>
                     ))}
 
-                    <Button type="button" onClick={() => append({})}>
+                    {!isEmployeeProfile && <Button type="button" onClick={() => append({})}>
                         Add Emergency Contact
-                    </Button>
+                    </Button>}
                 </SectionContainer>
             </Box>
         </Box>
