@@ -67,8 +67,8 @@ function evaluateOptDocsStatus(optDocs) {
     };
 }
 export default function VisaPage() {
-    // const optDocs_id = useSelector((state) => state.myProfile.profile?.optDocs);
-    const optDocs_id = "65b0ea2354ea27ba8bd0ecde";
+    const optDocs_id = useSelector((state) => state.myProfile.profile?.optDocs);
+    // const optDocs_id = "65b0ea2354ea27ba8bd0ecde";
     const [loading, setLoading] = React.useState(true);
     const [activeStep, setActiveStep] = React.useState(0);
     const [displayStep, setDisplayStep] = React.useState(0);
@@ -83,31 +83,31 @@ export default function VisaPage() {
         const fileLinks = optDocs[currentDocType] || [];
         return fileLinks;
     }
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(
-                    `http://localhost:8080/api/opt/${optDocs_id}`
-                );
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const optDoc = await response.json();
-                setOptData(optDoc);
-                if (optDoc.curDoc < optDoc.Docs.length) {
-                    setFileLinks(getFileLinksForCurrentDoc(optDoc, optDoc.curDoc));
-                }
-                setActiveStep(optDoc.curDoc);
-                setDisplayStep(optDoc.curDoc);
-                setEvaluatedMessage(evaluateOptDocsStatus(optDoc));
-                setIsDisabled(evaluateOptDocsStatus(optDoc).currentStatus === "pending" || !onBoardingStatus);
-                setSteps(optDoc.Docs);
-                setLoading(false);
-
-            } catch (error) {
-                console.error("Error fetching data:", error);
+    const fetchData = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/opt/${optDocs_id}`
+            );
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-        };
+            const optDoc = await response.json();
+            setOptData(optDoc);
+            if (optDoc.curDoc < optDoc.Docs.length) {
+                setFileLinks(getFileLinksForCurrentDoc(optDoc, optDoc.curDoc));
+            }
+            setActiveStep(optDoc.curDoc);
+            setDisplayStep(optDoc.curDoc);
+            setEvaluatedMessage(evaluateOptDocsStatus(optDoc));
+            setIsDisabled(evaluateOptDocsStatus(optDoc).currentStatus === "pending");
+            setSteps(optDoc.Docs);
+            setLoading(false);
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -119,6 +119,7 @@ export default function VisaPage() {
     };
 
     const handleUpload = async () => {
+        setLoading(true);
         try {
             const response = await axios.put('http://localhost:8080/api/opt/upload', {
                 id: optDocs_id,
@@ -126,6 +127,7 @@ export default function VisaPage() {
                 links: fileLinks,
             });
             console.log('Upload successful', response.data);
+            fetchData();
         } catch (error) {
             console.error('Error:', error);
             throw error;
@@ -182,4 +184,3 @@ export default function VisaPage() {
     );
 
 }
-

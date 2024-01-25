@@ -6,7 +6,6 @@ import { VisuallyHiddenInput } from "../profileSections/NameSection";
 
 const ActiveStepContent = ({ evaluatedMessage, isDisabled, updateTempFiles, fileLinks }) => {
     const [fileLink, setFileLink] = React.useState();
-    const onBoardingStatus = useSelector((state) => state.myProfile.profile?.review_status) || false;
     const uploadDocument = async (file) => {
         const formData = new FormData();
         formData.append('document', file);
@@ -32,19 +31,14 @@ const ActiveStepContent = ({ evaluatedMessage, isDisabled, updateTempFiles, file
                 const documentUrl = await uploadDocument(file);
                 setFileLink(documentUrl);
                 updateTempFiles("add", documentUrl);
+                console.log("added: ", documentUrl);
             } catch (error) {
                 console.error('Upload error:', error);
             }
         }
     };
     return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", border: "lightgray solid 2px", width: "100%", height: "100%" }}>
-
-
-        {!onBoardingStatus ?
-            <Typography sx={{ mt: 2, mb: 1 }}>submitted in onboarding application, waiting for approval</Typography>
-            : <Typography sx={{ mt: 2, mb: 1, textAlign: "center" }}>{evaluatedMessage.message}</Typography>
-
-        }
+        <Typography sx={{ mt: 2, mb: 1, textAlign: "center" }}>{evaluatedMessage.message}</Typography>
         <Button component="label" size="small" variant="contained" disabled={isDisabled} >
             Choose files
             <VisuallyHiddenInput type="file" accept=".pdf, .jpg, .jpeg, .png" onChange={handleChoose} />

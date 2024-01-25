@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import SectionContainer from './SectionContainer';
 import { useForm } from 'react-hook-form';
+import FilePreviewButton from '../FilePreviewButton';
 
 // todo:先忽略
 
@@ -26,7 +27,7 @@ export const DocumentsSection = ({ formData }) => {
                     <p>{doc.name}</p>
                     {/* 提供下载和预览链接 */}
                     <Button href={doc.downloadUrl} download>Download</Button>
-                    <Button href={doc.previewUrl} target="_blank">Preview</Button>
+                    <FilePreviewButton fileUrl={doc.previewUrl}/>
                 </div>
             ))}
         </SectionContainer>

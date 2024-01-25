@@ -8,7 +8,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
 import { getfileName } from "../HRpages/visaPages/AllEmployeeVisaPages";
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import FilePreviewButton from "../FilePreviewButton";
 const FileList = ({ files, updateTempFiles, isEditable }) => {
     console.log("filelist :", files);
     return (
@@ -39,10 +39,9 @@ const FileList = ({ files, updateTempFiles, isEditable }) => {
                             {fileIcon}
                         </ListItemIcon>
                         <ListItemText primary={fileName} />
-                        <Button size="small" sx={{ margin: '0 10px', padding: '3px' }}
-                            startIcon={<GetAppIcon />}>Download</Button>
                         <Button size="small" sx={{ margin: '0 5px', padding: '3px' }}
-                            startIcon={<VisibilityIcon />}>Preview</Button>
+                            startIcon={<GetAppIcon />} href={file}>Download File</Button>
+                        <FilePreviewButton fileUrl={file} fileName={fileName} />
                         {isEditable &&
                             <Button size="small" sx={{ margin: '0 5px', padding: '3px' }}
                                 startIcon={<DeleteIcon />} onClick={() => updateTempFiles("delete", file)}>Remove</Button>}
