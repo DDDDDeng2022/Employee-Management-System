@@ -34,6 +34,7 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
             try {
                 const imageUrl = await uploadImage(file);
                 setAvatar(imageUrl);
+                formData.photo = imageUrl;
             } catch (error) {
                 console.error('Upload error:', error);
             }
@@ -45,7 +46,12 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
     };
     const { register, handleSubmit, reset } = useForm({ defaultValues: formData });
     const handleEdit = () => {
-        setIsDisabled(!isDisabled);
+        console.log(formData);
+        if(!formData.first_name || !formData.last_name || !formData.email || !formData.gender) {
+            alert("Please finish onboarding application first.")
+        } else {
+            setIsDisabled(!isDisabled);
+        }
     };
     const resetAvatar = () => {
         setAvatar(formData?.photo);

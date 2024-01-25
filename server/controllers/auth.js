@@ -2,6 +2,7 @@ import User from "../db/models/user.js";
 import Role from "../db/models/role.js";
 // import signupUser from "../services/user/signup.js"
 import jwt from "jsonwebtoken";
+import Registration from "../db/models/registration.js"
 
 const decodeJWT = async ({ token, res }) => {
     const decoded = await jwt.verify(token, process.env.JWT_SECRET);
@@ -93,13 +94,14 @@ const signup = async (req, res) => {
                     "Registration link error, please contact with HR for validation",
             });
         } else {
-            await user.save().then((user) => {
+            await user.save().then(async (curr_user) => {
+                await Registration.findOneAndUpdate({ email: curr_user.email }, { status: true });
                 const token = jwt.sign(
-                    { id: user._id, email: user.email },
+                    { id: user._id, email: curr_user.email },
                     process.env.JWT_SECRET,
                     { expiresIn: "3d" }
                 );
-                res.status(201).json({ ...user, token });
+                res.status(201).json({ ...curr_user, token });
             });
         }
     } catch (err) {
@@ -107,4 +109,14 @@ const signup = async (req, res) => {
     }
 };
 
-export { login, signup, checkLogin };
+const decodeToken = async (req, res) => {
+    const { token } = req.body;
+    try {
+        const decoded = await decodeJWT({ token, res });
+        res.status(201).json({ ...decoded });
+    } catch (err) {
+        res.status(500).json({ err, message: "Token invalid" });
+    }
+}
+
+export { login, signup, checkLogin, decodeToken };
