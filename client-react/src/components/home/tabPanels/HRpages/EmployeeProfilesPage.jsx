@@ -22,8 +22,6 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#3157db",
         color: theme.palette.common.white,
-        whiteSpace: "nowrap",
-
         [theme.breakpoints.down('sm')]: {
             padding: "5px",
             fontSize: "12px",
@@ -102,7 +100,7 @@ export default function EmployeeProfilesPage() {
     return (
         <Paper>
             {loading ?
-                <Box sx={{ width: "100%", height: "700px", display: "flex", justifyContent: "center", alignItems: "center" }}><CircularProgress size="100px" /></Box>
+                <LoadingComponent />
                 : (location.pathname === "/home/employee"
                     ? (<Box sx={{ display: "flex", flexDirection: "column", padding: "20px" }}>
                         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: "10px", alignItems: "center", justifyContent: "center" }}>
@@ -118,7 +116,7 @@ export default function EmployeeProfilesPage() {
                             </Paper>
                         </Box>
                         {filteredRows.length === 0
-                            ? <Box sx={{ width: "100%", textAlign: "center", minHeight: "500px", lineHeight: "500px" }}>no results found</Box>
+                            ? <NoResultComponent />
                             :
                             <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "end" }}>
                                 <TableContainer sx={{ maxHeight: 450, marginTop: "20px" }} >
@@ -176,4 +174,12 @@ export default function EmployeeProfilesPage() {
         </ Paper>
 
     );
+}
+
+export const NoResultComponent = () => {
+    return <Box sx={{ width: "100%", textAlign: "center", minHeight: "500px", lineHeight: "500px" }}>no result found</Box>
+};
+
+export const LoadingComponent = () => {
+    return <Box sx={{ width: "100%", height: "700px", display: "flex", justifyContent: "center", alignItems: "center" }}><CircularProgress size="100px" /></Box>
 }

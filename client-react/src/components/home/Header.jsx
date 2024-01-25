@@ -11,7 +11,7 @@ import { setIsLogin } from "../../redux/loginStateSlice";
 import { resetUser } from "../../redux/userSlice";
 
 // eslint-disable-next-line react/prop-types
-export default function PrimarySearchAppBar({ handleLeftVisible }) {
+export default function Header({ handleLeftVisible }) {
     const username = useSelector((state) => state.user.user_name);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -100,10 +100,10 @@ export default function PrimarySearchAppBar({ handleLeftVisible }) {
                             <MenuIcon />
                         </IconButton>
                     </Tooltip>
-                    <Typography 
-                        variant="h6" 
-                        noWrap 
-                        component="div" 
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
                         sx={{ display: { xs: "none", sm: "block" } }}
                     >
                         P2HR Management

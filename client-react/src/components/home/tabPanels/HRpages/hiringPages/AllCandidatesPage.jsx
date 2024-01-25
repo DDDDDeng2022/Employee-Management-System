@@ -5,6 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import RegistrationSendPage from "./RegistrationSendPage";
 import { getRegistors } from "../../../../../services/registrationApi";
 import { StyledTableCell, StyledTableRow } from "../EmployeeProfilesPage";
+import { LoadingComponent, NoResultComponent } from "../EmployeeProfilesPage";
+
 const AllCandidatesPage = () => {
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
@@ -21,7 +23,7 @@ const AllCandidatesPage = () => {
     };
     React.useEffect(() => {
         fetchRegistors();
-    }, [])
+    }, [loading])
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -44,10 +46,29 @@ const AllCandidatesPage = () => {
             row.email.toLowerCase().includes(searchTerm)
         );
     });
+    const isExpried = () => {
+        // todo: 判断链接是否expired
+        // return true;
+        return false;
+    }
+    const resendEmail = (email) => {
+        // todo: 实现在发送一次链接 + 更新该用户的link
+        fetchRegistors();
+        console.log("rend a link to ", email);
+    }
+    const renderChip = (value, link, email) => {
+        return value
+            ? <Chip label="Submitted" color="success" sx={{ fontSize: { xs: "10px", sm: "15px" } }} />
+            : isExpried(link)
+                ? <>
+                    <Chip label="Expried" sx={{ fontSize: { xs: "10px", sm: "15px" } }} />
+                    <Button onClick={() => resendEmail(email)} >Resend</Button>
+                </>
+                : <Chip label="Not Submitted" color="error" sx={{ fontSize: { xs: "10px", sm: "15px" } }} />
+    }
+
     return (loading ?
-        <Box sx={{ width: "100%", height: "700px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <CircularProgress size="100px" />
-        </Box >
+        <LoadingComponent />
         :
         <Box sx={{ paddingTop: "15px" }}>
             <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: "10px", alignItems: "center", justifyContent: "center" }}>
@@ -64,46 +85,46 @@ const AllCandidatesPage = () => {
                     Invite new
                 </Button>
             </Box>
-            <TableContainer sx={{ maxHeight: 450, marginTop: "20px" }} >
-                <Table stickyHeader>
-                    <TableHead >
-                        <TableRow>
-                            {COLUMNS.map((column) => (
-                                <StyledTableCell
-                                    key={column.id}
-                                    align="center"
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {column.label}
-                                </StyledTableCell>
+            {filteredRows.length === 0 ? <NoResultComponent /> :
+                <TableContainer sx={{ maxHeight: 450, marginTop: "20px" }} >
+                    <Table stickyHeader>
+                        <TableHead >
+                            <TableRow>
+                                {COLUMNS.map((column) => (
+                                    <StyledTableCell
+                                        key={column.id}
+                                        align="center"
+                                        style={{ minWidth: column.minWidth }}
+                                    >
+                                        {column.label}
+                                    </StyledTableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {filteredRows.map((row) => (
+                                <StyledTableRow hover tabIndex={-1} key={row.email}>
+                                    {COLUMNS.map((column) => {
+                                        const value = row[column.id];
+                                        return (
+                                            <StyledTableCell key={column.id} align="center" sx={{ maxWidth: "100px" }}>
+                                                {column.id === "status"
+                                                    ? (renderChip(value, row.link, row.email))
+                                                    : <Tooltip title={value}>{value}</Tooltip>
+                                                }
+                                            </StyledTableCell>
+                                        );
+                                    })}
+                                </StyledTableRow>
                             ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {filteredRows.map((row) => (
-                            <StyledTableRow hover tabIndex={-1} key={row.email}>
-                                {COLUMNS.map((column) => {
-                                    const value = row[column.id];
-                                    return (
-                                        <StyledTableCell key={column.id} align="center" sx={{ maxWidth: "100px" }}>
-                                            {column.id === "status"
-                                                ? (value
-                                                    ? <Chip label="Submitted" color="success" sx={{ fontSize: { xs: "10px", sm: "15px" } }} />
-                                                    : <Chip label="Not Submitted" color="error" sx={{ fontSize: { xs: "10px", sm: "15px" } }} />
-                                                )
-                                                : <Tooltip title={value}>{value}</Tooltip>
-                                            }
-                                        </StyledTableCell>
-                                    );
-                                })}
-                            </StyledTableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            }
             <RegistrationSendPage open={open} handleClose={handleClose} updateRegistors={fetchRegistors} />
         </Box >
     )
 };
 
 export default AllCandidatesPage;
+

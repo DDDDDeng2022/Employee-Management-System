@@ -111,7 +111,7 @@ const uploadDocument = async (req, res) => {
         };
         const file = req.file;
         console.log("file: ", file);
-        const documentUrl = `${req.protocol}://${req.get('host')}/${file.path}`;
+        const documentUrl = `${req.protocol}://${req.get("host")}/uploads/${file.filename}`;
         res.status(200).send({ documentUrl: documentUrl });
     } catch (error) {
         console.error(error);

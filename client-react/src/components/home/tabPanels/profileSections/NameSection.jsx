@@ -29,7 +29,6 @@ export const NameSection = ({ formData, isEmployeeProfile }) => {
     const [avatar, setAvatar] = React.useState(formData.photo);
 
     const handleAvatarChange = async (e) => {
-        console.log("hhhh");
         const file = e.target.files[0];
         if (file) {
             try {

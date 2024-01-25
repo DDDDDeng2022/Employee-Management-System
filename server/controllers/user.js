@@ -8,7 +8,8 @@ const getAllUsers = async (req, res) => {
                 { path: 'reference' },
                 { path: 'emergency_contact' },
                 { path: 'address' },
-                { path: 'opt' }
+                { path: 'opt' },
+                { path: 'optDocs' }
             ]
         })
         .then((users) => {
@@ -28,7 +29,8 @@ const getAllUsers = async (req, res) => {
                     emergency_contact: user.personal_info?.emergency_contact,
                     address: user.personal_info?.address,
                     opt: user.personal_info?.opt,
-                    review_status: user.personal_info?.review_status
+                    review_status: user.personal_info?.review_status,
+                    optDocs: user.personal_info?.optDocs
                 };
                 console.log(new_obj);
                 return new_obj;
