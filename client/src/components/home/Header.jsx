@@ -55,14 +55,6 @@ export default function PrimarySearchAppBar({ hanldeMenuVisible }) {
         >
             <MenuItem>
                 <IconButton size="large" color="inherit">
-                    <Badge badgeContent={17} color="error">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
-            </MenuItem>
-            <MenuItem>
-                <IconButton size="large" color="inherit">
                     <AccountCircle />
                 </IconButton>
                 <p>Profile</p>
@@ -95,11 +87,6 @@ export default function PrimarySearchAppBar({ hanldeMenuVisible }) {
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <IconButton size="large" color="inherit">
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
                         <IconButton
                             size="large"
                             edge="end"

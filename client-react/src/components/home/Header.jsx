@@ -95,14 +95,6 @@ export default function Header({ handleLeftVisible }) {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
-                <IconButton size="large" color="inherit">
-                    <Badge badgeContent={17} color="error">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
-            </MenuItem>
             <MenuItem onClick={() => { navigate("/home/profile") }}>
                 <IconButton size="large" color="inherit">
                     <AccountCircle />
@@ -137,16 +129,9 @@ export default function Header({ handleLeftVisible }) {
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        {/* 可能用不着 */}
-                        {/* <IconButton size="large" color="inherit">
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton> */}
                         <IconButton size="large" edge="end" onClick={handleProfileMenuOpen} color="inherit">
                             <AccountCircle />
                         </IconButton>
-                        {/* todo: 改成username */}
                         <Typography sx={{ margin: "auto", paddingLeft: "20px" }}>
                             Welcome {username}!
                         </Typography>

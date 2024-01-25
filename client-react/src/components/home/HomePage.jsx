@@ -12,6 +12,7 @@ import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import { useSelector, useDispatch } from 'react-redux';
+
 const SwitchTabs = (role) => {
     if (role === "HR") {
         return [
@@ -30,6 +31,8 @@ const SwitchTabs = (role) => {
     }
 }
 const HomePage = () => {
+    const profile = useSelector((state) => state.myProfile.profile);
+    const [isFirstLoad, setIsFirstLoad] = React.useState(true);
     const [visible, setVisible] = React.useState(true);
     const [value, setValue] = React.useState(0);
     const location = useLocation();
@@ -39,11 +42,20 @@ const HomePage = () => {
     const role = useSelector((state) => state.user.role);
     const tabs = SwitchTabs(role);
     React.useEffect(() => {
-        const currentTab = tabs.findIndex((tab) => tab.path === location.pathname);
-        if (currentTab >= 0) {
-            setValue(currentTab);
+        if (isFirstLoad && Object.keys(profile).length === 1) {
+            navigate("/home/onboarding");
+            setIsFirstLoad(false);
+        } else {
+            const currentTab = tabs.findIndex((tab) => tab.path === location.pathname);
+            if (currentTab >= 0) {
+                setValue(currentTab);
+            }
         }
-    }, [location]);
+        // const currentTab = tabs.findIndex((tab) => tab.path === location.pathname);
+        // if (currentTab >= 0) {
+        //     setValue(currentTab);
+        // }
+    }, [navigate, location, tabs, isFirstLoad, profile]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

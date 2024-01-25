@@ -67,7 +67,7 @@ function evaluateOptDocsStatus(optDocs) {
 }
 export default function VisaPage() {
     const optDocs_id = useSelector((state) => state.myProfile.profile?.optDocs);
-    // const optDocs_id = "65b0ad3077279e830cc73822";
+    // const optDocs_id = "65b0ea2354ea27ba8bd0ecde";
     const [loading, setLoading] = React.useState(true);
     const [activeStep, setActiveStep] = React.useState(0);
     const [displayStep, setDisplayStep] = React.useState(0);

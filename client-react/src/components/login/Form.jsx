@@ -37,14 +37,14 @@ export default function Form({ isSignup }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { token } = useParams();
-    
+
     React.useEffect(() => {
         async function fetchToken(token) {
-            await apiCall({ url: "/api/auth/decode", method: "POST", data: { token }})
+            await apiCall({ url: "/api/auth/decode", method: "POST", data: { token } })
                 .then(decoded => {
                     console.log(decoded);
                     setUserEmail(decoded.email);
-            })
+                })
         };
         if (isSignup && token) {
             fetchToken(token);
@@ -94,6 +94,7 @@ export default function Form({ isSignup }) {
 
                 if (response.status === 201) {
                     console.log("Login Success", response);
+                    console.log()
                     response._doc.personal_info = checkReviewStatus(response._doc.personal_info);
                     dispatch(setIsLogin(true));
                     dispatch(
