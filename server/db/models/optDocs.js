@@ -33,6 +33,9 @@ const optDocsSchema = new mongoose.Schema({
     I20: {
         type: [String],
         default: []
+    },
+    feedback: {
+        type: String,
     }
 });
 

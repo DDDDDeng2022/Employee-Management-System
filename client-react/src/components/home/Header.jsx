@@ -124,7 +124,7 @@ export default function Header({ handleLeftVisible }) {
                 <Toolbar>
                     <Tooltip title="resource">
                         <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} onClick={handleLeftVisible}>
-                            <MenuIcon />
+                            <MenuIcon sx={{ display: { xs: "none", sm: "block" } }} />
                         </IconButton>
                     </Tooltip>
                     <Typography

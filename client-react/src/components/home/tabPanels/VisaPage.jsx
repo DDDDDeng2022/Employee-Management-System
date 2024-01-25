@@ -30,8 +30,6 @@ const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
     }),
 }));
 
-// todo:optDocs里添加feedback
-const feedback = "hhhhhh."
 function ColorlibStepIcon(props) {
     const { active, completed, icon } = props;
     return (
@@ -41,6 +39,7 @@ function ColorlibStepIcon(props) {
     );
 }
 function evaluateOptDocsStatus(optDocs) {
+    console.log("fedkja optDocs: ", optDocs);
     let message = "all set";
     let currentStatus = "empty";
     if (optDocs.curDoc < optDocs.Docs.length) {
@@ -54,7 +53,7 @@ function evaluateOptDocsStatus(optDocs) {
                 <>
                     Your uploading were <span style={{ color: "red" }}>rejected</span>. <br />
                     Here is the feedback:<br />
-                    <Chip label={feedback} color="error" variant="outlined" /><br />
+                    <Chip label={optDocs?.feedback} color="error" variant="outlined" /><br />
                     Plase <b>delete</b> the invalid files and <b>re-upload</b>
                     a new for your OPT {optDocs.Docs[optDocs.curDoc]}
                 </>
@@ -68,7 +67,7 @@ function evaluateOptDocsStatus(optDocs) {
 }
 export default function VisaPage() {
     const optDocs_id = useSelector((state) => state.myProfile.profile?.optDocs);
-    // const optDocs_id = "65b0ea2354ea27ba8bd0ecde";
+    // const optDocs_id = "65b0ad3077279e830cc73822";
     const [loading, setLoading] = React.useState(true);
     const [activeStep, setActiveStep] = React.useState(0);
     const [displayStep, setDisplayStep] = React.useState(0);
