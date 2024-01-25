@@ -9,7 +9,8 @@ import {
 } from "../controllers/user.js";
 import {
     createPersonalInfo,
-    updatePersonalInfo,
+    getPersonalInfo,
+    updatInfo,
     uploadPhoto,
     uploadDocument
 } from "../controllers/personalInfo.js";
@@ -18,13 +19,22 @@ import { fileURLToPath } from "url";
 
 const router = express.Router();
 
-const fileFilter = (req, file, cb) => {
+const photoFileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(new Error('Not a JPG or PNG photo'), false);
+    }
+};
+
+const documentFileFilter = (req, file, cb) => {
     if (file.mimetype === 'application/pdf' || file.mimetype === 'application/msword') {
         cb(null, true);
     } else {
         cb(new Error('Not a PDF or DOC file'), false);
     }
 };
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         const __filename = fileURLToPath(import.meta.url);
@@ -40,16 +50,19 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage, fileFilter: fileFilter });
+const uploadPhotoMulter = multer({ storage: storage, fileFilter: photoFileFilter });
+const uploadDocumentMulter = multer({ storage: storage, fileFilter: documentFileFilter });
 
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
+router.get("/info/:id", getPersonalInfo);
 
+router.put("/profileInfo/:id", updatInfo);
 router.put("/:id", updateUser);
 router.post("/info/:id", createPersonalInfo);
-router.put("/info/:id", updatePersonalInfo);
+// router.put("/info/:id", updatePersonalInfo);
 router.delete("/:id", deleteUser);
-router.post('/upload', upload.single('image'), uploadPhoto);
-router.post('/uploadDocument', upload.single('document'), uploadDocument);
+router.post('/upload', uploadPhotoMulter.single('image'), uploadPhoto);
+router.post('/uploadDocument', uploadDocumentMulter.single('document'), uploadDocument);
 
 export default router;
