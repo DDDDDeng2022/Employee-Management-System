@@ -5,7 +5,7 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios';
 import { DialogTitle, DialogContentText, DialogContent, DialogActions, Dialog, TextField } from "@mui/material";
-
+import FileList from "../../employeePages/FileList";
 export const calculateDaysRemaining = (endDate) => {
     const end = new Date(endDate);
     const now = new Date();
@@ -21,6 +21,7 @@ export const VISA_COLUMNS = [
 ];
 export default function InProcessPage({ employees, fetchEmployees }) {
     const filteredEmployees = employees.filter((item) => item.optDocs.curDoc <= 3);
+    const [files, setFiles] = React.useState([]);
     const transformEmployees = (employees) => {
         return employees.map(employee => {
             let nextStep = '';
@@ -45,6 +46,14 @@ export default function InProcessPage({ employees, fetchEmployees }) {
         });
     };
     const inProcessingdata = transformEmployees(filteredEmployees);
+    const [open, setOpen] = React.useState(false);
+    const handleClickOpen = (f) => {
+        setFiles(f)
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return <Box sx={{ p: 2 }}>
         <TableContainer component={Paper}>
@@ -73,23 +82,10 @@ export default function InProcessPage({ employees, fetchEmployees }) {
 
                                         {column.id === "nextStep" && value === "Wait for HR approval"
                                             && <Box>
-                                                {/* todo:
-                                                        还不确定file列在哪
-                                                        preview
-                                                 */}
-                                                <Button>view files</Button>
+
+                                                <Button onClick={() => handleClickOpen(employee.files)}>view files</Button>
                                                 <OPTActions id={employee.opt_id} fetchEmployees={fetchEmployees} />
-                                                {/* {employee.files.map((doc, index) => (
-                                                    <Tooltip key={index} title={doc.name}>
-                                                        <a
-                                                            href={doc.url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            {doc.name}
-                                                        </a>
-                                                    </Tooltip>
-                                                ))}, */}
+
                                             </Box>}
                                     </StyledTableCell>
                                 );
@@ -99,8 +95,36 @@ export default function InProcessPage({ employees, fetchEmployees }) {
                 </TableBody>
             </Table>
         </TableContainer>
+        {files.length > 0 && <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Uploaded files </DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    <FileList files={files} isEditable={false} />
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>close</Button>
+            </DialogActions>
+        </Dialog>
+        }
     </Box >
 
+}
+
+const FileDialog = ({ open, handleClose, files }) => {
+    console.log("dialog files open:", open)
+    console.log("dialogfiles: ", files);
+    return <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Uploaded files </DialogTitle>
+        <DialogContent>
+            <DialogContentText>
+                <FileList files={files} isEditable={false} />
+            </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleClose}>close</Button>
+        </DialogActions>
+    </Dialog>
 }
 
 const OPTActions = ({ id, fetchEmployees }) => {
