@@ -9,6 +9,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { calculateDaysRemaining } from "./InProcessPage";
 import { VISA_COLUMNS } from "./InProcessPage";
 import { NoResultComponent } from "../EmployeeProfilesPage";
+import { handlePreviewClick } from "../../FilePreviewButton";
 
 const COLUMNS = VISA_COLUMNS.slice(0, -1);
 const transformOptDocs = (optDocs) => {
@@ -136,7 +137,7 @@ function EmployeeRow({ employee }) {
                                             <StyledTableCell align="center">{file.docs_type}</StyledTableCell>
                                             <StyledTableCell align="center"><Chip label={file.status} color={ChipColor(file.status)} variant="outlined" /></StyledTableCell>
                                             <StyledTableCell align="center">
-                                                <IconButton onClick={() => {/* todo预览操作 */ }}>
+                                                <IconButton onClick={() => {handlePreviewClick(file.name)}}>
                                                     <VisibilityIcon />
                                                 </IconButton>
                                                 <IconButton component="a" href={file.name} download>
