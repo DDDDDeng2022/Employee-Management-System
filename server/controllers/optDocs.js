@@ -104,11 +104,17 @@ const approveDoc = async (req, res) => {
             res.status(404).json({ msg: `optDoc id: ${id} is not found` });
             return;
         }
-        optDoc.curDoc += 1;
-        optDoc.curStatus = EMPTY;
-        await optDoc.save();
-        res.status(200).json({ msg: "document approval success", optDoc: optDoc });
-        return;
+        if(optDoc.curStatus === PENDING){
+            optDoc.curDoc += 1;
+            optDoc.curStatus = EMPTY;
+            await optDoc.save();
+            res.status(200).json({ msg: "document approval success", optDoc: optDoc });
+            return;
+        }else{
+            res.status(400).json({ msg: "You cannot approve when no document uploaded"});
+            return;
+        }
+        
     } catch (err) {
         res.status(500).json({ msg: "Internal Error" });
     }

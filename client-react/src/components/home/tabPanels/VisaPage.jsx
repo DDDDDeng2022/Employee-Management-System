@@ -314,7 +314,15 @@
 import React from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { styled } from "@mui/material/styles";
-import { Box, Stepper, Step, StepLabel, Button, Typography, StepIcon, StepButton } from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Button, Typography, StepIcon, StepButton, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import GetAppIcon from '@mui/icons-material/GetApp'; // Download icon
+import VisibilityIcon from '@mui/icons-material/Visibility'; // Eye icon
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DescriptionIcon from '@mui/icons-material/Description';
+import PermMediaIcon from '@mui/icons-material/PermMedia';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Check from "@mui/icons-material/Check";
 import PDFViewer from 'pdf-viewer-reactjs';//npm install pdf-viewer-reactjs
 import { useEffect, useState } from 'react';
@@ -380,12 +388,11 @@ export default function VisaPage() {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                const data = await response.json();
-                console.log("data: ", data);
-                setOptData(data.optDoc);
-                setActiveStep(data.optDoc.curDoc);
-                setDisplayStep(data.optDoc.curDoc);
-                setCurStep(data.optDoc.curDoc);
+                const optDoc = await response.json();
+                setOptData(optDoc);
+                setActiveStep(optDoc.curDoc);
+                setDisplayStep(optDoc.curDoc);
+                setCurStep(optDoc.curDoc);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -499,7 +506,9 @@ export default function VisaPage() {
                             <Button onClick={handleNext}>Next</Button>
                         )}
                         {displayStep === activeStep && (
-                            <Button onClick={handleUpload}>upload</Button>
+                            <Button onClick={handleUpload} component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                                Upload file
+                            </Button>
                         )}
                     </Box>
                 </React.Fragment>
@@ -556,14 +565,64 @@ const ActiveStepContent = ({ updateTempFiles, fileLinks }) => {
         )}
     </Box>
 
-}
+};
+
+const FileList = ({ optData, step }) => {
+    return (
+      <List>
+        {optData[step].map(file => {
+          const linkParse = file.split('<')[1].split('>');
+          const fileName = linkParse[0];
+          const fileExtension = fileName.split('.').pop(); // Extract file extension
+  
+          // Map file extensions to corresponding Material-UI icons
+          const iconByExtension = {
+            pdf: <PictureAsPdfIcon />,
+            doc: <DescriptionIcon />,
+            png: < PermMediaIcon />,
+            jpg: <PermMediaIcon />,
+            jpeg: <PermMediaIcon />
+
+            // Add more file types and their icons as needed
+          };
+  
+          // Default icon for unknown file types
+          const defaultIcon = <InsertDriveFileIcon />;
+  
+          // Choose the appropriate icon based on the file extension
+          const fileIcon = iconByExtension[fileExtension.toLowerCase()] || defaultIcon;
+  
+          return (
+            <ListItem key={file}>
+              <ListItemIcon>
+                {fileIcon}
+              </ListItemIcon>
+            
+              <ListItemText primary={fileName} />
+              <Button variant="contained"  size="small" sx={{margin: '0 10px', padding: '3px'}}
+              startIcon={<GetAppIcon />}>Download</Button>
+              <Button variant="contained"  size="small" sx={{margin: '0 5px', padding: '3px'}}
+              startIcon={<VisibilityIcon />}>Preview</Button>
+            </ListItem>
+          );
+        })}
+      </List>
+    );
+  };
+
+ 
 const CompletedStepContent = ({ curStep, optData }) => {
     const step = steps[curStep];
     console.log("optData: ", optData);
+    
     return <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center", border: "lightgray solid 2px", margin: "20px 100px", width: "60vw", height: '60vh' }}>
         <Typography sx={{ mt: 2, mb: 1 }}>Your current Step: {step}</Typography>
-
-        <div>{optData[step]}</div>
-        <a href={optData[step]}></a>
+{/*      
+        {optData[step].map(file => { 
+            const linkParse = file.split('<')[1].split('>');
+            const fileName = linkParse[0];
+            return ( <div key={file}>{fileName}</div>)} )}
+        <a href={optData[step]}></a> */}
+        <FileList optData={optData} step={step}/>
     </Box>
 }
