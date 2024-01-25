@@ -36,7 +36,7 @@ export default function Form({ isSignup }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { token } = useParams();
-    
+
 
     const onSignupSubmit = async (data) => {
         alert("form data: " + JSON.stringify(data, null, 2));
