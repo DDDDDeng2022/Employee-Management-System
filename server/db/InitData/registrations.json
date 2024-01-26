@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "65af650a54ff5e3014108234"
+  },
+  "email": "zhouqing@usc.edu",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpob3VxaW5nQHVzYy5lZHUiLCJmaXJzdF9uYW1lIjoiQmVpIiwibGFzdF9uYW1lIjoiRGVuZyIsImlhdCI6MTcwNjIyMTI2NiwiZXhwIjoxNzA2MjMyMDY2fQ.G4phAZtcktHEVhUUAU-9ofnLwVQK0-ZPNFWd5_fHhbI",
+  "updated_at": {
+    "$date": "2024-01-25T22:21:07.614Z"
+  },
+  "__v": 0,
+  "first_name": "Bei",
+  "last_name": "Deng",
+  "status": false,
+  "link": "http://localhost:3000/signup/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpob3VxaW5nQHVzYy5lZHUiLCJmaXJzdF9uYW1lIjoiQmVpIiwibGFzdF9uYW1lIjoiRGVuZyIsImlhdCI6MTcwNjIyMTI2NiwiZXhwIjoxNzA2MjMyMDY2fQ.G4phAZtcktHEVhUUAU-9ofnLwVQK0-ZPNFWd5_fHhbI",
+  "created_at": {
+    "$date": "2024-01-25T11:49:17.557Z"
+  }
+}]
