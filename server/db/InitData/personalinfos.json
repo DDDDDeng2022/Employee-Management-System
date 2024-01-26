@@ -1,63 +1,100 @@
-[{
-  "_id": {
-    "$oid": "65abc4abe882fa5212a497c2"
-  },
-  "first_name": "Wentai",
-  "last_name": "Liu",
-  "email": "wentai1@gmail.com",
-  "ssn": "123567890",
-  "birth_date": "1999-01-20",
-  "gender": "I do not wish to answer",
-  "visa_type": "citizen",
-  "reference": {
-    "$oid": "65abc4abe882fa5212a497bd"
-  },
-  "emergency_contact": [
+[
     {
-      "$oid": "65abc4abe882fa5212a497be"
+        "_id": {
+            "$oid": "65abc4abe882fa5212a497c2"
+        },
+        "first_name": "Wentai",
+        "last_name": "Liu",
+        "email": "wentai1@gmail.com",
+        "ssn": "123567890",
+        "birth_date": "1999-01-20",
+        "gender": "I do not wish to answer",
+        "visa_type": "citizen",
+        "reference": {
+            "$oid": "65abc4abe882fa5212a497bd"
+        },
+        "emergency_contact": [
+            {
+                "$oid": "65abc4abe882fa5212a497be"
+            }
+        ],
+        "__v": 0,
+        "cell_phone_number": "9491234567",
+        "opt": {
+            "$oid": "65aeff331a79260d646a9c83"
+        },
+        "address": {
+            "$oid": "65abc4abe882fa5212a497c0"
+        },
+        "optDocs": {
+            "$oid": "65b0ad3077279e830cc73822"
+        },
+        "middle_name": "",
+        "photo": "http://localhost:8080/uploads/4511668.png-1706210832603-950788145",
+        "work_phone_number": ""
+    },
+    {
+        "_id": {
+            "$oid": "65b2f6dac7926407da1b983c"
+        },
+        "first_name": "uuu",
+        "last_name": "tttt",
+        "email": "tik@gmail.com",
+        "ssn": "1020008",
+        "birth_date": "1980-01-01",
+        "gender": "male",
+        "visa_type": "opt",
+        "reference": {
+            "$oid": "65abc4abe882fa5212a497bd"
+        },
+        "emergency_contact": [
+            {
+                "$oid": "65abc4abe882fa5212a497be"
+            }
+        ],
+        "__v": 0,
+        "cell_phone_number": "213000002",
+        "opt": {
+            "$oid": "65aeff78325e49dc8382c312"
+        },
+        "address": {
+            "$oid": "65abc4abe882fa5212a497c0"
+        },
+        "optDocs": {
+            "$oid": "65b0ad3477279e830cc73824"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "65b2f7e5fceb2ad32c0c3587"
+        },
+        "first_name": "Wentai",
+        "last_name": "Liu",
+        "photo": "http://localhost:8080/uploads/4511668.png-1706226651731-920621469",
+        "middle_name": "Middle",
+        "address": {
+            "$oid": "65b2f7e5fceb2ad32c0c3583"
+        },
+        "cell_phone_number": "5173031111",
+        "email": "toblerone4690@gmail.com",
+        "ssn": "11154948",
+        "birth_date": "06/01/1999",
+        "gender": "male",
+        "review_status": null,
+        "reference": {
+            "$oid": "65b2f7e5fceb2ad32c0c3580"
+        },
+        "emergency_contact": [
+            {
+                "$oid": "65b2f7e5fceb2ad32c0c3581"
+            }
+        ],
+        "opt": {
+            "$oid": "65b2f7e5fceb2ad32c0c3585"
+        },
+        "optDocs": {
+            "$oid": "65b2f4537376e30ead762c25"
+        },
+        "__v": 0
     }
-  ],
-  "__v": 0,
-  "cell_phone_number": "9491234567",
-  "opt": {
-    "$oid": "65aeff331a79260d646a9c83"
-  },
-  "address": {
-    "$oid": "65abc4abe882fa5212a497c0"
-  },
-  "optDocs": {
-    "$oid": "65b0ad3077279e830cc73822"
-  },
-  "middle_name": "",
-  "photo": "http://localhost:8080/uploads/4511668.png-1706210832603-950788145",
-  "work_phone_number": ""
-},
-{
-  "_id": {
-    "$oid": "65b2f6dac7926407da1b983c"
-  },
-  "first_name": "uuu",
-  "last_name": "tttt",
-  "email": "tik@gmail.com",
-  "ssn": "1020008",
-  "birth_date": "1980-01-01",
-  "gender": "male",
-  "visa_type": "opt",
-  "reference": {
-    "$oid": "65abc4abe882fa5212a497bd"
-  },
-  "emergency_contact": {
-    "$oid": "65abc4abe882fa5212a497be"
-  },
-  "__v": 0,
-  "cell_phone_number": "213000002",
-  "opt": {
-    "$oid": "65aeff78325e49dc8382c312"
-  },
-  "address": {
-    "$oid": "65abc4abe882fa5212a497c0"
-  },
-  "optDocs": {
-    "$oid": "65b0ad3477279e830cc73824"
-  }
-}]
+]

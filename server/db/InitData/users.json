@@ -1,17 +1,35 @@
-[{
-  "_id": {
-    "$oid": "65ae463d39beb4e98f656bc2"
-  },
-  "username": "user6",
-  "email": "email6@gmail.com",
-  "password": "email5",
-  "role": {
-    "$oid": "65abc24aac6bfa1e60d2cd53"
-  },
-  "__v": {
-    "$oid": "65ae2a4239beb4e98f656bb0"
-  },
-  "personal_info": {
-    "$oid": "65b2f6dac7926407da1b983c"
-  }
-}]
+[
+    {
+        "_id": {
+            "$oid": "65ae463d39beb4e98f656bc2"
+        },
+        "username": "user6",
+        "email": "email6@gmail.com",
+        "password": "email5",
+        "role": {
+            "$oid": "65abc24aac6bfa1e60d2cd53"
+        },
+        "__v": {
+            "$oid": "65ae2a4239beb4e98f656bb0"
+        },
+        "personal_info": {
+            "$oid": "65b2f6dac7926407da1b983c"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "65b2e236127f7e3d7703aa11"
+        },
+        "username": "Toblerone0",
+        "email": "toblerone4690@gmail.com",
+        "password": "test1234",
+        "role": {
+            "$oid": "65abc24aac6bfa1e60d2cd54"
+        },
+        "deleted": false,
+        "__v": 0,
+        "personal_info": {
+            "$oid": "65b2f7e5fceb2ad32c0c3587"
+        }
+    }
+]

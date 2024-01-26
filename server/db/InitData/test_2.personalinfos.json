@@ -1,0 +1,33 @@
+[{
+  "_id": {
+    "$oid": "65b2f7e5fceb2ad32c0c3587"
+  },
+  "first_name": "Wentai",
+  "last_name": "Liu",
+  "photo": "http://localhost:8080/uploads/4511668.png-1706226651731-920621469",
+  "middle_name": "Middle",
+  "address": {
+    "$oid": "65b2f7e5fceb2ad32c0c3583"
+  },
+  "cell_phone_number": "5173031111",
+  "email": "toblerone4690@gmail.com",
+  "ssn": "11154948",
+  "birth_date": "06/01/1999",
+  "gender": "male",
+  "review_status": null,
+  "reference": {
+    "$oid": "65b2f7e5fceb2ad32c0c3580"
+  },
+  "emergency_contact": [
+    {
+      "$oid": "65b2f7e5fceb2ad32c0c3581"
+    }
+  ],
+  "opt": {
+    "$oid": "65b2f7e5fceb2ad32c0c3585"
+  },
+  "optDocs": {
+    "$oid": "65b2f4537376e30ead762c25"
+  },
+  "__v": 0
+}]

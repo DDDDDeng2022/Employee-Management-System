@@ -1,0 +1,11 @@
+[{
+  "_id": {
+    "$oid": "65b2f7e5fceb2ad32c0c3583"
+  },
+  "street": "1 ave",
+  "building": "apt 111",
+  "city": "Seattle",
+  "state": "CA",
+  "zip": 98101,
+  "__v": 0
+}]

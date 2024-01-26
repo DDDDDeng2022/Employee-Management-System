@@ -1,0 +1,50 @@
+[
+    {
+        "_id": {
+            "$oid": "65b0ad3077279e830cc73822"
+        },
+        "Docs": ["Receipt", "EAD", "I983", "I20"],
+        "Status": ["empty", "pending", "rejected"],
+        "curDoc": 0,
+        "curStatus": 2,
+        "Receipt": [
+            "http://localhost:8080/uploads/Project_B.pdf-1706085790117-99803237",
+            "http://localhost:8080/uploads/Project_B.pdf-1706085790117-99803237"
+        ],
+        "EAD": [],
+        "I983": [],
+        "I20": [],
+        "__v": 2,
+        "feedback": "sjjolcoia onwjke"
+    },
+    {
+        "_id": {
+            "$oid": "65b0ad3477279e830cc73824"
+        },
+        "Docs": ["Receipt", "EAD", "I983", "I20"],
+        "Status": ["empty", "pending", "rejected"],
+        "curDoc": 0,
+        "curStatus": 0,
+        "Receipt": [],
+        "EAD": [],
+        "I983": [],
+        "I20": [],
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "65b2f4537376e30ead762c25"
+        },
+        "Docs": ["Receipt", "EAD", "I983", "I20"],
+        "Status": ["empty", "pending", "rejected"],
+        "curDoc": 0,
+        "curStatus": 1,
+        "Receipt": [
+            "http://localhost:8080/uploads/Project_B.pdf-1706226771957-263129100"
+        ],
+        "EAD": [],
+        "I983": [],
+        "I20": [],
+        "__v": 1
+    }
+]
