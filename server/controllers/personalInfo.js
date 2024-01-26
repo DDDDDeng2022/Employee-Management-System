@@ -6,11 +6,13 @@ import getUserById from "../services/getUserById.js";
 import getPersonalInfoById from "../services/getPersonalInfoById.js";
 import updateRefs from "../services/updateRefs.js";
 import OPT from "../db/models/opt.js";
+import removeEmptyFields from "../services/removeEmptyFields.js";
 
 const createPersonalInfo = async (req, res) => {
     try {
         const user_id = req.params?.id;
-        const personal_info = req.body;
+        const personal_info = removeEmptyFields(req.body);
+        console.log(personal_info);
         const update_fields = {
             address: Address,
             reference: Contact,
@@ -21,20 +23,23 @@ const createPersonalInfo = async (req, res) => {
         const user = await getUserById(user_id);
         if (!user.personal_info) {
             // Create and convert reference & emergency_contact to Object_id
-            await Contact.bulkWrite([
-                {
-                    insertOne: {
-                        document: personal_info.reference,
-                    },
+            const bulkWriteOperations = [];
+            bulkWriteOperations.push({
+                insertOne: {
+                    document: personal_info.reference,
                 },
-                {
+            });
+            personal_info.emergency_contact.forEach((emergencyContact) => {
+                bulkWriteOperations.push({
                     insertOne: {
-                        document: personal_info.emergency_contact,
+                        document: emergencyContact,
                     },
-                },
-            ]).then((result) => {
+                });
+            });
+            await Contact.bulkWrite(bulkWriteOperations).then((result) => {
+                console.log(result.insertedIds);
                 personal_info.reference = result.insertedIds["0"];
-                personal_info.emergency_contact = result.insertedIds["1"];
+                personal_info.emergency_contact = Object.values(result.insertedIds).slice(1);
             });
 
             // Create and convert address to Object_id
@@ -51,9 +56,10 @@ const createPersonalInfo = async (req, res) => {
             const pinfo = new PersonalInfo({ ...personal_info });
             await pinfo.save().then(async (info) => {
                 const user = await getUserById(user_id);
-                await User.findOneAndUpdate(
-                    { _id: user._id },
-                    { ...user, personal_info: info._id }
+                await User.findByIdAndUpdate(
+                    user._id,
+                    { ...user, personal_info: info._id },
+                    { new: true }
                 ).then((result) => {
                     res.status(200).json(result);
                 });

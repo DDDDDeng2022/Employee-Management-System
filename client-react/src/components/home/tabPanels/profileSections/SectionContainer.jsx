@@ -34,7 +34,7 @@ export default function SectionContainer(props) {
                 method: "POST",
                 data,
             }).then((response) => {
-                if (response.status === 201) {
+                if (response.status === 200) {
                     dispatch(setMyProfile(response.info))
                     alert("Update Successfully");
                 } else {
