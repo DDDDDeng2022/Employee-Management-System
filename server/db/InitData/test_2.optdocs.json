@@ -1,0 +1,25 @@
+[{
+  "_id": {
+    "$oid": "65b2f4537376e30ead762c25"
+  },
+  "Docs": [
+    "Receipt",
+    "EAD",
+    "I983",
+    "I20"
+  ],
+  "Status": [
+    "empty",
+    "pending",
+    "rejected"
+  ],
+  "curDoc": 0,
+  "curStatus": 1,
+  "Receipt": [
+    "http://localhost:8080/uploads/Project_B.pdf-1706226771957-263129100"
+  ],
+  "EAD": [],
+  "I983": [],
+  "I20": [],
+  "__v": 1
+}]
