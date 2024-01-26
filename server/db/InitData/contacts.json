@@ -1,0 +1,22 @@
+[{
+  "_id": {
+    "$oid": "65abc4abe882fa5212a497bd"
+  },
+  "first_name": "reference_test_first_name",
+  "last_name": "reference_test_last_name",
+  "relationship": "reference_test_relationship",
+  "phone_num": "9491234567",
+  "__v": 0,
+  "email": "emrg4@gmail.com"
+},
+{
+  "_id": {
+    "$oid": "65abc4abe882fa5212a497be"
+  },
+  "first_name": "emergency_contact_test_first_name",
+  "last_name": "emergency_contact_test_last_name",
+  "relationship": "emergency_contact_test_relationship",
+  "phone_num": "9497654321",
+  "__v": 0,
+  "email": "emrg65@gmail.com"
+}]
