@@ -57,11 +57,10 @@ const personalInfoSchema = new mongoose.Schema({
     },
     visa_type: {
         type: String,
-        required: true,
+        // required: true,
     },
     review_status: {
         type: Boolean,
-        required: true,
         default: null,
     },
     review_memo: {
