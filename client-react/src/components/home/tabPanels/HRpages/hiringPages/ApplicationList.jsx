@@ -84,15 +84,12 @@ const ApplicationList = ({ status, applications, updateApplications }) => {
 };
 
 export function ReviewSendPage({ open, handleClose, updateApplications, id }) {
-    const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         update(id, { ...formJson, review_status: false });
         updateApplications && updateApplications();
-        navigate(`/home/hiring/`);
-
         handleClose();
     }
     return <Dialog

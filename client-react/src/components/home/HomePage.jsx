@@ -51,10 +51,6 @@ const HomePage = () => {
                 setValue(currentTab);
             }
         }
-        // const currentTab = tabs.findIndex((tab) => tab.path === location.pathname);
-        // if (currentTab >= 0) {
-        //     setValue(currentTab);
-        // }
     }, [navigate, location, tabs, isFirstLoad, profile]);
 
     const handleChange = (event, newValue) => {

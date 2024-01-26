@@ -79,7 +79,7 @@ const createPersonalInfo = async (req, res) => {
                 res.status(201).json({ info, message: "Successfully updated." });
             });
         }
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -127,33 +127,50 @@ const getPersonalInfo = async (req, res) => {
         .populate('reference emergency_contact address opt optDocs')
         .then(personal_info => {
             res.status(201).json(personal_info);
-    }).catch(err => {
-        res.status(500).json({ err, message: "GET personal info Error" })
-    });
+        }).catch(err => {
+            res.status(500).json({ err, message: "GET personal info Error" })
+        });
 }
+
+// const updatInfo = async (req, res) => {
+//     try {
+//         const profile_id = req.params.id;
+//         const update_info = req.body;
+//         if (!profile_id) {
+//             return res.status(400).json({ message: "Profile ID is required." });
+//         }
+//         if (Object.keys(update_info).length === 0) {
+//             return res.status(400).json({ message: "Update data is required." });
+//         }
+//         const personal_info = await PersonalInfo.findById(profile_id);
+//         if (!personal_info) {
+//             return res.status(404).json({ message: "Personal info not found." });
+//         }
+//         const update_fields = {
+//             address: Address,
+//             reference: Contact,
+//             emergency_contact: Contact,
+//             opt: OPT,
+//         };
+
+//         await updateRefs({ update_fields, update_info, personal_info });
+//         await PersonalInfo.findByIdAndUpdate(profile_id, update_info, { new: true });
+//         res.status(200).json({ message: "Personal info updated successfully." });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ message: "Error updating personal info.", error: err.message });
+//     }
+// };
 
 const updatInfo = async (req, res) => {
     try {
         const profile_id = req.params.id;
-        const update_info = req.body;
+        const { review_status, review_memo } = req.body;
         if (!profile_id) {
             return res.status(400).json({ message: "Profile ID is required." });
-        }
-        if (Object.keys(update_info).length === 0) {
-            return res.status(400).json({ message: "Update data is required." });
-        }
-        const personal_info = await PersonalInfo.findById(profile_id);
-        if (!personal_info) {
-            return res.status(404).json({ message: "Personal info not found." });
-        }
-        const update_fields = {
-            address: Address,
-            reference: Contact,
-            emergency_contact: Contact,
-            opt: OPT,
-        };
-
-        await updateRefs({ update_fields, update_info, personal_info });
+        } const update_info = {};
+        if (review_status !== undefined) update_info.review_status = review_status;
+        if (review_memo !== undefined) update_info.review_memo = review_memo;
         await PersonalInfo.findByIdAndUpdate(profile_id, update_info, { new: true });
         res.status(200).json({ message: "Personal info updated successfully." });
     } catch (err) {
@@ -161,8 +178,6 @@ const updatInfo = async (req, res) => {
         res.status(500).json({ message: "Error updating personal info.", error: err.message });
     }
 };
-
-// export default updatePersonalInfo;
 
 const uploadPhoto = async (req, res) => {
     try {
