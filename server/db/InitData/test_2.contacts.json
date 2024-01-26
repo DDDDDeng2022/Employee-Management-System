@@ -1,0 +1,9 @@
+[{
+  "_id": {
+    "$oid": "65b2f7e5fceb2ad32c0c3580"
+  },
+  "first_name": "json",
+  "last_name": "emy",
+  "relationship": "friend",
+  "__v": 0
+}]
